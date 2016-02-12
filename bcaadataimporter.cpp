@@ -1,12 +1,18 @@
 #include <QDebug>
 #include <QSqlError>
+#include <QThread>
+#include <QUrl>
+#include <QFileInfo>
+#include <QSettings>
 #include "bcaadataimporter.h"
+#include "bcaaxmlreader.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
   , m_isrunning(false)
 {
-
+    QSettings settings("rdffg", "BCAA Importer");
+    m_datafilepath = settings.value("history/lastFolder").toString();
 }
 
 QString BCAADataImporter::dataFilePath()
@@ -17,6 +23,8 @@ QString BCAADataImporter::dataFilePath()
 void BCAADataImporter::setDataFilePath(QString path)
 {
     m_datafilepath = path;
+    QSettings settings("rdffg", "BCAA Importer");
+    settings.setValue("history/lastFolder", m_datafilepath);
 }
 
 DbConnectionSettings *BCAADataImporter::dbConnection() {
@@ -46,6 +54,21 @@ void BCAADataImporter::beginImport()
         qDebug() << Q_FUNC_INFO << "Database connection object was null";
         return;
     }
+
+    QThread *t = new QThread;
+    QUrl u(m_datafilepath);
+    BcaaXmlReader *r = new  BcaaXmlReader(u.toLocalFile());
+    QObject::connect(r, &BcaaXmlReader::message, [=](QString msg){
+        emit this->statusChanged(msg);
+    });
+    r->moveToThread(t);
+    QObject::connect(t, &QThread::started, r, &BcaaXmlReader::import);
+    QObject::connect(r, &BcaaXmlReader::finished, t, &QThread::quit);
+    QObject::connect(t, &QThread::finished, t, &QThread::deleteLater);
+    QObject::connect(r, &BcaaXmlReader::finished, r, &BcaaXmlReader::deleteLater);
+    t->start();
+
+
     m_isrunning = false;
     emit runningChanged();
 }

@@ -2,6 +2,8 @@ TEMPLATE = app
 
 QT += qml quick widgets sql xml
 
+CONFIG += qtquickcompiler
+
 SOURCES += main.cpp \
     bcaadataimporter.cpp \
     dbconnectionsettings.cpp \
@@ -30,3 +32,14 @@ else:unix:!macx: LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c
 
 INCLUDEPATH += $$PWD/../libs/CodeSynthesis/include
 DEPENDPATH += $$PWD/../libs/CodeSynthesis/include
+
+DISTFILES += \
+    DataAdvice.xsd
+
+mytarget.target = DataAdvice.hxx
+mytarget.commands = xsd cxx-tree --namespace-map http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd=dataadvice --std c++11 --output-dir $$PWD $$PWD/DataAdvice.xsd
+mytarget.depends = DataAdvice.xsd
+
+schema.target = DataAdvice.xsd
+
+QMAKE_EXTRA_TARGETS += mytarget schema

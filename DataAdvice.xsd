@@ -1,0 +1,4205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) 2015, BC Assessment Corporation. All rights reserved.
+-->
+<xs:schema
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:da="http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd"
+    xmlns="http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd"
+    targetNamespace="http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd"
+    elementFormDefault="qualified">
+    <xs:annotation>
+        <xs:documentation>
+            Defines the structure of a Data Advice XML document.
+        </xs:documentation>
+    </xs:annotation>
+
+    <!--
+    *******************************************************
+    Data Advice Document.
+    -->
+
+    <xs:element
+        name="DataAdvice"
+        type="DataAdvice">
+        <xs:annotation>
+            <xs:documentation>
+                The root element of a Data Advice XML document. The content of this
+                element represents an entire Data Advice XML delivery for a single order.
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:complexType
+        name="DataAdvice">
+        <xs:annotation>
+            <xs:documentation>
+                Represents an entire Data Advice XML delivery for a single order.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="RollYear"
+                type="xs:integer"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The roll year parameter used to generate the Data Advice XML document.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="OwnershipYear"
+                type="xs:integer"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The ownership year parameter used to generate the Data Advice XML document.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="RunType"
+                type="RunType"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The run type parameter used to generate the Data Advice XML document.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="StartDate"
+                type="xs:date"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The start date of the reporting period for the Data Advice XML document.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="EndDate"
+                type="xs:date"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The end date of the reporting period for the Data Advice XML document.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="AssessmentAreas"
+                type="AssessmentAreaCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Represents a collection of BCA assessment area folio groups.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="ReportSummary"
+                type="DeliverySummary"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The total folio count and value summaries for the entire Data Advice XML document.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute
+            name="Version"
+            type="Version"
+            use="required"
+            fixed="1.3">
+            <xs:annotation>
+                <xs:documentation>
+                    Identifies the version of the XML schema that defines the structure
+                    of the Data Advice XML document.
+                </xs:documentation>
+                <xs:documentation>
+                    Note: Documents that conform to this schema shall have a value of "1.3"
+                    for this attribute.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute
+            name="RequestID"
+            type="UniqueID"
+            use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    A unique identifier for the request that specified the order parameters.
+                    The value is intended for BCA internal purposes only.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute
+            name="OrderID"
+            type="UniqueID"
+            use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    A unique identifier for the order that generated the Data Advice XML document.
+                    The value is intended for BCA internal purposes only.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute
+            name="RunDate"
+            type="xs:date"
+            use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    The date when the order was run to generate the Data Advice XML document.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:simpleType
+        name="Version">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a version number of one to four integers separated by periods (e.g. 1.0).
+            </xs:documentation>
+            <xs:documentation>
+                Version numbers are assumed to be ordered according to standard conventions.
+                If "x" and "y" are version numbers where "x" precedes "y" in sort order, then
+                "x" shall identify a version that is historically older than the version identified by "y".
+                No additional interpretation of a version number is currently defined.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:pattern
+                value="[0-9]+(\.[0-9]+){0,3}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType
+        name="RunType">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a code indicating the run type that generated the Data Advice XML document.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:enumeration value="COMP">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates a Completed Roll run type.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="REVD">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates a Revised Roll run type.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="RVSP">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates a Revised + Supplementary Roll run type.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="GRNT">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates a Grant Roll run type.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SUPP">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates a Supplementary Cycle run type.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PAAB">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates a Property Assessment Appeal Board (PAAB) Roll run type.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="DECISION">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates a Decision Roll run type.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="MONTHLY">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates a Monthly run type.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="WEEKLY">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates a Weekly run type.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OTHER">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates a run type for a user-specified date range.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType
+        name="DeliverySummary">
+        <xs:annotation>
+            <xs:documentation>
+                Represents total folio counts and value summaries for an entire Data Advice XML document.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="TotalFolioCount"
+                type="xs:integer"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The total number of folios included in the Data Advice XML document.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="TaxableFolioCount"
+                type="xs:integer"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The number of taxable folios included in the Data Advice XML document.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="TaxExemptFolioCount"
+                type="xs:integer"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The number of exempt folios included in the Data Advice XML document.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="TotalGrossValues"
+                type="FolioGroupValues"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The summary of gross values for the folios in the folio group.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="TotalTaxExemptValues"
+                type="FolioGroupValues"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The summary of tax-exempt values for the folio group.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="TotalNetValues"
+                type="FolioGroupValues"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The summary of net values for the folio group.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="GeneralValues"
+                type="PropertyClassValuesCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Values summarized by property class and sub-class for general purposes.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="BCTransitValues"
+                type="PropertyClassValuesCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Values summarized by property class and sub-class for BC Transit purposes.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="SchoolValues"
+                type="PropertyClassValuesCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Values summarized by property class and sub-class for school purposes.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="AmendmentReasonCounts"
+                type="AmendmentReasonCountCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Total folio counts by amendment reason.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="DeleteReasonCounts"
+                type="DeleteReasonCountCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Total folio counts by delete reason.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="AmendmentReasonCountCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of folio counts by amendment reason.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="AmendmentReasonCount"
+                type="AmendmentReasonCount"
+                minOccurs="0"
+                maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        The folio count for a single amendment reason.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="AmendmentReasonCount">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a count of folios for a particular amendment type.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="AmendmentReasonCode"
+                type="LookupCode"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        A code indicating the amendment type.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+              name="AmendmentReasonDescription"
+              type="String255"
+              minOccurs="0"
+              maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        A short description about the amendment reason.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="FolioCount"
+                type="xs:integer"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The folio count for the amendment type.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="DeleteReasonCountCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of folio counts by delete reason.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="DeleteReasonCount"
+                type="DeleteReasonCount"
+                minOccurs="0"
+                maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        The count of folio deletes for a particular delete reason.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="DeleteReasonCount">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a count of folio for a particular delete reason.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="DeleteReasonCode"
+                type="LookupCode"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        A code indicating the delete reason.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="DeleteReasonDescription"
+                type="String255"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        A short description about the delete reason.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="FolioCount"
+                type="xs:integer"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The folio count for the delete reason.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+    *******************************************************
+    Assessment Area and Jurisdiction Folio Groups.
+    -->
+
+    <xs:complexType
+        name="AssessmentAreaCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of BCA assessment area folio groups.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="AssessmentArea"
+                type="AssessmentArea"
+                minOccurs="0"
+                maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        A folio group for a single BCA assessment area.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="AssessmentArea">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio group for a single BCA assessment area.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="AssessmentAreaCode"
+                type="AssessmentAreaCode"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The BCA code that identifies the assessment area.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="AssessmentAreaDescription"
+                type="String255"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The full name/description of the BCA assessment area.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="Jurisdictions"
+                type="JurisdictionCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The collection of jurisdiction folio groups for the BCA assessment area.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="AreaSummary"
+                type="DeliverySummary"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Total folio count and value summaries for the BCA assessment area.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType
+        name="AssessmentAreaCode">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a BCA code that identifies an assessment area.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:maxLength
+                value="16"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType
+        name="JurisdictionCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of jurisdiction folio groups.
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:sequence>
+            <xs:element
+                name="Jurisdiction"
+                type="Jurisdiction"
+                minOccurs="0"
+                maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        A folio group for a single jurisdiction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+
+    </xs:complexType>
+
+    <xs:complexType
+        name="Jurisdiction">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio group for a single jurisdiction.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="JurisdictionCode"
+                type="JurisdictionCode"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The BCA code that identifies the jurisdiction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="JurisdictionDescription"
+                type="String255"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The short name/description of the jurisdiction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="FolioRecords"
+                type="FolioRecordCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The collection of folio data records for the jurisdiction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="JurisdictionSummary"
+                type="DeliverySummary"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Total folio count and value summaries for the jurisdiction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType
+        name="JurisdictionCode">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a BCA code that identifies a jurisdition.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:maxLength
+                value="16"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType
+        name="FolioGroupValues">
+        <xs:annotation>
+            <xs:documentation>
+                Represents value summaries for a folio group.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="LandValue"
+                type="xs:decimal"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The sum of all land values reported for the folio group.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="ImprovementValue"
+                type="xs:decimal"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The sum of all improvement(s) values reported for the folio group.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="ParkingAreaValue"
+                type="xs:decimal"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The sum of all parking area values reported for the folio group.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+    *******************************************************
+    Folio Records.
+    -->
+
+    <xs:complexType
+        name="FolioRecordCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of folio data records.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="FolioRecord"
+                type="FolioRecord"
+                minOccurs="0"
+                maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        A data record for a single folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioRecord">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a data record for a single folio and its associated attributes.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="RollNumber"
+                type="FolioRollNumber"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The unique identifier for the specific folio within its jurisdiction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="FolioStatus"
+                type="FolioLookupCodeItem"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates the status of the folio at the time the Data Advice XML document was generated.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="FolioStatusDescription"
+                type="FolioString255Item"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The short name/description of the folio status.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="FolioAction"
+                type="FolioAction"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Specifies the folio action: Add, Delete.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="FolioAddresses"
+                type="FolioAddressCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The collection of addresses associated with the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="OwnershipGroups"
+                type="OwnershipGroupCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The collection of ownership groups associated with the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="LegalDescriptions"
+                type="LegalDescriptionCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The collection of legal descriptions associated with the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="FolioDescription"
+                type="FolioDescription"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Describes general characteristics of the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="Sales"
+                type="SaleCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The collection of sales associated with the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="Values"
+                type="PropertyValues"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The land and improvement values for a folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="Amendments"
+                type="FolioAmendmentCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The collection of amendments associated with the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="MinorTaxing"
+                type="MinorTaxing"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The minor taxing jurisdictions for the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="Farms"
+                type="FarmCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Farm associated with the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="ManufacturedHomes"
+                type="ManufacturedHomeCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The collection of manufactured home information associated with the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="ManagedForests"
+                type="ManagedForestCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Managed forest information associated with the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="OilAndGas"
+                type="OilAndGasCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Oil and gas information associated with the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="LandCharacteristics"
+                type="LandCharacteristicCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The collection of land characteristics associated with the folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+     name="FolioRollNumber">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a unique identifier for a folio within its jurisdiction.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="String32">
+                <xs:attributeGroup ref="Action"/>
+                <xs:attribute
+                    name="OldValue"
+                    type="String32"
+                    use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Specifies the old field value for a Change action, if available.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioAction">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio action (add, change, or delete).
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element
+                name="FolioAdd"
+                type="FolioAdd"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Specifies a folio add action.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                 name="FolioDelete"
+                 type="FolioDelete"
+                 minOccurs="1"
+                 maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Specifies a folio delete action.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioAdd">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio add action.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="FolioRenumber"
+                type="FolioRenumber"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Identifies an expired folio that has been renumbered.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioDelete">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio delete (expiry) action.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="FolioRenumber"
+                type="FolioRenumber"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Identifies a renumbered folio that replaces the expired folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="DeleteReasonCode"
+                type="LookupCode"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        A code identifying the reason why a folio is being expired.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+               name="DeleteReasonDescription"
+               type="String255"
+               minOccurs="0"
+               maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The short name/description of the deletion reason.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioRenumber">
+        <xs:annotation>
+            <xs:documentation>
+                Represents details of an add or delete due to folio renumbering.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="AssessmentAreaCode"
+                type="AssessmentAreaCode"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The BCA code that identifies the new or old assessment area of the renumbered folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+               name="AssessmentAreaDescription"
+               type="String255"
+               minOccurs="0"
+               maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The short name/description of the assessment area.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="JurisdictionCode"
+                type="JurisdictionCode"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The BCA code that identifies the new or old jurisdiction of the renumbered folio.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+               name="JurisdictionDescription"
+               type="String255"
+               minOccurs="0"
+               maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The short name/description of the jurisdiction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="RollNumber"
+                type="String32"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The unique identifier of the renumbered folio within its old or new jurisdiction.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+      name="FolioAddressCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of addresses associated with a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="FolioAddress"
+                        type="FolioAddress"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Specifies a single address associated with a folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioAddress">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a single address associated with a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="PrimaryFlag"
+                        type="FolioBooleanItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Indicates whether the address is the primary address associated with the folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="UnitNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Apartment or suite or unit number.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="StreetNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Street number assigned by a local government (municipality).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="StreetDirectionPrefix"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Further refinement of the street name to facilitate location of the folio (pre-directional).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="StreetName"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Street identifier assigned by a local government (municipality).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="StreetType"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Road, Street, Place, etc.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="StreetDirectionSuffix"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Further refinement of the street name to facilitate location of the folio (post-directional).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="City"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                City name.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ProvinceState"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Province or state.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="PostalZip"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Postal or zip code.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                     name="MapReferenceNumber"
+                     type="FolioString255Item"
+                     minOccurs="0"
+                     maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Formerly National Topographic System (NTS) number. A geographic reference.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+      name="OwnershipGroupCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of ownership groups for a property.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="OwnershipGroup"
+                        type="OwnershipGroup"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Describes a single ownership group.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+      name="OwnershipGroup">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a group of property owners with details in common.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="OwnershipGroupID"
+                        type="FolioUniqueIDItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Identifies the group of property owners.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="TenureCode"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Identifies the type of ownership or occupation on land.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="TenureDescription"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The short name/description of the tenure code.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="AssessmentNoticeReturned"
+                        type="FolioBooleanItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Indicates whether the Assessment Notice for the current roll year was returned
+                                to BC Assessment.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="AssessmentNoticeSuppressed"
+                        type="FolioBooleanItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Indicates whether BCA has not sent out an Assessment Notice to this owner based
+                                on predefined business agreements or rules.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                     name="ChangeType"
+                     type="FolioLookupCodeItem"
+                     minOccurs="0"
+                     maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A code identifying the type of the most recent change to the ownership information.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="ChangeTypeDescription"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The short name/description of the ChangeType.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ChangeDate"
+                        type="FolioDateItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The date of the most recent change to the ownership information.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ChangeSource"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Identifies the source of the most recent change to the ownership information.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="ChangeSourceDescription"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The short name/description of the ChangeSource.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Owners"
+                        type="OwnerCollection"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The collection of property owners for the group.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="FormattedMailingAddress"
+                        type="FormattedMailingAddress"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A formatted address for mailing purposes.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="MailingAddress"
+                        type="MailingAddress"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A structured address for mailing purposes.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="OwnerCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of property owners.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="Owner"
+                        type="Owner"
+                        minOccurs="1"
+                        maxOccurs="2">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The name of a single property owner.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="Owner">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a single property owner.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="FirstName"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The first name of an owner.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="MiddleName"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The middle name of an owner.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="MiddleInitial"
+                        type="FolioCharacterItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The middle initial of an owner.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="CompanyOrLastName"
+                        type="FolioString255Item"
+                        minOccurs="1"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The company name or last name of an owner.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="OwnerSequenceID"
+                        type="FolioUniqueIDItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Identifies the sequence owners should be listed within an ownership group.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="EquityType"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Identifies the type of relationship an owner/lessee/occupier has to the folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="EquityTypeDescription"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The short name/description of the equity type.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="MailingAddress">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a structured address for mailing purposes.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="Attention"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Attention, as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="CareOf"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Care Of, as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Floor"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Floor, as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="UnitNumber"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Apartment or Suite or Unit Number, as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="StreetDirectionPrefix"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Further refinement of the street name to facilitate location of building (pre-directional),
+                                as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                     name="StreetNumber"
+                     type="FolioString255Item"
+                     minOccurs="0"
+                     maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Street number assigned by a local government (municipality),
+                                as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="StreetName"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Road name assigned by a local government (municipality),
+                                as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="StreetType"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Street type, as required for mail to be sent to the owner’s mailing address.
+                                E.g. Road, Street, Place, etc.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="StreetDirectionSuffix"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Further refinement of the street name to facilitate location of building (post-directional),
+                                as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="City"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                City, as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ProvinceState"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Province or state, as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Country"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Country, as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="PostalZip"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Postal or zip code, as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="FreeformAddress"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Additional mailing address information not fitting in any of the predefined fields,
+                                as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Compartment"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Compartment, as required for mail to be sent to the owner’s mailing address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="DeliveryInstallationType"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Delivery installation type, as required for mail to be sent to the owner’s mailing address.
+                                E.g. Station, Post Office, Letter Carrier Depot, etc.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="DeliveryInstallationTypeValue"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Delivery installation value, as required for mail to be sent to the owner’s mailing address.
+                                E.g. Station 7, Retail Postal Outlet 10, etc.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ModeOfDelivery"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Mode of Delivery, as required for mail to be sent to the owner’s mailing address.
+                                e.g. Rural Route, Post Office Box, General Delivery, etc.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ModeOfDeliveryValue"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Mode of delivery value, as required for mail to be sent to the owner’s mailing address.
+                                e.g. RR 876, PO Box 19, etc.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Site"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Site value, as required for mail to be sent to the owner’s mailing address.
+                                e.g. Site 10.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="BulkMailCode"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Identifies when five or more properties are linked to a name record or
+                                when five or more name records with a single mailing address are linked to a folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FormattedMailingAddress">
+        <xs:annotation>
+            <xs:documentation>
+                Represents an address formatted for mailing purposes.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="Line1"
+                        type="FormattedMailingAddressLine"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Formatted address line for mailing purposes: Line 1 consists of C/O label and value.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Line2"
+                        type="FormattedMailingAddressLine"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Formatted address line for mailing purposes: Line 2 consists of Attention label and value.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Line3"
+                        type="FormattedMailingAddressLine"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Formatted address line for mailing purposes: Line 3 consists of value of freeform address field.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Line4"
+                        type="FormattedMailingAddressLine"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Formatted address line for mailing purposes: Line 4 consists of Unit and Floor Number label and
+                                value if there is not enough room on Line 5.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Line5"
+                        type="FormattedMailingAddressLine"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Formatted address line for mailing purposes: Line 5 consists of street number,
+                                name, type and directional data.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Line6"
+                        type="FormattedMailingAddressLine"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Formatted address line for mailing purposes: Line 6 consists of Site and Compartment label and values
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FormattedMailingAddressLine">
+        <xs:annotation>
+            <xs:documentation>
+                Represents one line of a formatted address for mailing purposes.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="String40">
+                <xs:attributeGroup ref="Action"/>
+                <xs:attribute
+                    name="OldValue"
+                    type="String40"
+                    use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Specifies the old field value for a Change action, if available.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="LegalDescriptionCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of legal descriptions for a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="LegalDescription"
+                        type="LegalDescription"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The legal descriptions of a folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+      name="LegalDescription">
+        <xs:annotation>
+            <xs:documentation>
+                Represents the legal descriptions of a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="FormattedLegalDescription"
+                        type="FolioString1024Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A formatted string of all the legal description attributes with appropriate labels.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="PID"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The PID that uniquely identifies the legal description.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Lot"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Lot, part of the legal description of a parcel of land as provided by the
+                                Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="StrataLot"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Strata Lot, part of the legal description of a parcel of land as provided by the
+                                Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Parcel"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Parcel, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Block"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Block, part of the legal description of a parcel of land as provided by the
+                                Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="SubBlock"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Sub block, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="Plan"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Plan number, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="SubLot"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Suburban lot, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="Part1"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Part 1, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Part2"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Part 2, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Part3"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Part 3, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Part4"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Part 4, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="DistrictLot"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                District Lot, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="LegalSubdivision"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Legal subdivision, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Section"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Section, part of the legal description of a parcel of land as provided by the
+                                Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Township"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Township, part of the legal description of a parcel of land as provided by the
+                                Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Range"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Range, part of the legal description of a parcel of land as provided by the
+                                Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="Meridian"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Meridian Code, identifies a line of longitude, part of the legal description of
+                                a parcel of land as provided by the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="MeridianShort"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Meridian Code, identifies a line of longitude, part of the legal description of
+                                a parcel of land as provided by the Land Title and Survey Authority. Only 1 Character.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="BCAGroup"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The legal description group as defined by BCA.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="LandDistrict"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Land district, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="LandDistrictDescription"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The short name/description of the LandDistrict.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Portion"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Portion, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ExceptPlan"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Except plan, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="FirstNationReserveNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Identifier assigned to FN reserve properties by BCA.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="FirstNationReserveDescription"
+                       type="FolioString255Item"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The short name/description of the FirstNationReserveNumber.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="LeaseLicenceNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Lease licence number as defined by the Ministry of Forest, Lands, and
+                                Natural Resource Operations and other valid sources of leases added to the assessment roll.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="LandBranchFileNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Lands Branch File Number as defined by the Ministry of Forest, Lands, and
+                                Natural Resource Operations.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="AirSpaceParcelNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A volumetric parcel identifier.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="LegalText"
+                        type="FolioString1024Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Freeform legal text, part of the legal description of a parcel of land as provided by
+                                the Land Title and Survey Authority.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name ="LandCharacteristic">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a land characteristic.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="LandCharacteristicCode"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A code indicating a characteristic of the land.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="LandCharacteristicDescription"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A description of the Land Characteristic Code.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+      name="LandCharacteristicCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of land characteristic information.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="LandCharacteristic"
+                        type="LandCharacteristic"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Represents a land characteristic.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="ManufacturedHomeCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of manufactured home information.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="ManufacturedHome"
+                        type="ManufacturedHome"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Provides information for a single manufactured home.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+      name="ManufacturedHome">
+        <xs:annotation>
+            <xs:documentation>
+                Represents information for a single manufactured home.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="MHRegistryNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Registration number for a manufactured home (MH) by the Manufactured Home Registry.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="MHBayNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Bay number associated with the manufactured home.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="MHPark"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The name or other identification of the park associated with the manufactured home.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="MHParkRollNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Park roll number associated with the manufactured home.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FarmCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of farm information associated with a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="Farm"
+                        type="Farm"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Represents a farm.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+    name="Farm">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a farm.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="FarmNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A BCA farm identification number.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+
+
+    <xs:complexType
+        name="OilAndGasCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of oil and gas information associated with a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="OilAndGas"
+                        type="OilAndGas"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Represents an OilAndGas.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+     name="OilAndGas">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a oil and gas information associated with a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="PipelineProjectNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Pipeline project number for oil and gas reference.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+
+
+    <xs:complexType
+        name="ManagedForestCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents managed forest information associated with a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="ManagedForest"
+                        type="ManagedForest"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Represents a ManagedForest.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+    name="ManagedForest">
+        <xs:annotation>
+            <xs:documentation>
+                Represents managed forest information associated with a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="ManagedForestNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Represents a ManagedForest.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+      name="FolioAmendmentCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of amendments associated with a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="Amendment"
+                        type="FolioAmendment"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Specifies a single amendment associated with a folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+      name="FolioAmendment">
+        <xs:annotation>
+            <xs:documentation>
+                Represents an amendment resulting from an appeal or review process.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="AmendmentType"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A code identifying the process that resulted in the amendment.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="AmendmentTypeDescription"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A short description about the Amendment Type.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="AmendmentReasonCode"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Describes the reason for the amendment.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="AmendmentReasonDescription"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A short description about the Amendment Reason.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="SuppOccupancyDate"
+                        type="FolioDateItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Specifies the date when a SUPP occupancy began or ended.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="SuppOccupancyCode"
+                        type="FolioCharacterItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Specifies whether the SUPP occupancy date indicates a begin (B) or end (E) date.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="SaleCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of sale information.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="Sale"
+                        type="Sale"
+                        minOccurs="0"
+                        maxOccurs="unbounded">
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="Sale">
+        <xs:annotation>
+            <xs:documentation>
+                Represents information for a single sale.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="DocumentNumber"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The LTSA Document Number assigned in regard to an Indefeasible State of Title Certificate,
+                                which indicates ownership or title.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ConveyanceDate"
+                        type="FolioDateItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The date associated with this sale.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ConveyancePrice"
+                        type="FolioDecimalItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The amount of money exchanged as part of this sale.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ConveyanceType"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The conveyance type code identifying the characteristics of the sale.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                         name="ConveyanceTypeDescription"
+                         type="FolioString255Item"
+                         minOccurs="0"
+                         maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A short description about the conveyance type.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="RejectReasonCode"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The reject reason code identifying why a sale was rejected.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                         name="RejectReasonDescription"
+                         type="FolioString255Item"
+                         minOccurs="0"
+                         maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A short description about the reject reason code.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioDescription">
+        <xs:annotation>
+            <xs:documentation>
+                Represents attributes that describe general characteristics of the folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="Neighbourhood"
+                        type="Neighbourhood"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The neighbourhood of the folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ActualUseCode"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A code identifying the Actual Use.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ActualUseDescription"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The full name/description of the Actual Use.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="VacantFlag"
+                        type="FolioBooleanItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Indicates whether the folio is vacant or occupied.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="BCTransitFlag"
+                       type="FolioBooleanItem"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Indicates whether the folio is subject to BC Transit taxation.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="PoliceTaxFlag"
+                        type="FolioBooleanItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Indicates whether the folio is subject to exemption.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                       name="ALRCode"
+                       type="FolioLookupCodeItem"
+                       minOccurs="0"
+                       maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The Agricultural Land Reserve identifier for the folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ALRDescription"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A short description about the ALR code.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ParkingArea"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Identifies the total value of the parking area (TransLink values only for Roll Years 2005 to 2007).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="LandMeasurement"
+                        type="LandMeasurement"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Land measurements for the folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="SchoolDistrict"
+                        type="SpecialDistrict"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The school district of the folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="RegionalDistrict"
+                        type="SpecialDistrict"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The regional district of the folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="RegionalHospitalDistrict"
+                        type="SpecialDistrict"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The regional hospital district of the folio.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="PredominantManualClass"
+                        type="ManualClass"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Information about the state and condition of improvements and structural components.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="LandMeasurement">
+        <xs:annotation>
+            <xs:documentation>
+                Represents the land measurement for a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="LandDimensionType"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A code indicating the type of land measurements being used.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                         name="LandDimensionTypeDescription"
+                         type="FolioString255Item"
+                         minOccurs="0"
+                         maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A short description about the land dimension type.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="LandDimension"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Freeform land measurement.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="LandWidth"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Land width measurement.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="LandDepth"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Land depth measurement.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+    name="Neighbourhood">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a neighbourhood.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="NeighbourhoodCode"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A code identifying the neighbourhood.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="NeighbourhoodDescription"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The full name/description of the neighbourhood.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="SpecialDistrict">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a special (school, regional, hospital, etc.) district.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="DistrictCode"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A code identifying the special district.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="DistrictDescription"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The full name/description of the special district.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="ManualClass">
+        <xs:annotation>
+            <xs:documentation>
+                Represents information about the state and condition of improvements and structural components.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="ManualClassCode"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A code identifying the state and condition of improvements and structural components.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ManualClassDescription"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A short description about the manual class code.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="PercentDeviation"
+                        type="FolioDecimalItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A percentage deviation from the manual class code.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="MinorTaxing">
+        <xs:annotation>
+            <xs:documentation>
+                Represents the minor taxing jurisdictions (MTXJ) for a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="ElectoralAreas"
+                        type="MinorTaxingJurisdictionCollection"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The Electoral Areas minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ServiceAreas"
+                        type="MinorTaxingJurisdictionCollection"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The Service Areas minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="Defined"
+                        type="MinorTaxingJurisdictionCollection"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The Defined minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="SpecifiedRegional"
+                        type="MinorTaxingJurisdictionCollection"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The Specified Regional minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="SpecifiedMunicipal"
+                        type="MinorTaxingJurisdictionCollection"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The Specified Municipal minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="LocalAreas"
+                        type="MinorTaxingJurisdictionCollection"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The Local Areas minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="GeneralServices"
+                        type="MinorTaxingJurisdiction"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The General Services minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="ImprovementDistricts"
+                        type="MinorTaxingJurisdictionCollection"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The Improvement Districts minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="IslandsTrusts"
+                        type="MinorTaxingJurisdiction"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The Islands Trusts minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+      name="MinorTaxingJurisdictionCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of minor taxing jurisdictions (MTXJ) by MTXJ type.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="MinorTaxingJurisdiction"
+                        type="MinorTaxingJurisdiction"
+                        minOccurs="1"
+                        maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>
+                                Represents a collection of minor taxing jurisdictions (MTXJ) by MTXJ type.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="MinorTaxingJurisdiction">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of minor taxing jurisdictions (MTXJ) by MTXJ type.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="FolioItemGroup">
+                <xs:sequence>
+                    <xs:element
+                        name="MinorTaxingCode"
+                        type="FolioLookupCodeItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A code identifying the minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="MinorTaxingCodeShort"
+                        type="FolioCharacterItem"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                A one-character code identifying the minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element
+                        name="MinorTaxingDescription"
+                        type="FolioString255Item"
+                        minOccurs="0"
+                        maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>
+                                The full name/description of the minor taxing jurisdiction (MTXJ).
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="PropertyValues">
+        <xs:annotation>
+            <xs:documentation>
+                Represents the land and improvement values for a property.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="GeneralValues"
+                type="PropertyClassValuesCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        General land and improvement values by property class and sub-class.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="BCTransitValues"
+                type="PropertyClassValuesCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Land and improvement by property class and sub-class for BC Transit purposes.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="SchoolValues"
+                type="PropertyClassValuesCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Land and improvement values by property class and sub-class for school purposes.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="TaxExemptValues"
+                type="TaxExemptValuesCollection"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        Tax exempt land and improvement values.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="TaxExemptValuesCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of land and improvement values by tax exception.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="TaxExemptPropertyClassValues"
+                type="TaxExemptPropertyClassValues"
+                minOccurs="0"
+                maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        The tax exempt land and improvement values for a single property class.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="TaxExemptPropertyClassValues">
+        <xs:annotation>
+            <xs:documentation>
+                Represents tax exempt land and improvement values for a single property class.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="TaxExemptCode"
+                type="LookupCode"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The tax exemption code.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="TaxExemptDescription"
+                type="String255"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The tax exemption code description.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+               name="PropertyClassCode"
+               type="PropertyClassCode"
+               minOccurs="1"
+               maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        A code indicating the property class.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="PropertyClassDescription"
+                type="String255"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The class code description.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:group ref="Valuation"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="PropertyClassValuesCollection">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a collection of land and improvement values by property class and sub-class.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="PropertyClassValues"
+                type="PropertyClassValues"
+                minOccurs="0"
+                maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        The land and improvement values for a single property class.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType
+        name="PropertyClassValues">
+        <xs:annotation>
+            <xs:documentation>
+                Represents land and improvement values by property class and sub-class.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:group ref="PropertyClass"/>
+            <xs:element
+                name="GrossValues"
+                type="Valuation"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The gross land and improvement values for the property class.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="TaxExemptValues"
+                type="Valuation"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The tax-exempt land and improvement values for the property class.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="NetValues"
+                type="Valuation"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The net land and improvement values for the property class.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:group
+        name="PropertyClass">
+        <xs:annotation>
+            <xs:documentation>
+                Represents identifying information for a property class and sub-class.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="PropertyClassCode"
+                type="PropertyClassCode"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        A code indicating the property class.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="PropertyClassDescription"
+                type="String255"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The property class description.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="PropertySubClassCode"
+                type="PropertySubClassCode"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        A code indicating the property sub-class.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="PropertySubClassDescription"
+                type="String255"
+                minOccurs="0"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The property sub-class description.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:simpleType
+        name="PropertyClassCode">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a code indicating a property class.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:maxLength
+                value="64"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType
+        name="PropertySubClassCode">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a code indicating a property sub-class.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:maxLength
+                value="64"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType
+        name="Valuation">
+        <xs:annotation>
+            <xs:documentation>
+                Represents assessed land and/or improvement values for a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:group ref="Valuation"/>
+    </xs:complexType>
+
+    <xs:group
+        name="Valuation">
+        <xs:annotation>
+            <xs:documentation>
+                Represents assessed land and/or improvement values for a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element
+                name="LandValue"
+                type="xs:decimal"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The land value.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element
+                name="ImprovementValue"
+                type="xs:decimal"
+                minOccurs="1"
+                maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>
+                        The improvement(s) value.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:group>
+
+    <xs:complexType
+        name="FolioItemGroup"
+        abstract="true"
+        block="restriction">
+        <xs:annotation>
+            <xs:documentation>
+                Represents an abstract group of folio data fields.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="Action"/>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioIntegerItem">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio integer data value.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:integer">
+                <xs:attributeGroup ref="Action"/>
+                <xs:attribute
+                    name="OldValue"
+                    type="xs:integer"
+                    use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Specifies the old field value for a Change action, if available.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioBooleanItem">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio boolean data value.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:boolean">
+                <xs:attributeGroup ref="Action"/>
+                <xs:attribute
+                    name="OldValue"
+                    type="xs:boolean"
+                    use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Specifies the old field value for a Change action, if available.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioDecimalItem">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio decimal data value.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:decimal">
+                <xs:attributeGroup ref="Action"/>
+                <xs:attribute
+                    name="OldValue"
+                    type="xs:decimal"
+                    use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Specifies the old field value for a Change action, if available.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioDateItem">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio date data value.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="xs:date">
+                <xs:attributeGroup ref="Action"/>
+                <xs:attribute
+                    name="OldValue"
+                    type="xs:date"
+                    use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Specifies the old field value for a Change action, if available.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioUniqueIDItem">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a unique BCA ID data value for a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="UniqueID">
+                <xs:attributeGroup ref="Action"/>
+                <xs:attribute
+                    name="OldValue"
+                    type="UniqueID"
+                    use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Specifies the old field value for a Change action, if available.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioLookupCodeItem">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a lookup code data value for a folio.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="LookupCode">
+                <xs:attributeGroup ref="Action"/>
+                <xs:attribute
+                    name="OldValue"
+                    type="LookupCode"
+                    use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Specifies the old field value for a Change action, if available.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioCharacterItem">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio string data value that is exactly one character.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="Character">
+                <xs:attributeGroup ref="Action"/>
+                <xs:attribute
+                    name="OldValue"
+                    type="Character"
+                    use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Specifies the old field value for a Change action, if available.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioString255Item">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio string data value with a maximum length of 255 characters.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="String255">
+                <xs:attributeGroup ref="Action"/>
+                <xs:attribute
+                    name="OldValue"
+                    type="String255"
+                    use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Specifies the old field value for a Change action, if available.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType
+        name="FolioString1024Item">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a folio string data value with a maximum length of 1024 characters.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:simpleContent>
+            <xs:extension base="String1024">
+                <xs:attributeGroup ref="Action"/>
+                <xs:attribute
+                    name="OldValue"
+                    type="String1024"
+                    use="optional">
+                    <xs:annotation>
+                        <xs:documentation>
+                            Specifies the old field value for a Change action, if available.
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:attributeGroup
+        name="Action">
+        <xs:annotation>
+            <xs:documentation>
+                Represents an action applied to a structure or field.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute
+            name="Action"
+            type="ActionCode"
+            use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    Identifies whether an Add, Change, or Delete action applies to the structure or field.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+    <xs:simpleType
+        name="ActionCode">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a code identifying an Add, Change, or Delete action for a structure or field.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:enumeration
+                value="Add">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates that a field or field group has been added.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration
+                value="Change">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates that a field or field group has been changed.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration
+                value="Delete">
+                <xs:annotation>
+                    <xs:documentation>
+                        Indicates that a field or field group has been deleted.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType
+        name="UniqueID">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a BCA-assigned unique identifier.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:maxLength
+                value="32"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType
+        name="LookupCode">
+        <xs:annotation>
+            <xs:documentation>
+                Represents the code for an entry in a lookup table.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:maxLength
+                value="16"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType
+        name="Character">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a one-character string.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:length
+                value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType
+        name="String32">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a string that is a maximum of 32 characters in length.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:maxLength
+                value="32"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType
+        name="String40">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a string that is a maximum of 40 characters in length.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:maxLength
+                value="40"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType
+        name="String255">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a string that is a maximum of 255 characters in length.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:maxLength
+                value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType
+        name="String1024">
+        <xs:annotation>
+            <xs:documentation>
+                Represents a string that is a maximum of 1024 characters in length.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction
+            base="xs:string">
+            <xs:maxLength
+                value="1024"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

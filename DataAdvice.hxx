@@ -31,8 +31,8 @@
 // in the accompanying FLOSSE file.
 //
 
-#ifndef DATA_ADVICE_HXX
-#define DATA_ADVICE_HXX
+#ifndef E__WORKSPACE_PROJECTS_NEW_BCAAREADER_NATIVE_BCAA_IMPORTER2_DATA_ADVICE_HXX
+#define E__WORKSPACE_PROJECTS_NEW_BCAAREADER_NATIVE_BCAA_IMPORTER2_DATA_ADVICE_HXX
 
 #ifndef XSD_CXX11
 #define XSD_CXX11
@@ -82,21 +82,6 @@
 #include <xsd/cxx/tree/parsing/float.hxx>
 #include <xsd/cxx/tree/parsing/double.hxx>
 #include <xsd/cxx/tree/parsing/decimal.hxx>
-
-#include <xsd/cxx/xml/dom/serialization-header.hxx>
-#include <xsd/cxx/tree/serialization.hxx>
-#include <xsd/cxx/tree/serialization/byte.hxx>
-#include <xsd/cxx/tree/serialization/unsigned-byte.hxx>
-#include <xsd/cxx/tree/serialization/short.hxx>
-#include <xsd/cxx/tree/serialization/unsigned-short.hxx>
-#include <xsd/cxx/tree/serialization/int.hxx>
-#include <xsd/cxx/tree/serialization/unsigned-int.hxx>
-#include <xsd/cxx/tree/serialization/long.hxx>
-#include <xsd/cxx/tree/serialization/unsigned-long.hxx>
-#include <xsd/cxx/tree/serialization/boolean.hxx>
-#include <xsd/cxx/tree/serialization/float.hxx>
-#include <xsd/cxx/tree/serialization/double.hxx>
-#include <xsd/cxx/tree/serialization/decimal.hxx>
 
 namespace xml_schema
 {
@@ -194,16 +179,6 @@ namespace xml_schema
   typedef ::xsd::cxx::tree::entities< char, simple_type, entity > entities;
 
   typedef ::xsd::cxx::tree::content_order content_order;
-  // Namespace information and list stream. Used in
-  // serialization functions.
-  //
-  typedef ::xsd::cxx::xml::dom::namespace_info< char > namespace_info;
-  typedef ::xsd::cxx::xml::dom::namespace_infomap< char > namespace_infomap;
-  typedef ::xsd::cxx::tree::list_stream< char > list_stream;
-  typedef ::xsd::cxx::tree::as_double< double_ > as_double;
-  typedef ::xsd::cxx::tree::as_decimal< decimal > as_decimal;
-  typedef ::xsd::cxx::tree::facet facet;
-
   // Flags and properties.
   //
   typedef ::xsd::cxx::tree::flags flags;
@@ -227,7 +202,6 @@ namespace xml_schema
   typedef ::xsd::cxx::tree::unexpected_enumerator< char > unexpected_enumerator;
   typedef ::xsd::cxx::tree::expected_text_content< char > expected_text_content;
   typedef ::xsd::cxx::tree::no_prefix_mapping< char > no_prefix_mapping;
-  typedef ::xsd::cxx::tree::serialization< char > serialization;
 
   // Error handler callback interface.
   //
@@ -271,6 +245,7 @@ namespace dataadvice
   class FolioGroupValues;
   class FolioRecordCollection;
   class FolioRecord;
+  class String32;
   class FolioRollNumber;
   class FolioAction;
   class FolioAdd;
@@ -311,7 +286,6 @@ namespace dataadvice
   class MinorTaxing;
   class MinorTaxingJurisdictionCollection;
   class MinorTaxingJurisdiction;
-  class MinorTaxingCode;
   class PropertyValues;
   class TaxExemptValuesCollection;
   class TaxExemptPropertyClassValues;
@@ -370,6 +344,20 @@ namespace dataadvice
 
     void
     RollYear (const RollYear_type& x);
+
+    // OwnershipYear
+    //
+    typedef ::xml_schema::integer OwnershipYear_type;
+    typedef ::xsd::cxx::tree::traits< OwnershipYear_type, char > OwnershipYear_traits;
+
+    const OwnershipYear_type&
+    OwnershipYear () const;
+
+    OwnershipYear_type&
+    OwnershipYear ();
+
+    void
+    OwnershipYear (const OwnershipYear_type& x);
 
     // RunType
     //
@@ -529,6 +517,7 @@ namespace dataadvice
     // Constructors.
     //
     DataAdvice (const RollYear_type&,
+                const OwnershipYear_type&,
                 const RunType_type&,
                 const StartDate_type&,
                 const EndDate_type&,
@@ -563,6 +552,7 @@ namespace dataadvice
 
     protected:
     ::xsd::cxx::tree::one< RollYear_type > RollYear_;
+    ::xsd::cxx::tree::one< OwnershipYear_type > OwnershipYear_;
     ::xsd::cxx::tree::one< RunType_type > RunType_;
     ::xsd::cxx::tree::one< StartDate_type > StartDate_;
     ::xsd::cxx::tree::one< EndDate_type > EndDate_;
@@ -2151,6 +2141,8 @@ namespace dataadvice
     //
     FolioRecord (const RollNumber_type&);
 
+    FolioRecord (::std::unique_ptr< RollNumber_type >);
+
     FolioRecord (const ::xercesc::DOMElement& e,
                  ::xml_schema::flags f = 0,
                  ::xml_schema::container* c = 0);
@@ -2196,9 +2188,89 @@ namespace dataadvice
     LandCharacteristics_optional LandCharacteristics_;
   };
 
-  class FolioRollNumber: public ::xml_schema::string
+  class String32: public ::xml_schema::string
   {
     public:
+    // Constructors.
+    //
+    String32 ();
+
+    String32 (const char*);
+
+    String32 (const ::std::string&);
+
+    String32 (const ::xml_schema::string&);
+
+    String32 (const ::xercesc::DOMElement& e,
+              ::xml_schema::flags f = 0,
+              ::xml_schema::container* c = 0);
+
+    String32 (const ::xercesc::DOMAttr& a,
+              ::xml_schema::flags f = 0,
+              ::xml_schema::container* c = 0);
+
+    String32 (const ::std::string& s,
+              const ::xercesc::DOMElement* e,
+              ::xml_schema::flags f = 0,
+              ::xml_schema::container* c = 0);
+
+    String32 (const String32& x,
+              ::xml_schema::flags f = 0,
+              ::xml_schema::container* c = 0);
+
+    virtual String32*
+    _clone (::xml_schema::flags f = 0,
+            ::xml_schema::container* c = 0) const;
+
+    virtual 
+    ~String32 ();
+  };
+
+  class FolioRollNumber: public ::dataadvice::String32
+  {
+    public:
+    // Action
+    //
+    typedef ::dataadvice::ActionCode Action_type;
+    typedef ::xsd::cxx::tree::optional< Action_type > Action_optional;
+    typedef ::xsd::cxx::tree::traits< Action_type, char > Action_traits;
+
+    const Action_optional&
+    Action () const;
+
+    Action_optional&
+    Action ();
+
+    void
+    Action (const Action_type& x);
+
+    void
+    Action (const Action_optional& x);
+
+    void
+    Action (::std::unique_ptr< Action_type > p);
+
+    // OldValue
+    //
+    typedef ::dataadvice::String32 OldValue_type;
+    typedef ::xsd::cxx::tree::optional< OldValue_type > OldValue_optional;
+    typedef ::xsd::cxx::tree::traits< OldValue_type, char > OldValue_traits;
+
+    const OldValue_optional&
+    OldValue () const;
+
+    OldValue_optional&
+    OldValue ();
+
+    void
+    OldValue (const OldValue_type& x);
+
+    void
+    OldValue (const OldValue_optional& x);
+
+    void
+    OldValue (::std::unique_ptr< OldValue_type > p);
+
     // Constructors.
     //
     FolioRollNumber ();
@@ -2213,15 +2285,6 @@ namespace dataadvice
                      ::xml_schema::flags f = 0,
                      ::xml_schema::container* c = 0);
 
-    FolioRollNumber (const ::xercesc::DOMAttr& a,
-                     ::xml_schema::flags f = 0,
-                     ::xml_schema::container* c = 0);
-
-    FolioRollNumber (const ::std::string& s,
-                     const ::xercesc::DOMElement* e,
-                     ::xml_schema::flags f = 0,
-                     ::xml_schema::container* c = 0);
-
     FolioRollNumber (const FolioRollNumber& x,
                      ::xml_schema::flags f = 0,
                      ::xml_schema::container* c = 0);
@@ -2230,8 +2293,22 @@ namespace dataadvice
     _clone (::xml_schema::flags f = 0,
             ::xml_schema::container* c = 0) const;
 
+    FolioRollNumber&
+    operator= (const FolioRollNumber& x);
+
     virtual 
     ~FolioRollNumber ();
+
+    // Implementation.
+    //
+    protected:
+    void
+    parse (::xsd::cxx::xml::dom::parser< char >&,
+           ::xml_schema::flags);
+
+    protected:
+    Action_optional Action_;
+    OldValue_optional OldValue_;
   };
 
   class FolioAction: public ::xml_schema::type
@@ -2552,7 +2629,7 @@ namespace dataadvice
 
     // RollNumber
     //
-    typedef ::dataadvice::FolioRollNumber RollNumber_type;
+    typedef ::dataadvice::String32 RollNumber_type;
     typedef ::xsd::cxx::tree::traits< RollNumber_type, char > RollNumber_traits;
 
     const RollNumber_type&
@@ -5961,7 +6038,7 @@ namespace dataadvice
 
     // SuppOccupancyCode
     //
-    typedef ::dataadvice::Character SuppOccupancyCode_type;
+    typedef ::dataadvice::FolioCharacterItem SuppOccupancyCode_type;
     typedef ::xsd::cxx::tree::optional< SuppOccupancyCode_type > SuppOccupancyCode_optional;
     typedef ::xsd::cxx::tree::traits< SuppOccupancyCode_type, char > SuppOccupancyCode_traits;
 
@@ -6832,7 +6909,7 @@ namespace dataadvice
     public:
     // DistrictCode
     //
-    typedef ::dataadvice::LookupCode DistrictCode_type;
+    typedef ::dataadvice::FolioLookupCodeItem DistrictCode_type;
     typedef ::xsd::cxx::tree::optional< DistrictCode_type > DistrictCode_optional;
     typedef ::xsd::cxx::tree::traits< DistrictCode_type, char > DistrictCode_traits;
 
@@ -6853,7 +6930,7 @@ namespace dataadvice
 
     // DistrictDescription
     //
-    typedef ::dataadvice::String255 DistrictDescription_type;
+    typedef ::dataadvice::FolioString255Item DistrictDescription_type;
     typedef ::xsd::cxx::tree::optional< DistrictDescription_type > DistrictDescription_optional;
     typedef ::xsd::cxx::tree::traits< DistrictDescription_type, char > DistrictDescription_traits;
 
@@ -6911,7 +6988,7 @@ namespace dataadvice
     public:
     // ManualClassCode
     //
-    typedef ::dataadvice::LookupCode ManualClassCode_type;
+    typedef ::dataadvice::FolioLookupCodeItem ManualClassCode_type;
     typedef ::xsd::cxx::tree::optional< ManualClassCode_type > ManualClassCode_optional;
     typedef ::xsd::cxx::tree::traits< ManualClassCode_type, char > ManualClassCode_traits;
 
@@ -6932,7 +7009,7 @@ namespace dataadvice
 
     // ManualClassDescription
     //
-    typedef ::dataadvice::String255 ManualClassDescription_type;
+    typedef ::dataadvice::FolioString255Item ManualClassDescription_type;
     typedef ::xsd::cxx::tree::optional< ManualClassDescription_type > ManualClassDescription_optional;
     typedef ::xsd::cxx::tree::traits< ManualClassDescription_type, char > ManualClassDescription_traits;
 
@@ -7298,7 +7375,7 @@ namespace dataadvice
     public:
     // MinorTaxingCode
     //
-    typedef ::dataadvice::MinorTaxingCode MinorTaxingCode_type;
+    typedef ::dataadvice::FolioLookupCodeItem MinorTaxingCode_type;
     typedef ::xsd::cxx::tree::optional< MinorTaxingCode_type > MinorTaxingCode_optional;
     typedef ::xsd::cxx::tree::traits< MinorTaxingCode_type, char > MinorTaxingCode_traits;
 
@@ -7392,44 +7469,6 @@ namespace dataadvice
     MinorTaxingCode_optional MinorTaxingCode_;
     MinorTaxingCodeShort_optional MinorTaxingCodeShort_;
     MinorTaxingDescription_optional MinorTaxingDescription_;
-  };
-
-  class MinorTaxingCode: public ::xml_schema::string
-  {
-    public:
-    // Constructors.
-    //
-    MinorTaxingCode ();
-
-    MinorTaxingCode (const char*);
-
-    MinorTaxingCode (const ::std::string&);
-
-    MinorTaxingCode (const ::xml_schema::string&);
-
-    MinorTaxingCode (const ::xercesc::DOMElement& e,
-                     ::xml_schema::flags f = 0,
-                     ::xml_schema::container* c = 0);
-
-    MinorTaxingCode (const ::xercesc::DOMAttr& a,
-                     ::xml_schema::flags f = 0,
-                     ::xml_schema::container* c = 0);
-
-    MinorTaxingCode (const ::std::string& s,
-                     const ::xercesc::DOMElement* e,
-                     ::xml_schema::flags f = 0,
-                     ::xml_schema::container* c = 0);
-
-    MinorTaxingCode (const MinorTaxingCode& x,
-                     ::xml_schema::flags f = 0,
-                     ::xml_schema::container* c = 0);
-
-    virtual MinorTaxingCode*
-    _clone (::xml_schema::flags f = 0,
-            ::xml_schema::container* c = 0) const;
-
-    virtual 
-    ~MinorTaxingCode ();
   };
 
   class PropertyValues: public ::xml_schema::type
@@ -9218,433 +9257,6 @@ namespace dataadvice
                const ::xml_schema::properties& p = ::xml_schema::properties ());
 }
 
-#include <iosfwd>
-
-#include <xercesc/dom/DOMDocument.hpp>
-#include <xercesc/dom/DOMErrorHandler.hpp>
-#include <xercesc/framework/XMLFormatter.hpp>
-
-#include <xsd/cxx/xml/dom/auto-ptr.hxx>
-
-namespace dataadvice
-{
-  // Serialize to std::ostream.
-  //
-
-  void
-  DataAdvice_ (::std::ostream& os,
-               const ::dataadvice::DataAdvice& x, 
-               const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-               const ::std::string& e = "UTF-8",
-               ::xml_schema::flags f = 0);
-
-  void
-  DataAdvice_ (::std::ostream& os,
-               const ::dataadvice::DataAdvice& x, 
-               ::xml_schema::error_handler& eh,
-               const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-               const ::std::string& e = "UTF-8",
-               ::xml_schema::flags f = 0);
-
-  void
-  DataAdvice_ (::std::ostream& os,
-               const ::dataadvice::DataAdvice& x, 
-               ::xercesc::DOMErrorHandler& eh,
-               const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-               const ::std::string& e = "UTF-8",
-               ::xml_schema::flags f = 0);
-
-  // Serialize to xercesc::XMLFormatTarget.
-  //
-
-  void
-  DataAdvice_ (::xercesc::XMLFormatTarget& ft,
-               const ::dataadvice::DataAdvice& x, 
-               const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-               const ::std::string& e = "UTF-8",
-               ::xml_schema::flags f = 0);
-
-  void
-  DataAdvice_ (::xercesc::XMLFormatTarget& ft,
-               const ::dataadvice::DataAdvice& x, 
-               ::xml_schema::error_handler& eh,
-               const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-               const ::std::string& e = "UTF-8",
-               ::xml_schema::flags f = 0);
-
-  void
-  DataAdvice_ (::xercesc::XMLFormatTarget& ft,
-               const ::dataadvice::DataAdvice& x, 
-               ::xercesc::DOMErrorHandler& eh,
-               const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-               const ::std::string& e = "UTF-8",
-               ::xml_schema::flags f = 0);
-
-  // Serialize to an existing xercesc::DOMDocument.
-  //
-
-  void
-  DataAdvice_ (::xercesc::DOMDocument& d,
-               const ::dataadvice::DataAdvice& x,
-               ::xml_schema::flags f = 0);
-
-  // Serialize to a new xercesc::DOMDocument.
-  //
-
-  ::xml_schema::dom::unique_ptr< ::xercesc::DOMDocument >
-  DataAdvice_ (const ::dataadvice::DataAdvice& x, 
-               const ::xml_schema::namespace_infomap& m = ::xml_schema::namespace_infomap (),
-               ::xml_schema::flags f = 0);
-
-  void
-  operator<< (::xercesc::DOMElement&, const DataAdvice&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const Version&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const Version&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const Version&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const RunType&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const RunType&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const RunType&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const DeliverySummary&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const AmendmentReasonCountCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const AmendmentReasonCount&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const DeleteReasonCountCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const DeleteReasonCount&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const AssessmentAreaCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const AssessmentArea&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const AssessmentAreaCode&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const AssessmentAreaCode&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const AssessmentAreaCode&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const JurisdictionCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const Jurisdiction&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const JurisdictionCode&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const JurisdictionCode&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const JurisdictionCode&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioGroupValues&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioRecordCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioRecord&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioRollNumber&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const FolioRollNumber&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const FolioRollNumber&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioAction&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioAdd&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioDelete&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioRenumber&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioItemGroup&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioAddressCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioAddress&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const OwnershipGroupCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const OwnershipGroup&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const OwnerCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const Owner&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const MailingAddress&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FormattedMailingAddress&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const String40&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const String40&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const String40&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FormattedMailingAddressLine&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const LegalDescriptionCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const LegalDescription&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const LandCharacteristic&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const LandCharacteristicCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const ManufacturedHomeCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const ManufacturedHome&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FarmCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const Farm&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const OilAndGasCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const OilAndGas&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const ManagedForestCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const ManagedForest&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioAmendmentCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioAmendment&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const SaleCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const Sale&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioDescription&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const LandMeasurement&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const Neighbourhood&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const SpecialDistrict&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const ManualClass&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const MinorTaxing&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const MinorTaxingJurisdictionCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const MinorTaxingJurisdiction&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const MinorTaxingCode&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const MinorTaxingCode&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const MinorTaxingCode&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const PropertyValues&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const TaxExemptValuesCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const TaxExemptPropertyClassValues&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const PropertyClassValuesCollection&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const PropertyClassValues&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const PropertyClassCode&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const PropertyClassCode&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const PropertyClassCode&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const PropertySubClassCode&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const PropertySubClassCode&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const PropertySubClassCode&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const Valuation&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioIntegerItem&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioBooleanItem&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioDecimalItem&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioDateItem&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const UniqueID&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const UniqueID&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const UniqueID&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioUniqueIDItem&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const LookupCode&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const LookupCode&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const LookupCode&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioLookupCodeItem&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const Character&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const Character&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const Character&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioCharacterItem&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const String255&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const String255&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const String255&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioString255Item&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const String1024&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const String1024&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const String1024&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const FolioString1024Item&);
-
-  void
-  operator<< (::xercesc::DOMElement&, const ActionCode&);
-
-  void
-  operator<< (::xercesc::DOMAttr&, const ActionCode&);
-
-  void
-  operator<< (::xml_schema::list_stream&,
-              const ActionCode&);
-}
-
 #include <xsd/cxx/post.hxx>
 
 // Begin epilogue.
@@ -9652,4 +9264,4 @@ namespace dataadvice
 //
 // End epilogue.
 
-#endif // DATA_ADVICE_HXX
+#endif // E__WORKSPACE_PROJECTS_NEW_BCAAREADER_NATIVE_BCAA_IMPORTER2_DATA_ADVICE_HXX

@@ -10,7 +10,7 @@ Item {
     property alias startbutton: button1
     property alias textedit1: textedit1
     property alias settingsButton: settingsButton1
-    
+
     RowLayout {
         id: rowLayout1
         anchors.bottom: parent.bottom
@@ -38,6 +38,12 @@ Item {
         anchors.bottom: rowLayout1.top
         anchors.bottomMargin: 0
 
+
+        Rectangle {
+            color: "#dbdbdb"
+            border.color: "#242424"
+            anchors.fill: parent
+        }
         TextEdit {
             id: textedit1
             anchors.bottom: parent.bottom

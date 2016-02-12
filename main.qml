@@ -73,12 +73,24 @@ ApplicationWindow {
             title: qsTr("&File")
             MenuItem {
                 text: qsTr("&Open")
-                onTriggered: messageDialog.show(qsTr("Open action triggered"));
+                onTriggered: {
+                    fileDialog.visible = true;
+                }
             }
             MenuItem {
                 text: qsTr("E&xit")
                 onTriggered: Qt.quit();
             }
+        }
+    }
+
+    FileDialog {
+        id: fileDialog
+        title: qsTr("Select Data Advice File")
+        folder: if (importer.dataFilePath == "") shortcuts.home; else importer.dataFilePath;
+        onAccepted: {
+            importer.dataFilePath = fileDialog.fileUrl;
+            console.log("XML file " + importer.dataFilePath + " chosen.");
         }
     }
 

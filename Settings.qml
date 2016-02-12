@@ -20,7 +20,7 @@ ApplicationWindow {
 
     Rectangle {
         id: rectangle1
-        color: parent.color
+        color: "#00000000"
         anchors.rightMargin: 5
         anchors.leftMargin: 5
         anchors.bottomMargin: 5
