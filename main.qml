@@ -13,11 +13,6 @@ ApplicationWindow {
         id: settingsWindow
         driverType.model: sqlconnection.drivers
         serverName: sqlconnection.server
-        driverType.currentIndex:
-            if(driverType.find(sqlconnection.driver) >= 0)
-                                     driverType.currentIndex = driverType.find(sqlconnection.driver);
-                                 else
-                                     console.log("Failed to find the previous driver name.")
         database: sqlconnection.database
         username: sqlconnection.username
         password: sqlconnection.password
@@ -103,7 +98,14 @@ ApplicationWindow {
         anchors.fill: parent
         textedit1.text: logdata.logtext
         startbutton.onClicked: importer.beginImport();
-        settingsButton.onClicked: settingsWindow.visible = true;
+        settingsButton.onClicked: {
+            sqlconnection.loadSettings();
+            if(settingsWindow.driverType.find(sqlconnection.driver) >= 0)
+                                     settingsWindow.driverType.currentIndex = settingsWindow.driverType.find(sqlconnection.driver);
+                                 else
+                                     console.log("Failed to find the previous driver name. again.");
+            settingsWindow.visible = true;
+        }
 
     }
 
