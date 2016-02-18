@@ -30,6 +30,7 @@ QString DbConnectionSettings::driver()
 void DbConnectionSettings::setDriver(QString driver)
 {
     m_driver = driver;
+    emit dataChanged();
 }
 
 QString DbConnectionSettings::server() {

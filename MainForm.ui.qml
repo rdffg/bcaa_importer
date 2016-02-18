@@ -1,5 +1,5 @@
-import QtQuick 2.4
-import QtQuick.Controls 1.3
+import QtQuick 2.5
+import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 
 Item {
@@ -12,7 +12,28 @@ Item {
     property alias settingsButton: settingsButton1
 
     RowLayout {
-        id: rowLayout1
+        id: rowlayout1
+        anchors.right: parent.right
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.top: parent.top
+        anchors.bottom: rowLayout2.top
+        anchors.bottomMargin: 0
+
+
+        Rectangle {
+            color: "#dbdbdb"
+            border.color: "#242424"
+            anchors.fill: parent
+        }
+        TextArea {
+            id: textedit1
+            anchors.fill: parent
+            readOnly: true
+        }
+    }
+    RowLayout {
+        id: rowLayout2
         anchors.bottom: parent.bottom
 
         Button {
@@ -27,29 +48,6 @@ Item {
             text: qsTr("Settings...")
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
-        }
-    }
-    RowLayout {
-        id: rowlayout2
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.leftMargin: 0
-        anchors.top: parent.top
-        anchors.bottom: rowLayout1.top
-        anchors.bottomMargin: 0
-
-
-        Rectangle {
-            color: "#dbdbdb"
-            border.color: "#242424"
-            anchors.fill: parent
-        }
-        TextEdit {
-            id: textedit1
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
         }
     }
 }

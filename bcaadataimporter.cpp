@@ -4,8 +4,11 @@
 #include <QUrl>
 #include <QFileInfo>
 #include <QSettings>
+#include "QDjango.h"
 #include "bcaadataimporter.h"
 #include "bcaaxmlreader.h"
+#include "model/folio.h"
+#include "model/jurisdiction.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
@@ -13,6 +16,8 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
 {
     QSettings settings("rdffg", "BCAA Importer");
     m_datafilepath = settings.value("history/lastFolder").toString();
+    QDjango::registerModel<Jurisdiction>();
+    QDjango::registerModel<Folio>();
 }
 
 QString BCAADataImporter::dataFilePath()
@@ -41,12 +46,14 @@ bool BCAADataImporter::isRunning() {
 
 void BCAADataImporter::beginImport()
 {
+    QDjango::setDebugEnabled(true);
     m_isrunning = true;
     emit runningChanged();
     if (m_dbconnection != NULL) {
         auto db = m_dbconnection->makeDbConnection();
         if(db.open()) {
-
+            QDjango::setDatabase(db);
+            QDjango::createTables();
         } else {
             qDebug() << "Failed to open database:" << db.lastError();
         }
@@ -71,5 +78,20 @@ void BCAADataImporter::beginImport()
 
     m_isrunning = false;
     emit runningChanged();
+}
+
+void BCAADataImporter::testDb() {
+    Jurisdiction *j = new Jurisdiction();
+    j->setCode("200");
+    j->setDescription("Vancouver");
+    qDebug() << "Jurisiction save: " << j->save();
+
+    Folio *f = new Folio();
+    f->setJurisdiction(j);
+    f->setRollNumber("00000000");
+    f->setStatus("01");
+    f->setStatusDescription("Active");
+    qDebug() << "Folio save: " << f->save();
+    QDjango::database().close();
 }
 

@@ -25,9 +25,10 @@ public slots:
     Q_INVOKABLE void beginImport();
 
 private:
-    bool m_isrunning;
-    QString m_datafilepath;
     DbConnectionSettings *m_dbconnection;
+    QString m_datafilepath;
+    bool m_isrunning;
+    void testDb();
 };
 
 #endif // BCAADATAIMPORTER_H

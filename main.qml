@@ -1,10 +1,10 @@
-import QtQuick 2.4
-import QtQuick.Controls 1.3
-import QtQuick.Window 2.2
+import QtQuick 2.5
+import QtQuick.Controls 1.4
+import QtQuick.Window 2.0
 import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
-    title: qsTr("Hello World")
+    title: qsTr("BC Assessment Importer 2.0")
     width: 640
     height: 480
     visible: true
@@ -13,6 +13,11 @@ ApplicationWindow {
         id: settingsWindow
         driverType.model: sqlconnection.drivers
         serverName: sqlconnection.server
+        driverType.currentIndex:
+            if(driverType.find(sqlconnection.driver) >= 0)
+                                     driverType.currentIndex = driverType.find(sqlconnection.driver);
+                                 else
+                                     console.log("Failed to find the previous driver name.")
         database: sqlconnection.database
         username: sqlconnection.username
         password: sqlconnection.password
