@@ -1,7 +1,7 @@
 #include "jurisdiction.h"
 
 Jurisdiction::Jurisdiction(QObject *parent): QDjangoModel(parent) {
-
+    setForeignKey(ASSESSMENT_AREA_PROPERTY, new AssessmentArea());
 }
 
 QString Jurisdiction::code()
@@ -22,4 +22,13 @@ QString Jurisdiction::description()
 void Jurisdiction::setDescription(QString desc)
 {
     m_description = desc;
+}
+
+AssessmentArea *Jurisdiction::assessmentArea()
+{
+    return qobject_cast<AssessmentArea *>(foreignKey(ASSESSMENT_AREA_PROPERTY));
+}
+
+void Jurisdiction::setAssessmentArea(AssessmentArea *area) {
+    setForeignKey(ASSESSMENT_AREA_PROPERTY, area);
 }

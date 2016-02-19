@@ -13,11 +13,12 @@ SOURCES += main.cpp \
     logsource.cpp \
     bcaaxmlreader.cpp \
     DataAdvice.cxx \
-    model/header.cpp \
     model/jurisdiction.cpp \
     model/folio.cpp \
     modelConverter/folioconverter.cpp \
-    modelConverter/jurisdictionconverter.cpp
+    modelConverter/jurisdictionconverter.cpp \
+    model/assessmentarea.cpp \
+    model/folioaddress.cpp
 
 RESOURCES += qml.qrc
 
@@ -33,11 +34,12 @@ HEADERS += \
     logsource.h \
     bcaaxmlreader.h \
     DataAdvice.hxx \
-    model/header.h \
     model/jurisdiction.h \
     model/folio.h \
     modelConverter/folioconverter.h \
-    modelConverter/jurisdictionconverter.h
+    modelConverter/jurisdictionconverter.h \
+    model/assessmentarea.h \
+    model/folioaddress.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d

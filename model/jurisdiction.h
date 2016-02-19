@@ -3,12 +3,16 @@
 
 #include <QObject>
 #include "QDjangoModel.h"
+#include "assessmentarea.h"
+
+#define ASSESSMENT_AREA_PROPERTY "assessmentArea"
 
     class Jurisdiction : public QDjangoModel
     {
         Q_OBJECT
         Q_PROPERTY(QString code READ code WRITE setCode)
         Q_PROPERTY(QString description READ description WRITE setDescription)
+        Q_PROPERTY(AssessmentArea * assessmentArea READ assessmentArea WRITE setAssessmentArea)
 
         Q_CLASSINFO("__meta__", "db_table=jurisdiction")
         Q_CLASSINFO("code", "max_length=16 primary_key=true")
@@ -19,6 +23,8 @@
         void setCode(QString code);
         QString description();
         void setDescription(QString desc);
+        AssessmentArea *assessmentArea();
+        void setAssessmentArea(AssessmentArea *area);
 
     signals:
 
