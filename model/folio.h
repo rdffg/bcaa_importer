@@ -7,7 +7,6 @@
 
 #define JURISDICTION_PROPERTY "jurisdiction"
 
-
 class Folio : public QDjangoModel
 {
     Q_OBJECT

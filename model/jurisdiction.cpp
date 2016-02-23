@@ -1,7 +1,7 @@
 #include "jurisdiction.h"
 
 Jurisdiction::Jurisdiction(QObject *parent): QDjangoModel(parent) {
-    setForeignKey(ASSESSMENT_AREA_PROPERTY, new AssessmentArea());
+    //setForeignKey(ASSESSMENT_AREA_PROPERTY, new AssessmentArea());
 }
 
 QString Jurisdiction::code()
@@ -31,4 +31,8 @@ AssessmentArea *Jurisdiction::assessmentArea()
 
 void Jurisdiction::setAssessmentArea(AssessmentArea *area) {
     setForeignKey(ASSESSMENT_AREA_PROPERTY, area);
+}
+
+void Jurisdiction::setAssessmentArea(std::shared_ptr<AssessmentArea> area) {
+    setForeignKey(ASSESSMENT_AREA_PROPERTY, area.get());
 }

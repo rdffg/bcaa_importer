@@ -2,6 +2,7 @@
 #define JURISDICTION_H
 
 #include <QObject>
+#include <memory>
 #include "QDjangoModel.h"
 #include "assessmentarea.h"
 
@@ -12,7 +13,7 @@
         Q_OBJECT
         Q_PROPERTY(QString code READ code WRITE setCode)
         Q_PROPERTY(QString description READ description WRITE setDescription)
-        Q_PROPERTY(AssessmentArea * assessmentArea READ assessmentArea WRITE setAssessmentArea)
+        Q_PROPERTY(AssessmentArea *assessmentArea READ assessmentArea WRITE setAssessmentArea)
 
         Q_CLASSINFO("__meta__", "db_table=jurisdiction")
         Q_CLASSINFO("code", "max_length=16 primary_key=true")
@@ -25,6 +26,7 @@
         void setDescription(QString desc);
         AssessmentArea *assessmentArea();
         void setAssessmentArea(AssessmentArea *area);
+        void setAssessmentArea(std::shared_ptr<AssessmentArea> area);
 
     signals:
 

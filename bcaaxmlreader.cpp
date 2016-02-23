@@ -8,6 +8,8 @@
 #include "model/folio.h"
 #include "modelConverter/jurisdictionconverter.h"
 #include "modelConverter/folioconverter.h"
+#include "modelConverter/folioaddressconverter.h"
+#include "modelConverter/assessmentareaconverter.h"
 #include "QSqlDatabase"
 
 
@@ -42,6 +44,7 @@ void BcaaXmlReader::import() {
     db.setDatabaseName(QDjango::database().databaseName());
     db.open();
     QDjango::setDatabase(db);
+    QDjango::dropTables();
     QDjango::createTables();
 
     qDebug() << "Opened XML file...";
@@ -52,6 +55,9 @@ void BcaaXmlReader::import() {
             auto aa_seq = dat.AssessmentArea();
             for (auto i (aa_seq.begin()); i != aa_seq.end(); ++i) {
                 dataadvice::AssessmentArea& a (*i);
+                auto aamodel = converter::AssessmentAreaConverter::convert(a);
+                aamodel.get()->save();
+
                 emit message(QString("Found Assessment Area ") + QString::fromStdString(a.AssessmentAreaCode()));
                 auto juris_seq = a.Jurisdictions().get().Jurisdiction();
                 for (auto j (juris_seq.begin()); j != juris_seq.end(); ++j) {
@@ -59,6 +65,7 @@ void BcaaXmlReader::import() {
                     Jurisdiction *juris_model = converter::JurisdictionConverter::convert(juris);
                     emit message(QString("Found Jurisdiction ")
                                  + juris_model->description());
+                    juris_model->setAssessmentArea(aamodel);
                     juris_model->save();
                     auto folio_seq = juris.FolioRecords().get().FolioRecord();
                     for (auto f (folio_seq.begin()); f != folio_seq.end(); f++) {
@@ -67,6 +74,17 @@ void BcaaXmlReader::import() {
                         foliomodel->setJurisdiction(juris_model);
                         foliomodel->save();
                         emit message(QString(" - ") + foliomodel->rollNumber());
+                        if (folio.FolioAddresses().present()) {
+                            auto addr_seq = folio.FolioAddresses().get().FolioAddress();
+                            for (auto a1 (addr_seq.begin()); a1 != addr_seq.end(); a1++) {
+                                dataadvice::FolioAddress &addr (*a1);
+                                FolioAddress *addrmodel = converter::FolioAddressConverter::convert(addr);
+                                addrmodel->setFolio(foliomodel);
+                                addrmodel->save();
+                                delete addrmodel;
+                            }
+                        }
+
                         delete foliomodel;
                     }
                     delete juris_model;

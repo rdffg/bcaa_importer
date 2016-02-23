@@ -3,13 +3,15 @@
 
 #include <QObject>
 #include <QDjangoModel.h>
+#include "folio.h"
 
+#define FOLIO_PROPERTY "folio"
 /**
  * @brief The FolioAddress class
  *
  * Contains a complete street address of a folio.
  */
-class FolioAddress : public QObject
+class FolioAddress : public QDjangoModel
 {
     Q_OBJECT
     Q_PROPERTY(bool primaryFlag READ primaryFlag WRITE setPrimaryFlag)
@@ -22,6 +24,7 @@ class FolioAddress : public QObject
     Q_PROPERTY(QString postalCode READ postalCode WRITE setPostalCode )
     Q_PROPERTY(QString mapReferenceNumber READ mapReferenceNumber WRITE setMapReferenceNumber )
     Q_PROPERTY(QString streetType READ streetType WRITE setStreetType)
+    Q_PROPERTY(Folio * folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("primaryFlag", "null=true")
     Q_CLASSINFO("unitNumber", "null=true")
@@ -33,6 +36,7 @@ class FolioAddress : public QObject
     Q_CLASSINFO("city", "null=true")
     Q_CLASSINFO("postalCode", "null=true")
     Q_CLASSINFO("mapReferenceNumber", "null=true")
+
 public:
     explicit FolioAddress(QObject *parent = 0);
     bool primaryFlag();
@@ -64,6 +68,10 @@ public:
 
     QString mapReferenceNumber();
     void setMapReferenceNumber(QString mapref);
+
+    Folio *folio();
+    void setFolio(Folio *folio);
+
 signals:
 
 public slots:

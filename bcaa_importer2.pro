@@ -18,7 +18,9 @@ SOURCES += main.cpp \
     modelConverter/folioconverter.cpp \
     modelConverter/jurisdictionconverter.cpp \
     model/assessmentarea.cpp \
-    model/folioaddress.cpp
+    model/folioaddress.cpp \
+    modelConverter/folioaddressconverter.cpp \
+    modelConverter/assessmentareaconverter.cpp
 
 RESOURCES += qml.qrc
 
@@ -39,7 +41,9 @@ HEADERS += \
     modelConverter/folioconverter.h \
     modelConverter/jurisdictionconverter.h \
     model/assessmentarea.h \
-    model/folioaddress.h
+    model/folioaddress.h \
+    modelConverter/folioaddressconverter.h \
+    modelConverter/assessmentareaconverter.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d

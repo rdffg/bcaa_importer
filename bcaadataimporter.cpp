@@ -9,6 +9,8 @@
 #include "bcaaxmlreader.h"
 #include "model/folio.h"
 #include "model/jurisdiction.h"
+#include "model/folioaddress.h"
+#include "model/assessmentarea.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
@@ -16,6 +18,8 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
 {
     QSettings settings("rdffg", "BCAA Importer");
     m_datafilepath = settings.value("history/lastFolder").toString();
+    QDjango::registerModel<AssessmentArea>();
+    QDjango::registerModel<FolioAddress>();
     QDjango::registerModel<Jurisdiction>();
     QDjango::registerModel<Folio>();
 }

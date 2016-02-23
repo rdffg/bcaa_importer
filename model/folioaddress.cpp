@@ -1,6 +1,6 @@
 #include "folioaddress.h"
 
-FolioAddress::FolioAddress(QObject *parent) : QObject(parent)
+FolioAddress::FolioAddress(QObject *parent) : QDjangoModel(parent)
   , m_primaryFlag(false)
   , m_unit(QString())
   , m_streetno(QString())
@@ -12,7 +12,7 @@ FolioAddress::FolioAddress(QObject *parent) : QObject(parent)
   , m_mapref(QString())
   , m_streettype(QString())
 {
-
+    //setForeignKey(FOLIO_PROPERTY, new Folio());
 }
 
 bool FolioAddress::primaryFlag() {
@@ -109,5 +109,13 @@ QString FolioAddress::mapReferenceNumber()
 void FolioAddress::setMapReferenceNumber(QString mapref)
 {
     m_mapref = mapref;
+}
+
+Folio *FolioAddress::folio() {
+    return qobject_cast<Folio *>(foreignKey(FOLIO_PROPERTY));
+}
+
+void FolioAddress::setFolio(Folio *folio) {
+    setForeignKey(FOLIO_PROPERTY, folio);
 }
 

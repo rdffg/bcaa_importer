@@ -3,7 +3,7 @@
 //const char* Folio::JURISDICTION_PROPERTY = "jurisdiction";
 
 Folio::Folio(QObject *parent): QDjangoModel(parent) {
-    setForeignKey(JURISDICTION_PROPERTY, new Jurisdiction(this));
+    //setForeignKey(JURISDICTION_PROPERTY, new Jurisdiction(this));
 }
 
 QString Folio::rollNumber() {
