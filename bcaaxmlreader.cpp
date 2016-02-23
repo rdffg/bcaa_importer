@@ -11,6 +11,8 @@
 #include "modelConverter/folioaddressconverter.h"
 #include "modelConverter/assessmentareaconverter.h"
 #include "modelConverter/ownershipgroupconverter.h"
+#include "modelConverter/ownerconverter.h"
+#include "saveerror.h"
 #include "QSqlDatabase"
 
 
@@ -48,40 +50,53 @@ void BcaaXmlReader::import() {
     QDjango::dropTables();
     QDjango::createTables();
 
+    QDjango::database().transaction();
+
     qDebug() << "Opened XML file...";
     emit message("Successfully opened the XML file");
     dataadvice::DataAdvice::AssessmentAreas_optional aac = da.get()->AssessmentAreas();
     if (aac.present()) {
             dataadvice::DataAdvice::AssessmentAreas_type dat = aac.get();
+            try {
             auto aa_seq = dat.AssessmentArea();
-            for (auto i (aa_seq.begin()); i != aa_seq.end(); ++i) {
-                dataadvice::AssessmentArea& a (*i);
+            for (auto &&a : aa_seq) {
                 auto aamodel = converter::AssessmentAreaConverter::convert(a);
-                aamodel.get()->save();
+                if (!aamodel.get()->save()) {
+                    QString err = QString("Failed to save Assessment Area: ") + QDjango::database().lastError().text();
+                    throw SaveError(err);
+                }
 
                 emit message(QString("Found Assessment Area ") + QString::fromStdString(a.AssessmentAreaCode()));
                 auto juris_seq = a.Jurisdictions().get().Jurisdiction();
-                for (auto j (juris_seq.begin()); j != juris_seq.end(); ++j) {
-                    dataadvice::Jurisdiction &juris (*j);
+                for (auto &&juris: juris_seq) {
                     Jurisdiction *juris_model = converter::JurisdictionConverter::convert(juris);
                     emit message(QString("Found Jurisdiction ")
                                  + juris_model->description());
                     juris_model->setAssessmentArea(aamodel);
-                    juris_model->save();
+                    if (!juris_model->save()) {
+                        QString err = QString("Failed to save Jurisdiction: ") + QDjango::database().lastError().text();
+                        throw SaveError(err);
+
+                    }
                     auto folio_seq = juris.FolioRecords().get().FolioRecord();
-                    for (auto f (folio_seq.begin()); f != folio_seq.end(); f++) {
-                        dataadvice::FolioRecord &folio (*f);
+                    for (auto &&folio : folio_seq) {
                         Folio *foliomodel = converter::FolioConverter::convert(folio);
                         foliomodel->setJurisdiction(juris_model);
-                        foliomodel->save();
+                        if (!foliomodel->save()) {
+                            QString err = QString("Failed to save Folio: ") + QDjango::database().lastError().text();
+                            throw SaveError(err);
+
+                        }
                         emit message(QString(" - ") + foliomodel->rollNumber());
                         if (folio.FolioAddresses().present()) {
                             auto addr_seq = folio.FolioAddresses().get().FolioAddress();
-                            for (auto a1 (addr_seq.begin()); a1 != addr_seq.end(); a1++) {
-                                dataadvice::FolioAddress &addr (*a1);
+                            for (auto &&addr: addr_seq) {
                                 FolioAddress *addrmodel = converter::FolioAddressConverter::convert(addr);
                                 addrmodel->setFolio(foliomodel);
-                                addrmodel->save();
+                                if (!addrmodel->save()) {
+                                    QString err = QString("Failed to save Folio Address: ") + QDjango::database().lastError().text();
+                                    throw SaveError(err);
+                                }
                                 delete addrmodel;
                             }
                         }
@@ -90,7 +105,17 @@ void BcaaXmlReader::import() {
                         for (auto&& og : own_groups_seq) {
                             auto groupmodel = converter::OwnershipGroupConverter::convert(og);
                             groupmodel->setFolio(foliomodel);
-                            groupmodel->save();
+                            if (!groupmodel->save()) {
+                                QString err = QString("Failed to save OwnershipGroup: ") + QDjango::database().lastError().text();
+                                throw SaveError(err);
+                            }
+                            for (auto &&owner : og.Owners().get().Owner()) {
+                                auto ownermodel = std::unique_ptr<Owner>(converter::OwnerConverter::convert(owner));
+                                if (!ownermodel->save()) {
+                                    QString err = QString("Failed to save Owner: ") + QDjango::database().lastError().text();
+                                    throw SaveError(err);
+                                }
+                            }
 
                             delete groupmodel;
                         }
@@ -99,6 +124,13 @@ void BcaaXmlReader::import() {
                     }
                     delete juris_model;
                 }
+            }
+            } catch (SaveError err) {
+                QDjango::database().rollback();
+                QDjango::database().close();
+                emit message(QString("Error: ") +  err.text());
+                emit finished();
+                return;
             }
         }
     QDjango::database().commit();

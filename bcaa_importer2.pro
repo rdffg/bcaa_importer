@@ -24,7 +24,8 @@ SOURCES += main.cpp \
     model/ownergroup.cpp \
     model/owner.cpp \
     modelConverter/ownershipgroupconverter.cpp \
-    modelConverter/ownerconverter.cpp
+    modelConverter/ownerconverter.cpp \
+    saveerror.cpp
 
 RESOURCES += qml.qrc
 
@@ -51,7 +52,8 @@ HEADERS += \
     model/ownergroup.h \
     model/owner.h \
     modelConverter/ownershipgroupconverter.h \
-    modelConverter/ownerconverter.h
+    modelConverter/ownerconverter.h \
+    saveerror.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d
