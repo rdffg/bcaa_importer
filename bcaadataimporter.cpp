@@ -11,6 +11,8 @@
 #include "model/jurisdiction.h"
 #include "model/folioaddress.h"
 #include "model/assessmentarea.h"
+#include "model/ownergroup.h"
+#include "model/owner.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
@@ -22,6 +24,8 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
     QDjango::registerModel<FolioAddress>();
     QDjango::registerModel<Jurisdiction>();
     QDjango::registerModel<Folio>();
+    QDjango::registerModel<OwnershipGroup>();
+    QDjango::registerModel<Owner>();
 }
 
 QString BCAADataImporter::dataFilePath()

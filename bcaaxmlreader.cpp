@@ -10,6 +10,7 @@
 #include "modelConverter/folioconverter.h"
 #include "modelConverter/folioaddressconverter.h"
 #include "modelConverter/assessmentareaconverter.h"
+#include "modelConverter/ownershipgroupconverter.h"
 #include "QSqlDatabase"
 
 
@@ -83,6 +84,15 @@ void BcaaXmlReader::import() {
                                 addrmodel->save();
                                 delete addrmodel;
                             }
+                        }
+
+                        auto own_groups_seq = folio.OwnershipGroups()->OwnershipGroup();
+                        for (auto&& og : own_groups_seq) {
+                            auto groupmodel = converter::OwnershipGroupConverter::convert(og);
+                            groupmodel->setFolio(foliomodel);
+                            groupmodel->save();
+
+                            delete groupmodel;
                         }
 
                         delete foliomodel;
