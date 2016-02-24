@@ -58,76 +58,86 @@ void BcaaXmlReader::import() {
     if (aac.present()) {
             dataadvice::DataAdvice::AssessmentAreas_type dat = aac.get();
             try {
-            auto aa_seq = dat.AssessmentArea();
-            for (auto &&a : aa_seq) {
-                auto aamodel = converter::AssessmentAreaConverter::convert(a);
-                if (!aamodel.get()->save()) {
-                    QString err = QString("Failed to save Assessment Area: ") + QDjango::database().lastError().text();
-                    throw SaveError(err);
-                }
-
-                emit message(QString("Found Assessment Area ") + QString::fromStdString(a.AssessmentAreaCode()));
-                auto juris_seq = a.Jurisdictions().get().Jurisdiction();
-                for (auto &&juris: juris_seq) {
-                    Jurisdiction *juris_model = converter::JurisdictionConverter::convert(juris);
-                    emit message(QString("Found Jurisdiction ")
-                                 + juris_model->description());
-                    juris_model->setAssessmentArea(aamodel);
-                    if (!juris_model->save()) {
-                        QString err = QString("Failed to save Jurisdiction: ") + QDjango::database().lastError().text();
-                        throw SaveError(err);
-
-                    }
-                    auto folio_seq = juris.FolioRecords().get().FolioRecord();
-                    for (auto &&folio : folio_seq) {
-                        Folio *foliomodel = converter::FolioConverter::convert(folio);
-                        foliomodel->setJurisdiction(juris_model);
-                        if (!foliomodel->save()) {
-                            QString err = QString("Failed to save Folio: ") + QDjango::database().lastError().text();
+                // assessment area
+                auto aa_seq = dat.AssessmentArea();
+                for (auto &&a : aa_seq) {
+                    auto aamodel = converter::AssessmentAreaConverter::convert(a);
+                    if (!aamodel.get()->save()) {
+                            QString err = QString("Failed to save Assessment Area: ") + QDjango::database().lastError().text();
                             throw SaveError(err);
-
-                        }
-                        emit message(QString(" - ") + foliomodel->rollNumber());
-                        if (folio.FolioAddresses().present()) {
-                            auto addr_seq = folio.FolioAddresses().get().FolioAddress();
-                            for (auto &&addr: addr_seq) {
-                                FolioAddress *addrmodel = converter::FolioAddressConverter::convert(addr);
-                                addrmodel->setFolio(foliomodel);
-                                if (!addrmodel->save()) {
-                                    QString err = QString("Failed to save Folio Address: ") + QDjango::database().lastError().text();
-                                    throw SaveError(err);
-                                }
-                                delete addrmodel;
-                            }
-                        }
-
-                        auto own_groups_seq = folio.OwnershipGroups()->OwnershipGroup();
-                        for (auto&& og : own_groups_seq) {
-                            auto groupmodel = converter::OwnershipGroupConverter::convert(og);
-                            groupmodel->setFolio(foliomodel);
-                            if (!groupmodel->save()) {
-                                QString err = QString("Failed to save OwnershipGroup: ") + QDjango::database().lastError().text();
-                                throw SaveError(err);
-                            }
-                            for (auto &&owner : og.Owners().get().Owner()) {
-                                auto ownermodel = std::unique_ptr<Owner>(converter::OwnerConverter::convert(owner));
-                                if (!ownermodel->save()) {
-                                    QString err = QString("Failed to save Owner: ") + QDjango::database().lastError().text();
-                                    throw SaveError(err);
-                                }
-                            }
-
-                            delete groupmodel;
-                        }
-
-                        delete foliomodel;
                     }
-                    delete juris_model;
+
+                    emit message(QString("Found Assessment Area ") + QString::fromStdString(a.AssessmentAreaCode()));
+
+                    // jurisdiction
+                    auto juris_seq = a.Jurisdictions().get().Jurisdiction();
+                    for (auto &&juris: juris_seq) {
+                            Jurisdiction *juris_model = converter::JurisdictionConverter::convert(juris);
+                            emit message(QString("Found Jurisdiction ")
+                                         + juris_model->description());
+                            juris_model->setAssessmentArea(aamodel);
+                            if (!juris_model->save()) {
+                                    QString err = QString("Failed to save Jurisdiction: ") + QDjango::database().lastError().text();
+                                    throw SaveError(err);
+
+                            }
+
+                            // folio
+                            auto folio_seq = juris.FolioRecords().get().FolioRecord();
+                            for (auto &&folio : folio_seq) {
+                                    Folio *foliomodel = converter::FolioConverter::convert(folio);
+                                    foliomodel->setJurisdiction(juris_model);
+                                    if (!foliomodel->save()) {
+                                            QString err = QString("Failed to save Folio: ") + QDjango::database().lastError().text();
+                                            throw SaveError(err);
+
+                                    }
+                                    emit message(QString(" - ") + foliomodel->rollNumber());
+
+                                    // Folio addresses
+                                    if (folio.FolioAddresses().present()) {
+                                            auto addr_seq = folio.FolioAddresses().get().FolioAddress();
+                                            for (auto &&addr: addr_seq) {
+                                                    FolioAddress *addrmodel = converter::FolioAddressConverter::convert(addr);
+                                                    addrmodel->setFolio(foliomodel);
+                                                    if (!addrmodel->save()) {
+                                                            QString err = QString("Failed to save Folio Address: ") + QDjango::database().lastError().text();
+                                                            throw SaveError(err);
+                                                    }
+                                                    delete addrmodel;
+                                            }
+                                    }
+
+                                    // ownership groups
+                                    auto own_groups_seq = folio.OwnershipGroups()->OwnershipGroup();
+                                    for (auto&& og : own_groups_seq) {
+                                            auto groupmodel = converter::OwnershipGroupConverter::convert(og);
+                                            groupmodel->setFolio(foliomodel);
+                                            if (!groupmodel->save()) {
+                                                    QString err = QString("Failed to save OwnershipGroup: ") + QDjango::database().lastError().text();
+                                                    throw SaveError(err);
+                                            }
+
+                                            // owners
+                                            for (auto &&owner : og.Owners().get().Owner()) {
+                                                    auto ownermodel = std::unique_ptr<Owner>(converter::OwnerConverter::convert(owner));
+                                                    if (!ownermodel->save()) {
+                                                            QString err = QString("Failed to save Owner: ") + QDjango::database().lastError().text();
+                                                            throw SaveError(err);
+                                                    }
+                                            }
+
+                                            delete groupmodel;
+                                    }
+
+                                    delete foliomodel;
+                            }
+                            delete juris_model;
+                    }
                 }
-            }
             } catch (SaveError err) {
-                QDjango::database().rollback();
-                QDjango::database().close();
+                    QDjango::database().rollback();
+                    QDjango::database().close();
                 emit message(QString("Error: ") +  err.text());
                 emit finished();
                 return;
