@@ -7,6 +7,7 @@
 
 #define FOLIO_PROPERTY "folio"
 
+namespace model {
 class OwnershipGroup : public QDjangoModel
 {
     Q_OBJECT
@@ -21,7 +22,16 @@ class OwnershipGroup : public QDjangoModel
     Q_PROPERTY(QString changeSourceDescription READ changeSourceDescription WRITE setChangeSourceDescription)
     Q_PROPERTY(Folio * folio READ folio WRITE setFolio)
 
-    Q_CLASSINFO("__met__", "db_table=ownership_group")
+    Q_CLASSINFO("__meta__", "db_table=ownership_group")
+    Q_CLASSINFO("tenureCode", "null=true")
+    Q_CLASSINFO("tenureDescription", "null=true")
+    Q_CLASSINFO("assessmentNoticeReturned", "null=true")
+    Q_CLASSINFO("assessmentNoticeSuppressed", "null=true")
+    Q_CLASSINFO("changeType", "null=true")
+    Q_CLASSINFO("changeTypeDescription", "null=true")
+    Q_CLASSINFO("changeDate", "null=true")
+    Q_CLASSINFO("changeSource", "null=true")
+    Q_CLASSINFO("changeSourceDescription", "null=true")
     Q_CLASSINFO(FOLIO_PROPERTY, "on_delete=cascade")
 public:
     explicit OwnershipGroup(QObject *parent = 0);
@@ -62,5 +72,6 @@ private:
     QString m_changeSource;
     QString m_changeSourceDescription;
 };
+}
 
 #endif // OWNERGROUP_H

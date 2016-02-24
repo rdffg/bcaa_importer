@@ -1,8 +1,8 @@
 #include "ownerconverter.h"
 
 using namespace converter;
-Owner *OwnerConverter::convert(const dataadvice::Owner &xowner) {
-    auto owner = new Owner();
+model::Owner *OwnerConverter::convert(const dataadvice::Owner &xowner) {
+    auto owner = new model::Owner();
     owner->setCompanyOrLastName(QString::fromStdString(xowner.CompanyOrLastName()));
     if (xowner.FirstName().present())
         owner->setFirstname(QString::fromStdString(xowner.FirstName().get()));

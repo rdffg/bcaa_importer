@@ -5,7 +5,7 @@ TEMPLATE = app
 
 QT += qml quick widgets sql xml
 
-CONFIG += qtquickcompiler c++11
+CONFIG += qtquickcompiler c++14
 
 SOURCES += main.cpp \
     bcaadataimporter.cpp \
@@ -26,7 +26,9 @@ SOURCES += main.cpp \
     modelConverter/ownershipgroupconverter.cpp \
     modelConverter/ownerconverter.cpp \
     saveerror.cpp \
-    model/mailingaddress.cpp
+    model/mailingaddress.cpp \
+    model/formattedmailingaddress.cpp \
+    modelConverter/mailingaddressconverter.cpp
 
 RESOURCES += qml.qrc
 
@@ -55,7 +57,9 @@ HEADERS += \
     modelConverter/ownershipgroupconverter.h \
     modelConverter/ownerconverter.h \
     saveerror.h \
-    model/mailingaddress.h
+    model/mailingaddress.h \
+    model/formattedmailingaddress.h \
+    modelConverter/mailingaddressconverter.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d

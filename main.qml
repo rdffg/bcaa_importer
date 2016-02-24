@@ -29,20 +29,26 @@ ApplicationWindow {
             settingsWindow.visible = false;
         }
 
+        driverType.onAccepted: function() {
+            console.log(driverType.currentText);
+            sqlconnection.driver = driverType.currentText;
+        }
+
         visible: false
         modality: Qt.WindowModal
-    }
+     }
 
-    Binding {
-       property: "driver"
-       target: sqlconnection
-       value: settingsWindow.driverType.currentText
-       when:
-           if (settingsWindow.driverType.currentText != "")
-               return true;
-           else
-               console.log("driver type not selected");
-    }
+//    Binding {
+//       property: "driver"
+//       target: sqlconnection
+//       value: settingsWindow.driverType.currentText
+//       when:
+//           if (settingsWindow.driverType.currentText != "")
+//               return true;
+//           else
+//               console.log("driver type not selected");
+//    }
+
 
     Binding {
         property: "server"

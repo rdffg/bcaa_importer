@@ -7,6 +7,7 @@
 
 #define OWNERSHIPGROUP_PROPERTY "ownershipGroup"
 
+namespace model {
 class Owner : public QDjangoModel
 {
     Q_OBJECT
@@ -16,7 +17,7 @@ class Owner : public QDjangoModel
     Q_PROPERTY(QString companyOrLastName READ companyOrLastName WRITE setCompanyOrLastName)
     Q_PROPERTY(QString equityType READ equityType WRITE setEquityType)
     Q_PROPERTY(QString equityTypeDescription READ equityTypeDescription WRITE setEquityTypeDescription)
-    Q_PROPERTY(OwnershipGroup* ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
+    Q_PROPERTY(model::OwnershipGroup* ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
 
     Q_CLASSINFO("firstname", "null=true")
     Q_CLASSINFO("middleName", "null=true")
@@ -57,5 +58,5 @@ private:
     QString m_equityType;
     QString m_equityTypeDescription;
 };
-
+}
 #endif // OWNER_H

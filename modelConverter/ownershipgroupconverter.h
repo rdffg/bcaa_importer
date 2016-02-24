@@ -8,7 +8,7 @@ namespace converter {
 class OwnershipGroupConverter
 {
 public:
-    static OwnershipGroup* convert(const dataadvice::OwnershipGroup &group);
+    static model::OwnershipGroup* convert(const dataadvice::OwnershipGroup &group);
 };
 }
 #endif // OWNERSHIPGROUPCONVERTER_H

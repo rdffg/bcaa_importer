@@ -1,7 +1,8 @@
 #ifndef MAILINGADDRESS_H
 #define MAILINGADDRESS_H
 #include "QDjangoModel.h"
-#include "model/ownergroup.h"
+#include "ownergroup.h"
+
 #define OWNERSHIPGROUP_PROPERTY "ownershipGroup"
 
 namespace model {
@@ -27,8 +28,9 @@ class MailingAddress : public QDjangoModel
     Q_PROPERTY(QString modeOfDelivery READ modeOfDelivery WRITE setModeOfDelivery)
     Q_PROPERTY(QString site READ site WRITE setSite)
     Q_PROPERTY(QString bulkMailCode READ bulkMailCode WRITE setBulkMailCode)
-    Q_PROPERTY(OwnershipGroup* ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
+    Q_PROPERTY(model::OwnershipGroup* ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
 
+    Q_CLASSINFO("__meta__", "db_table=mailing_address")
     Q_CLASSINFO("attention", "null=true")
     Q_CLASSINFO("careOf", "null=true")
     Q_CLASSINFO("floor", "null=true")
@@ -48,7 +50,7 @@ class MailingAddress : public QDjangoModel
     Q_CLASSINFO("modeOfDelivery", "null=true")
     Q_CLASSINFO("site", "null=true")
     Q_CLASSINFO("bulkMailCode", "null=true")
-    Q_CLASSINFO("ownershipGroup", "null=true")
+    Q_CLASSINFO(OWNERSHIPGROUP_PROPERTY, "on_delete=cascade")
 
 public:
     explicit MailingAddress(QObject *parent=0);

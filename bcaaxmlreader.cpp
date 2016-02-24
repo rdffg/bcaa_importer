@@ -12,6 +12,7 @@
 #include "modelConverter/assessmentareaconverter.h"
 #include "modelConverter/ownershipgroupconverter.h"
 #include "modelConverter/ownerconverter.h"
+#include "modelConverter/mailingaddressconverter.h"
 #include "saveerror.h"
 #include "QSqlDatabase"
 
@@ -120,11 +121,22 @@ void BcaaXmlReader::import() {
 
                                             // owners
                                             for (auto &&owner : og.Owners().get().Owner()) {
-                                                    auto ownermodel = std::unique_ptr<Owner>(converter::OwnerConverter::convert(owner));
+                                                    auto ownermodel = std::unique_ptr<model::Owner>(converter::OwnerConverter::convert(owner));
+                                                    ownermodel->setOwnershipGroup(groupmodel);
                                                     if (!ownermodel->save()) {
                                                             QString err = QString("Failed to save Owner: ") + QDjango::database().lastError().text();
                                                             throw SaveError(err);
                                                     }
+                                            }
+
+                                            // mailing address
+                                            if (og.MailingAddress().present()) {
+                                                auto mamodel = converter::MailingAddressConverter::convert(og.MailingAddress().get());
+                                                mamodel->setOwnershipGroup(groupmodel);
+                                                if (!mamodel->save()) {
+                                                    QString err = QString("failed to save mailing address: ") + QDjango::database().lastError().text();
+                                                    throw SaveError(err);
+                                                }
                                             }
 
                                             delete groupmodel;

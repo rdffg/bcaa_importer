@@ -2,8 +2,8 @@
 #include <QDate>
 
 using namespace converter;
-OwnershipGroup *OwnershipGroupConverter::convert(const dataadvice::OwnershipGroup &group) {
-    auto groupmodel = new OwnershipGroup();
+model::OwnershipGroup *OwnershipGroupConverter::convert(const dataadvice::OwnershipGroup &group) {
+    auto groupmodel = new model::OwnershipGroup();
     groupmodel->setAssessmentNoticeReturned(group.AssessmentNoticeReturned());
     groupmodel->setAssessmentNoticeSuppressed(group.AssessmentNoticeSuppressed());
     if (group.ChangeDate().present()) {

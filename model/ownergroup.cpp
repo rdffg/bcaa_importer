@@ -1,5 +1,6 @@
 #include "ownergroup.h"
 
+using namespace model;
 OwnershipGroup::OwnershipGroup(QObject *parent) : QDjangoModel(parent) {}
 
 QString OwnershipGroup::tenureCode() const { return m_tenureCode; }

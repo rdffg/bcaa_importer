@@ -1,5 +1,6 @@
 #include "owner.h"
 
+using namespace model;
 Owner::Owner(QObject *parent): QDjangoModel (parent)
 {
 

@@ -8,7 +8,7 @@ namespace converter {
 class OwnerConverter
 {
 public:
-    static Owner *convert(const dataadvice::Owner &xowner);
+    static model::Owner *convert(const dataadvice::Owner &xowner);
 };
 }
 #endif // OWNERCONVERTER_H
