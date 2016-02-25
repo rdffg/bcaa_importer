@@ -8,7 +8,7 @@ namespace converter {
 class FolioConverter : public QObject
 {
 public:
-    static Folio *convert(const dataadvice::FolioRecord &folio);
+    static model::Folio *convert(const dataadvice::FolioRecord &folio);
 };
 }
 #endif // FOLIOCONVERTER_H

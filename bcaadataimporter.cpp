@@ -14,6 +14,7 @@
 #include "model/ownergroup.h"
 #include "model/owner.h"
 #include "model/mailingaddress.h"
+#include "model/formattedmailingaddress.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
@@ -21,13 +22,14 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
 {
     QSettings settings("rdffg", "BCAA Importer");
     m_datafilepath = settings.value("history/lastFolder").toString();
-    QDjango::registerModel<AssessmentArea>();
-    QDjango::registerModel<FolioAddress>();
-    QDjango::registerModel<Jurisdiction>();
-    QDjango::registerModel<Folio>();
+    QDjango::registerModel<model::AssessmentArea>();
+    QDjango::registerModel<model::FolioAddress>();
+    QDjango::registerModel<model::Jurisdiction>();
+    QDjango::registerModel<model::Folio>();
     QDjango::registerModel<model::OwnershipGroup>();
     QDjango::registerModel<model::Owner>();
     QDjango::registerModel<model::MailingAddress>();
+    QDjango::registerModel<model::FormattedMailingAddress>();
 }
 
 QString BCAADataImporter::dataFilePath()
@@ -89,19 +91,3 @@ void BCAADataImporter::beginImport()
     m_isrunning = false;
     emit runningChanged();
 }
-
-void BCAADataImporter::testDb() {
-    Jurisdiction *j = new Jurisdiction();
-    j->setCode("200");
-    j->setDescription("Vancouver");
-    qDebug() << "Jurisiction save: " << j->save();
-
-    Folio *f = new Folio();
-    f->setJurisdiction(j);
-    f->setRollNumber("00000000");
-    f->setStatus("01");
-    f->setStatusDescription("Active");
-    qDebug() << "Folio save: " << f->save();
-    QDjango::database().close();
-}
-

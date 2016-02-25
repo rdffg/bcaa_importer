@@ -20,7 +20,7 @@ class OwnershipGroup : public QDjangoModel
     Q_PROPERTY(QDate changeDate READ changeDate WRITE setChangeDate)
     Q_PROPERTY(QString changeSource READ changeSource WRITE setChangeSource)
     Q_PROPERTY(QString changeSourceDescription READ changeSourceDescription WRITE setChangeSourceDescription)
-    Q_PROPERTY(Folio * folio READ folio WRITE setFolio)
+    Q_PROPERTY(model::Folio * folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=ownership_group")
     Q_CLASSINFO("tenureCode", "null=true")

@@ -28,12 +28,16 @@ SOURCES += main.cpp \
     saveerror.cpp \
     model/mailingaddress.cpp \
     model/formattedmailingaddress.cpp \
-    modelConverter/mailingaddressconverter.cpp
+    modelConverter/mailingaddressconverter.cpp \
+    modelConverter/formattedmailingaddressconverter.cpp
 
 RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
+
+
+PRECOMPILED_HEADER = global/pch.h
 
 # Default rules for deployment.
 include(deployment.pri)
@@ -59,7 +63,8 @@ HEADERS += \
     saveerror.h \
     model/mailingaddress.h \
     model/formattedmailingaddress.h \
-    modelConverter/mailingaddressconverter.h
+    modelConverter/mailingaddressconverter.h \
+    modelConverter/formattedmailingaddressconverter.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d

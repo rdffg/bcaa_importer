@@ -2,9 +2,9 @@
 
 
 using namespace converter;
-FolioAddress *FolioAddressConverter::convert(dataadvice::FolioAddress &xml_model)
+model::FolioAddress *FolioAddressConverter::convert(dataadvice::FolioAddress &xml_model)
 {
-   FolioAddress *addr = new FolioAddress();
+   model::FolioAddress *addr = new model::FolioAddress();
    if (xml_model.UnitNumber().present())
            addr->setUnitNumber(QString::fromStdString(xml_model.UnitNumber().get()));
    if (xml_model.StreetDirectionPrefix().present())

@@ -1,8 +1,8 @@
 #include "mailingaddressconverter.h"
 
-std::unique_ptr<model::MailingAddress> converter::MailingAddressConverter::convert(
+model::MailingAddress *converter::MailingAddressConverter::convert(
         dataadvice::MailingAddress const &addr) {
-    std::unique_ptr<model::MailingAddress> addrmodel = std::make_unique<model::MailingAddress>();
+    auto addrmodel = new model::MailingAddress();
     if (addr.Attention().present())
         addrmodel->setAttention(QString::fromStdString(addr.Attention().get()));
     if (addr.BulkMailCode().present())

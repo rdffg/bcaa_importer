@@ -19,6 +19,7 @@ class Owner : public QDjangoModel
     Q_PROPERTY(QString equityTypeDescription READ equityTypeDescription WRITE setEquityTypeDescription)
     Q_PROPERTY(model::OwnershipGroup* ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
 
+    Q_CLASSINFO("__meta__", "db_table=owner")
     Q_CLASSINFO("firstname", "null=true")
     Q_CLASSINFO("middleName", "null=true")
     Q_CLASSINFO("middleInitial", "null=true")

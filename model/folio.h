@@ -7,13 +7,14 @@
 
 #define JURISDICTION_PROPERTY "jurisdiction"
 
+namespace model {
 class Folio : public QDjangoModel
 {
     Q_OBJECT
     Q_PROPERTY(QString rollNumber READ rollNumber WRITE setRollNumber)
     Q_PROPERTY(QString status READ status WRITE setStatus)
     Q_PROPERTY(QString statusDescription READ statusDescription WRITE setStatusDescription)
-    Q_PROPERTY(Jurisdiction *jurisdiction READ jurisdiction WRITE setJurisdiction)
+    Q_PROPERTY(model::Jurisdiction *jurisdiction READ jurisdiction WRITE setJurisdiction)
 
     Q_CLASSINFO("__meta__", "db_table=folio")
     Q_CLASSINFO("rollNumber", "max_length=32")
@@ -41,5 +42,5 @@ private:
     QString m_status;
     QString m_statusDescription;
 };
-
+}
 #endif // FOLIO_H

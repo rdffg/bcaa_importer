@@ -7,13 +7,13 @@
 #include "assessmentarea.h"
 
 #define ASSESSMENT_AREA_PROPERTY "assessmentArea"
-
+namespace model {
     class Jurisdiction : public QDjangoModel
     {
         Q_OBJECT
         Q_PROPERTY(QString code READ code WRITE setCode)
         Q_PROPERTY(QString description READ description WRITE setDescription)
-        Q_PROPERTY(AssessmentArea *assessmentArea READ assessmentArea WRITE setAssessmentArea)
+        Q_PROPERTY(model::AssessmentArea *assessmentArea READ assessmentArea WRITE setAssessmentArea)
 
         Q_CLASSINFO("__meta__", "db_table=jurisdiction")
         Q_CLASSINFO("code", "max_length=16 primary_key=true")
@@ -36,5 +36,5 @@
         QString m_code;
         QString m_description;
     };
-
+}
 #endif // JURISDICTION_H

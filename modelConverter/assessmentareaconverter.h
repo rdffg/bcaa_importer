@@ -9,7 +9,7 @@ namespace converter {
 class AssessmentAreaConverter
 {
 public:
-    static std::shared_ptr<AssessmentArea> convert(dataadvice::AssessmentArea &xml_model);
+    static model::AssessmentArea *convert(dataadvice::AssessmentArea &xml_model);
 };
 }
 #endif // ASSESSMENTAREAMODEL_H

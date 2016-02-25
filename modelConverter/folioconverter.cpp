@@ -3,9 +3,9 @@
 
 using namespace converter;
 
-Folio *converter::FolioConverter::convert(const dataadvice::FolioRecord &folio)
+model::Folio *converter::FolioConverter::convert(const dataadvice::FolioRecord &folio)
 {
-    auto foliomodel = new Folio();
+    auto foliomodel = new model::Folio();
     foliomodel->setRollNumber(QString::fromStdString(folio.RollNumber()));
     if (folio.FolioStatus().present())
         foliomodel->setStatus(

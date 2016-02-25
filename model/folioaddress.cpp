@@ -1,5 +1,6 @@
 #include "folioaddress.h"
 
+using namespace model;
 FolioAddress::FolioAddress(QObject *parent) : QDjangoModel(parent)
   , m_primaryFlag(false)
   , m_unit(QString())

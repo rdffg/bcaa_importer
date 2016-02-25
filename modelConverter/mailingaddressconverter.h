@@ -9,7 +9,7 @@ namespace converter {
 class MailingAddressConverter
 {
 public:
-    static std::unique_ptr<model::MailingAddress> convert(dataadvice::MailingAddress const &addr);
+    static model::MailingAddress* convert(dataadvice::MailingAddress const &addr);
 };
 }
 

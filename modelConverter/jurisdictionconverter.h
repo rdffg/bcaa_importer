@@ -8,7 +8,7 @@ namespace converter {
 class JurisdictionConverter
 {
 public:
-    static Jurisdiction *convert(dataadvice::Jurisdiction &jurisdiction);
+    static model::Jurisdiction *convert(dataadvice::Jurisdiction &jurisdiction);
 };
 }
 

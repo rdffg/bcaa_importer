@@ -1,5 +1,6 @@
 #include "jurisdiction.h"
 
+using namespace model;
 Jurisdiction::Jurisdiction(QObject *parent): QDjangoModel(parent) {
     //setForeignKey(ASSESSMENT_AREA_PROPERTY, new AssessmentArea());
 }

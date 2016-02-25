@@ -13,6 +13,7 @@
 #include "modelConverter/ownershipgroupconverter.h"
 #include "modelConverter/ownerconverter.h"
 #include "modelConverter/mailingaddressconverter.h"
+#include "modelConverter/formattedmailingaddressconverter.h"
 #include "saveerror.h"
 #include "QSqlDatabase"
 
@@ -62,8 +63,8 @@ void BcaaXmlReader::import() {
                 // assessment area
                 auto aa_seq = dat.AssessmentArea();
                 for (auto &&a : aa_seq) {
-                    auto aamodel = converter::AssessmentAreaConverter::convert(a);
-                    if (!aamodel.get()->save()) {
+                    auto aamodel = std::unique_ptr<model::AssessmentArea>(converter::AssessmentAreaConverter::convert(a));
+                    if (!aamodel->save()) {
                             QString err = QString("Failed to save Assessment Area: ") + QDjango::database().lastError().text();
                             throw SaveError(err);
                     }
@@ -73,10 +74,10 @@ void BcaaXmlReader::import() {
                     // jurisdiction
                     auto juris_seq = a.Jurisdictions().get().Jurisdiction();
                     for (auto &&juris: juris_seq) {
-                            Jurisdiction *juris_model = converter::JurisdictionConverter::convert(juris);
+                            auto juris_model = std::unique_ptr<model::Jurisdiction>(converter::JurisdictionConverter::convert(juris));
                             emit message(QString("Found Jurisdiction ")
                                          + juris_model->description());
-                            juris_model->setAssessmentArea(aamodel);
+                            juris_model->setAssessmentArea(aamodel.get());
                             if (!juris_model->save()) {
                                     QString err = QString("Failed to save Jurisdiction: ") + QDjango::database().lastError().text();
                                     throw SaveError(err);
@@ -86,8 +87,8 @@ void BcaaXmlReader::import() {
                             // folio
                             auto folio_seq = juris.FolioRecords().get().FolioRecord();
                             for (auto &&folio : folio_seq) {
-                                    Folio *foliomodel = converter::FolioConverter::convert(folio);
-                                    foliomodel->setJurisdiction(juris_model);
+                                    auto foliomodel = std::unique_ptr<model::Folio>(converter::FolioConverter::convert(folio));
+                                    foliomodel->setJurisdiction(juris_model.get());
                                     if (!foliomodel->save()) {
                                             QString err = QString("Failed to save Folio: ") + QDjango::database().lastError().text();
                                             throw SaveError(err);
@@ -99,21 +100,20 @@ void BcaaXmlReader::import() {
                                     if (folio.FolioAddresses().present()) {
                                             auto addr_seq = folio.FolioAddresses().get().FolioAddress();
                                             for (auto &&addr: addr_seq) {
-                                                    FolioAddress *addrmodel = converter::FolioAddressConverter::convert(addr);
-                                                    addrmodel->setFolio(foliomodel);
+                                                    auto addrmodel = converter::FolioAddressConverter::convert(addr);
+                                                    addrmodel->setFolio(foliomodel.get());
                                                     if (!addrmodel->save()) {
                                                             QString err = QString("Failed to save Folio Address: ") + QDjango::database().lastError().text();
                                                             throw SaveError(err);
                                                     }
-                                                    delete addrmodel;
                                             }
                                     }
 
                                     // ownership groups
                                     auto own_groups_seq = folio.OwnershipGroups()->OwnershipGroup();
                                     for (auto&& og : own_groups_seq) {
-                                            auto groupmodel = converter::OwnershipGroupConverter::convert(og);
-                                            groupmodel->setFolio(foliomodel);
+                                            auto groupmodel = std::unique_ptr<model::OwnershipGroup>(converter::OwnershipGroupConverter::convert(og));
+                                            groupmodel->setFolio(foliomodel.get());
                                             if (!groupmodel->save()) {
                                                     QString err = QString("Failed to save OwnershipGroup: ") + QDjango::database().lastError().text();
                                                     throw SaveError(err);
@@ -122,7 +122,7 @@ void BcaaXmlReader::import() {
                                             // owners
                                             for (auto &&owner : og.Owners().get().Owner()) {
                                                     auto ownermodel = std::unique_ptr<model::Owner>(converter::OwnerConverter::convert(owner));
-                                                    ownermodel->setOwnershipGroup(groupmodel);
+                                                    ownermodel->setOwnershipGroup(groupmodel.get());
                                                     if (!ownermodel->save()) {
                                                             QString err = QString("Failed to save Owner: ") + QDjango::database().lastError().text();
                                                             throw SaveError(err);
@@ -131,20 +131,25 @@ void BcaaXmlReader::import() {
 
                                             // mailing address
                                             if (og.MailingAddress().present()) {
-                                                auto mamodel = converter::MailingAddressConverter::convert(og.MailingAddress().get());
-                                                mamodel->setOwnershipGroup(groupmodel);
-                                                if (!mamodel->save()) {
-                                                    QString err = QString("failed to save mailing address: ") + QDjango::database().lastError().text();
-                                                    throw SaveError(err);
-                                                }
+                                                    auto mamodel = std::unique_ptr<model::MailingAddress>(converter::MailingAddressConverter::convert(og.MailingAddress().get()));
+                                                    mamodel->setOwnershipGroup(groupmodel.get());
+                                                    if (!mamodel->save()) {
+                                                            QString err = QString("failed to save mailing address: ") + QDjango::database().lastError().text();
+                                                            throw SaveError(err);
+                                                    }
                                             }
 
-                                            delete groupmodel;
+                                            // formatted mailing address
+                                            if (og.FormattedMailingAddress().present()) {
+                                                    auto fma = converter::FormattedMailingAddressConverter::convert(og.FormattedMailingAddress().get());
+                                                    fma->setOwnershipGroup(groupmodel.get());
+                                                    if (!fma->save()) {
+                                                            QString err = QString("Failed to save formatted mailing address: ") + QDjango::database().lastError().text();
+                                                            throw err;
+                                                    }
+                                            }
                                     }
-
-                                    delete foliomodel;
                             }
-                            delete juris_model;
                     }
                 }
             } catch (SaveError err) {

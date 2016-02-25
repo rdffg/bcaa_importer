@@ -28,7 +28,6 @@ private:
     DbConnectionSettings *m_dbconnection;
     QString m_datafilepath;
     bool m_isrunning;
-    void testDb();
 };
 
 #endif // BCAADATAIMPORTER_H

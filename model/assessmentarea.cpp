@@ -1,5 +1,6 @@
 #include "assessmentarea.h"
 
+using namespace model;
 AssessmentArea::AssessmentArea(QObject *parent) : QDjangoModel(parent)
   , m_assessmentAreaCode(QString())
   , m_assessmentAreaDescription(QString())

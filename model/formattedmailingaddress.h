@@ -15,6 +15,7 @@ class FormattedMailingAddress : public QDjangoModel
     Q_PROPERTY(QString line5 READ line5 WRITE setLine5)
     Q_PROPERTY(QString line6 READ line6 WRITE setLine6)
     Q_PROPERTY(model::OwnershipGroup *ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
+    Q_CLASSINFO("__meta__", "db_table=formatted_mailing_address")
     Q_CLASSINFO("line1", "null=true")
     Q_CLASSINFO("line2", "null=true")
     Q_CLASSINFO("line3", "null=true")

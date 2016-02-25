@@ -6,6 +6,7 @@
 #include "folio.h"
 
 #define FOLIO_PROPERTY "folio"
+namespace model {
 /**
  * @brief The FolioAddress class
  *
@@ -24,8 +25,9 @@ class FolioAddress : public QDjangoModel
     Q_PROPERTY(QString postalCode READ postalCode WRITE setPostalCode )
     Q_PROPERTY(QString mapReferenceNumber READ mapReferenceNumber WRITE setMapReferenceNumber )
     Q_PROPERTY(QString streetType READ streetType WRITE setStreetType)
-    Q_PROPERTY(Folio * folio READ folio WRITE setFolio)
+    Q_PROPERTY(model::Folio * folio READ folio WRITE setFolio)
 
+    Q_CLASSINFO("__meta__", "db_table=folio_address")
     Q_CLASSINFO("primaryFlag", "null=true")
     Q_CLASSINFO("unitNumber", "null=true")
     Q_CLASSINFO("streetNumber", "null=true")
@@ -87,5 +89,5 @@ private:
     QString m_mapref;
     QString m_streettype;
 };
-
+}
 #endif // FOLIOADDRESS_H
