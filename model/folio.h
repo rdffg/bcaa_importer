@@ -4,6 +4,7 @@
 #include <QObject>
 #include "QDjangoModel.h"
 #include "jurisdiction.h"
+#include "minortaxing/minortaxingjurisdiction.h"
 
 #define JURISDICTION_PROPERTY "jurisdiction"
 
@@ -32,6 +33,10 @@ public:
     void setStatusDescription(QString desc);
     Jurisdiction *jurisdiction() const;
     void setJurisdiction(Jurisdiction *juris);
+    minortaxing::MinorTaxingJurisdiction *generalService() const;
+    void setGeneralService(minortaxing::MinorTaxingJurisdiction *service);
+    minortaxing::MinorTaxingJurisdiction *islandTrust() const;
+    void setIslandTrust(minortaxing::MinorTaxingJurisdiction *trust);
 
 signals:
 

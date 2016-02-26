@@ -15,6 +15,9 @@
 #include "model/owner.h"
 #include "model/mailingaddress.h"
 #include "model/formattedmailingaddress.h"
+#include "model/minortaxing/minortaxingjurisdiction.h"
+#include "model/minortaxing/minortaxing.h"
+#include "model/minortaxing/electoralarea.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
@@ -30,6 +33,8 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
     QDjango::registerModel<model::Owner>();
     QDjango::registerModel<model::MailingAddress>();
     QDjango::registerModel<model::FormattedMailingAddress>();
+    QDjango::registerModel<model::minortaxing::MinorTaxingJurisdiction>();
+    QDjango::registerModel<model::minortaxing::ElectoralArea>();
 }
 
 QString BCAADataImporter::dataFilePath()

@@ -36,7 +36,10 @@ SOURCES += main.cpp \
     model/neighbourhood.cpp \
     model/specialdistrict.cpp \
     model/manualclass.cpp \
-    model/minortaxing.cpp
+    model/minortaxing/minortaxing.cpp \
+    model/minortaxing/minortaxingjurisdiction.cpp \
+    model/minortaxing/electoralarea.cpp \
+    modelConverter/minortaxingjurisdictionconverter.cpp
 
 RESOURCES += qml.qrc
 
@@ -78,7 +81,10 @@ HEADERS += \
     model/neighbourhood.h \
     model/specialdistrict.h \
     model/manualclass.h \
-    model/minortaxing.h
+    model/minortaxing/minortaxing.h \
+    model/minortaxing/minortaxingjurisdiction.h \
+    model/minortaxing/electoralarea.h \
+    modelConverter/minortaxingjurisdictionconverter.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d

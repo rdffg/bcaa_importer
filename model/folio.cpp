@@ -37,3 +37,23 @@ Jurisdiction *Folio::jurisdiction() const {
 void Folio::setJurisdiction(Jurisdiction *juris) {
     setForeignKey(JURISDICTION_PROPERTY, juris);
 }
+
+model::minortaxing::MinorTaxingJurisdiction *Folio::generalService() const
+{
+    return qobject_cast<model::minortaxing::MinorTaxingJurisdiction*>(foreignKey("generalService"));
+}
+
+void Folio::setGeneralService(model::minortaxing::MinorTaxingJurisdiction *service)
+{
+    setForeignKey("generalService", service);
+}
+
+model::minortaxing::MinorTaxingJurisdiction *Folio::islandTrust() const
+{
+    return qobject_cast<model::minortaxing::MinorTaxingJurisdiction*>(foreignKey("islandTrust"));
+}
+
+void Folio::setIslandTrust(model::minortaxing::MinorTaxingJurisdiction *trust)
+{
+    setForeignKey("islandTrust", trust);
+}
