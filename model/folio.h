@@ -37,7 +37,6 @@ signals:
 
 public slots:
 private:
-    //static const char *JURISDICTION_PROPERTY;
     QString m_rollNumber;
     QString m_status;
     QString m_statusDescription;

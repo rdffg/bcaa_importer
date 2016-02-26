@@ -29,7 +29,14 @@ SOURCES += main.cpp \
     model/mailingaddress.cpp \
     model/formattedmailingaddress.cpp \
     modelConverter/mailingaddressconverter.cpp \
-    modelConverter/formattedmailingaddressconverter.cpp
+    modelConverter/formattedmailingaddressconverter.cpp \
+    model/legaldescription.cpp \
+    model/foliodescription.cpp \
+    model/landmeasurement.cpp \
+    model/neighbourhood.cpp \
+    model/specialdistrict.cpp \
+    model/manualclass.cpp \
+    model/minortaxing.cpp
 
 RESOURCES += qml.qrc
 
@@ -64,7 +71,14 @@ HEADERS += \
     model/mailingaddress.h \
     model/formattedmailingaddress.h \
     modelConverter/mailingaddressconverter.h \
-    modelConverter/formattedmailingaddressconverter.h
+    modelConverter/formattedmailingaddressconverter.h \
+    model/legaldescription.h \
+    model/foliodescription.h \
+    model/landmeasurement.h \
+    model/neighbourhood.h \
+    model/specialdistrict.h \
+    model/manualclass.h \
+    model/minortaxing.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d
