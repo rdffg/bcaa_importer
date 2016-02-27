@@ -18,6 +18,9 @@
 #include "model/minortaxing/minortaxingjurisdiction.h"
 #include "model/minortaxing/minortaxing.h"
 #include "model/minortaxing/electoralarea.h"
+#include "model/minortaxing/servicearea.h"
+#include "model/minortaxing/specifiedregional.h"
+#include "model/minortaxing/defined.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
@@ -25,16 +28,7 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
 {
     QSettings settings("rdffg", "BCAA Importer");
     m_datafilepath = settings.value("history/lastFolder").toString();
-    QDjango::registerModel<model::AssessmentArea>();
-    QDjango::registerModel<model::FolioAddress>();
-    QDjango::registerModel<model::Jurisdiction>();
-    QDjango::registerModel<model::Folio>();
-    QDjango::registerModel<model::OwnershipGroup>();
-    QDjango::registerModel<model::Owner>();
-    QDjango::registerModel<model::MailingAddress>();
-    QDjango::registerModel<model::FormattedMailingAddress>();
-    QDjango::registerModel<model::minortaxing::MinorTaxingJurisdiction>();
-    QDjango::registerModel<model::minortaxing::ElectoralArea>();
+    registerModels();
 }
 
 QString BCAADataImporter::dataFilePath()
@@ -95,4 +89,21 @@ void BCAADataImporter::beginImport()
 
     m_isrunning = false;
     emit runningChanged();
+}
+
+void BCAADataImporter::registerModels()
+{
+    QDjango::registerModel<model::AssessmentArea>();
+    QDjango::registerModel<model::FolioAddress>();
+    QDjango::registerModel<model::Jurisdiction>();
+    QDjango::registerModel<model::Folio>();
+    QDjango::registerModel<model::OwnershipGroup>();
+    QDjango::registerModel<model::Owner>();
+    QDjango::registerModel<model::MailingAddress>();
+    QDjango::registerModel<model::FormattedMailingAddress>();
+    QDjango::registerModel<model::minortaxing::MinorTaxingJurisdiction>();
+    QDjango::registerModel<model::minortaxing::ElectoralArea>();
+    QDjango::registerModel<model::minortaxing::ServiceArea>();
+    QDjango::registerModel<model::minortaxing::SpecifiedRegional>();
+    QDjango::registerModel<model::minortaxing::Defined>();
 }

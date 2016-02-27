@@ -9,7 +9,7 @@ class AssessmentArea : public QDjangoModel
     Q_OBJECT
     Q_PROPERTY(QString assessmentAreaCode READ assessmentAreaCode WRITE setAssessmentAreaCode)
     Q_PROPERTY(QString assessmentAreaDescription READ assessmentAreaDescription WRITE setAssessmentAreaDescription)
-    Q_CLASSINFO("__meta__", "db_name=assessment_area")
+    Q_CLASSINFO("__meta__", "db_table=assessment_area")
     Q_CLASSINFO("assessmentAreaCode", "max_length=16 primary_key=true")
     Q_CLASSINFO("assessmentAreaDescription", "max_length=255 blank=true null=true")
 

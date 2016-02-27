@@ -25,6 +25,7 @@ public slots:
     Q_INVOKABLE void beginImport();
 
 private:
+    void registerModels();
     DbConnectionSettings *m_dbconnection;
     QString m_datafilepath;
     bool m_isrunning;

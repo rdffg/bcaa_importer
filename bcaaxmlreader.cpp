@@ -7,6 +7,8 @@
 #include "model/jurisdiction.h"
 #include "model/folio.h"
 #include "model/minortaxing/electoralarea.h"
+#include "model/minortaxing/servicearea.h"
+#include "model/minortaxing/defined.h"
 #include "modelConverter/jurisdictionconverter.h"
 #include "modelConverter/folioconverter.h"
 #include "modelConverter/folioaddressconverter.h"
@@ -208,10 +210,52 @@ void BcaaXmlReader::import() {
                                                     }
 
                                                     // Defined
+                                                    if (folio.MinorTaxing().get().Defined().present())
+                                                    {
+                                                        auto de_seq = folio.MinorTaxing().get().Defined().get().MinorTaxingJurisdiction();
+                                                        for (auto defined: de_seq)
+                                                        {
+                                                            auto definedmodel = std::make_unique<model::minortaxing::Defined>();
+                                                            auto dej = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(converter::MinorTaxingJurisdictionConverter::convert(defined));
+                                                            if (!dej->save())
+                                                            {
+                                                                QString err = QString("Failed to save defined") + QDjango::database().lastError().text();
+                                                                throw err;
+                                                            }
+                                                            definedmodel->setFolio(foliomodel.get());
+                                                            definedmodel->setMinorTaxingJurisdiction(dej.get());
+                                                            if (!definedmodel->save())
+                                                            {
+                                                                 QString err = QString("Failed to save defined") + QDjango::database().lastError().text();
+                                                                 throw err;
+                                                            }
+                                                        }
+                                                    }
 
                                                     // Specified Regional
 
                                                     // Service Areas
+                                                    if (folio.MinorTaxing().get().ServiceAreas().present())
+                                                    {
+                                                        auto sa_seq = folio.MinorTaxing().get().ServiceAreas().get().MinorTaxingJurisdiction();
+                                                        for (auto sa: sa_seq)
+                                                        {
+                                                            auto servicearea = new model::minortaxing::ServiceArea();
+                                                            auto saj = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(converter::MinorTaxingJurisdictionConverter::convert(sa));
+                                                            if (!saj->save())
+                                                            {
+                                                                QString err = QString("Failed to save service area") + QDjango::database().lastError().text();
+                                                                throw err;
+                                                            }
+                                                            servicearea->setFolio(foliomodel.get());
+                                                            servicearea->setMinorTaxingJurisdiction(saj.get());
+                                                            if (!servicearea->save())
+                                                            {
+                                                                QString err = QString("Failed to save service area") + QDjango::database().lastError().text();
+                                                                throw err;
+                                                            }
+                                                        }
+                                                    }
 
                                                     // Specified Municipal
 
