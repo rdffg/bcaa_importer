@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QDjangoModel.h>
 #include "folio.h"
+#include "DataAdvice.hxx"
 
 #define FOLIO_PROPERTY "folio"
 namespace model {
@@ -73,6 +74,8 @@ public:
 
     Folio *folio();
     void setFolio(Folio *folio);
+
+    static FolioAddress *fromXml(dataadvice::FolioAddress const &address);
 
 signals:
 

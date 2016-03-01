@@ -1,6 +1,7 @@
 #ifndef MINORTAXINGJURISDICTION_H
 #define MINORTAXINGJURISDICTION_H
 #include "QDjangoModel.h"
+#include "DataAdvice.hxx"
 
 namespace model {
 namespace minortaxing {
@@ -26,6 +27,8 @@ public:
 
     QString minorTaxingDescription() const;
     void setMinorTaxingDescription(const QString &minorTaxingDescription);
+
+    static MinorTaxingJurisdiction *fromXml(dataadvice::MinorTaxingJurisdiction const &jurisdiction);
 
 private:
     QString m_code;

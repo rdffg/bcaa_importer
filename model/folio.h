@@ -4,6 +4,7 @@
 #include <QObject>
 #include "QDjangoModel.h"
 #include "jurisdiction.h"
+#include "DataAdvice.hxx"
 #include "minortaxing/minortaxingjurisdiction.h"
 
 #define JURISDICTION_PROPERTY "jurisdiction"
@@ -37,6 +38,7 @@ public:
     void setGeneralService(minortaxing::MinorTaxingJurisdiction *service);
     minortaxing::MinorTaxingJurisdiction *islandTrust() const;
     void setIslandTrust(minortaxing::MinorTaxingJurisdiction *trust);
+    static Folio *fromXml(dataadvice::FolioRecord const &folio);
 
 signals:
 

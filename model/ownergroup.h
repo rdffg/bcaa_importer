@@ -57,6 +57,7 @@ public:
     Folio *folio() const;
     void setFolio(Folio *folio);
 
+    static OwnershipGroup *fromXml(dataadvice::OwnershipGroup const &ownershipgroup);
 signals:
 
 public slots:

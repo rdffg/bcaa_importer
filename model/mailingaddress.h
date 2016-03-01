@@ -114,6 +114,8 @@ public:
     OwnershipGroup* ownershipGroup() const;
     void setOwnershipGroup(OwnershipGroup *group);
 
+    static MailingAddress *fromXml(dataadvice::MailingAddress const &address);
+
 private:
     QString m_attention;
     QString m_careOf;

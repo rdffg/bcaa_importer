@@ -15,21 +15,13 @@ SOURCES += main.cpp \
     DataAdvice.cxx \
     model/jurisdiction.cpp \
     model/folio.cpp \
-    modelConverter/folioconverter.cpp \
-    modelConverter/jurisdictionconverter.cpp \
     model/assessmentarea.cpp \
     model/folioaddress.cpp \
-    modelConverter/folioaddressconverter.cpp \
-    modelConverter/assessmentareaconverter.cpp \
     model/ownergroup.cpp \
     model/owner.cpp \
-    modelConverter/ownershipgroupconverter.cpp \
-    modelConverter/ownerconverter.cpp \
     saveerror.cpp \
     model/mailingaddress.cpp \
     model/formattedmailingaddress.cpp \
-    modelConverter/mailingaddressconverter.cpp \
-    modelConverter/formattedmailingaddressconverter.cpp \
     model/legaldescription.cpp \
     model/foliodescription.cpp \
     model/landmeasurement.cpp \
@@ -39,7 +31,6 @@ SOURCES += main.cpp \
     model/minortaxing/minortaxing.cpp \
     model/minortaxing/minortaxingjurisdiction.cpp \
     model/minortaxing/electoralarea.cpp \
-    modelConverter/minortaxingjurisdictionconverter.cpp \
     model/minortaxing/servicearea.cpp \
     model/minortaxing/specifiedregional.cpp \
     model/minortaxing/defined.cpp
@@ -63,21 +54,13 @@ HEADERS += \
     DataAdvice.hxx \
     model/jurisdiction.h \
     model/folio.h \
-    modelConverter/folioconverter.h \
-    modelConverter/jurisdictionconverter.h \
     model/assessmentarea.h \
     model/folioaddress.h \
-    modelConverter/folioaddressconverter.h \
-    modelConverter/assessmentareaconverter.h \
     model/ownergroup.h \
     model/owner.h \
-    modelConverter/ownershipgroupconverter.h \
-    modelConverter/ownerconverter.h \
     saveerror.h \
     model/mailingaddress.h \
     model/formattedmailingaddress.h \
-    modelConverter/mailingaddressconverter.h \
-    modelConverter/formattedmailingaddressconverter.h \
     model/legaldescription.h \
     model/foliodescription.h \
     model/landmeasurement.h \
@@ -87,7 +70,6 @@ HEADERS += \
     model/minortaxing/minortaxing.h \
     model/minortaxing/minortaxingjurisdiction.h \
     model/minortaxing/electoralarea.h \
-    modelConverter/minortaxingjurisdictionconverter.h \
     model/minortaxing/servicearea.h \
     model/minortaxing/specifiedregional.h \
     model/minortaxing/defined.h

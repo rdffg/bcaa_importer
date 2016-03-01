@@ -6,18 +6,15 @@
 #include "QDjango.h"
 #include "model/jurisdiction.h"
 #include "model/folio.h"
+#include "model/folioaddress.h"
+#include "model/mailingaddress.h"
+#include "model/formattedmailingaddress.h"
+#include "model/owner.h"
+#include "model/ownergroup.h"
 #include "model/minortaxing/electoralarea.h"
 #include "model/minortaxing/servicearea.h"
 #include "model/minortaxing/defined.h"
-#include "modelConverter/jurisdictionconverter.h"
-#include "modelConverter/folioconverter.h"
-#include "modelConverter/folioaddressconverter.h"
-#include "modelConverter/assessmentareaconverter.h"
-#include "modelConverter/ownershipgroupconverter.h"
-#include "modelConverter/ownerconverter.h"
-#include "modelConverter/mailingaddressconverter.h"
-#include "modelConverter/formattedmailingaddressconverter.h"
-#include "modelConverter/minortaxingjurisdictionconverter.h"
+#include "model/minortaxing/minortaxingjurisdiction.h"
 #include "saveerror.h"
 #include "QSqlDatabase"
 
@@ -73,7 +70,7 @@ void BcaaXmlReader::import() {
                     // assessment area
                     auto aa_seq = dat.AssessmentArea();
                     for (auto &&a : aa_seq) {
-                            auto aamodel = std::unique_ptr<model::AssessmentArea>(converter::AssessmentAreaConverter::convert(a));
+                            auto aamodel = std::unique_ptr<model::AssessmentArea>(model::AssessmentArea::fromXml(a));
                             if (!aamodel->save()) {
                                     QString err = QString("Failed to save Assessment Area: ") + QDjango::database().lastError().text();
                                     throw SaveError(err);
@@ -84,7 +81,7 @@ void BcaaXmlReader::import() {
                             // jurisdiction
                             auto juris_seq = a.Jurisdictions().get().Jurisdiction();
                             for (auto &&juris: juris_seq) {
-                                    auto juris_model = std::unique_ptr<model::Jurisdiction>(converter::JurisdictionConverter::convert(juris));
+                                    auto juris_model = std::unique_ptr<model::Jurisdiction>(model::Jurisdiction::fromXml(juris));
                                     emit message(QString("Found Jurisdiction ")
                                                  + juris_model->description());
                                     juris_model->setAssessmentArea(aamodel.get());
@@ -97,7 +94,7 @@ void BcaaXmlReader::import() {
                                     // folio
                                     auto folio_seq = juris.FolioRecords().get().FolioRecord();
                                     for (auto &&folio : folio_seq) {
-                                            auto foliomodel = std::unique_ptr<model::Folio>(converter::FolioConverter::convert(folio));
+                                            auto foliomodel = std::unique_ptr<model::Folio>(model::Folio::fromXml(folio));
                                             foliomodel->setJurisdiction(juris_model.get());
                                             if (!foliomodel->save()) {
                                                     QString err = QString("Failed to save Folio: ") + QDjango::database().lastError().text();
@@ -110,7 +107,7 @@ void BcaaXmlReader::import() {
                                             if (folio.FolioAddresses().present()) {
                                                     auto addr_seq = folio.FolioAddresses().get().FolioAddress();
                                                     for (auto &&addr: addr_seq) {
-                                                            auto addrmodel = converter::FolioAddressConverter::convert(addr);
+                                                            auto addrmodel = std::unique_ptr<model::FolioAddress>(model::FolioAddress::fromXml(addr));
                                                             addrmodel->setFolio(foliomodel.get());
                                                             if (!addrmodel->save()) {
                                                                     QString err = QString("Failed to save Folio Address: ") + QDjango::database().lastError().text();
@@ -122,7 +119,7 @@ void BcaaXmlReader::import() {
                                             // ownership groups
                                             auto own_groups_seq = folio.OwnershipGroups()->OwnershipGroup();
                                             for (auto&& og : own_groups_seq) {
-                                                    auto groupmodel = std::unique_ptr<model::OwnershipGroup>(converter::OwnershipGroupConverter::convert(og));
+                                                    auto groupmodel = std::unique_ptr<model::OwnershipGroup>(model::OwnershipGroup::fromXml(og));
                                                     groupmodel->setFolio(foliomodel.get());
                                                     if (!groupmodel->save()) {
                                                             QString err = QString("Failed to save OwnershipGroup: ") + QDjango::database().lastError().text();
@@ -131,7 +128,7 @@ void BcaaXmlReader::import() {
 
                                                     // owners
                                                     for (auto &&owner : og.Owners().get().Owner()) {
-                                                            auto ownermodel = std::unique_ptr<model::Owner>(converter::OwnerConverter::convert(owner));
+                                                            auto ownermodel = std::unique_ptr<model::Owner>(model::Owner::fromXml(owner));
                                                             ownermodel->setOwnershipGroup(groupmodel.get());
                                                             if (!ownermodel->save()) {
                                                                     QString err = QString("Failed to save Owner: ") + QDjango::database().lastError().text();
@@ -141,7 +138,7 @@ void BcaaXmlReader::import() {
 
                                                     // mailing address
                                                     if (og.MailingAddress().present()) {
-                                                            auto mamodel = std::unique_ptr<model::MailingAddress>(converter::MailingAddressConverter::convert(og.MailingAddress().get()));
+                                                            auto mamodel = std::unique_ptr<model::MailingAddress>(model::MailingAddress::fromXml(og.MailingAddress().get()));
                                                             mamodel->setOwnershipGroup(groupmodel.get());
                                                             if (!mamodel->save()) {
                                                                     QString err = QString("failed to save mailing address: ") + QDjango::database().lastError().text();
@@ -151,7 +148,7 @@ void BcaaXmlReader::import() {
 
                                                     // formatted mailing address
                                                     if (og.FormattedMailingAddress().present()) {
-                                                            auto fma = converter::FormattedMailingAddressConverter::convert(og.FormattedMailingAddress().get());
+                                                            auto fma = std::unique_ptr<model::FormattedMailingAddress>(model::FormattedMailingAddress::fromXml(og.FormattedMailingAddress().get()));
                                                             fma->setOwnershipGroup(groupmodel.get());
                                                             if (!fma->save()) {
                                                                     QString err = QString("Failed to save formatted mailing address: ") + QDjango::database().lastError().text();
@@ -164,7 +161,7 @@ void BcaaXmlReader::import() {
                                             if (folio.MinorTaxing().present()) {
                                                     if (folio.MinorTaxing().get().GeneralServices().present()) {
                                                             auto gs = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(
-                                                                                    converter::MinorTaxingJurisdictionConverter::convert(folio.MinorTaxing().get().GeneralServices().get()));
+                                                                                    model::minortaxing::MinorTaxingJurisdiction::fromXml(folio.MinorTaxing().get().GeneralServices().get()));
                                                             if (!gs->save()) {
                                                                     QString err = QString("Failed to save general services") + QDjango::database().lastError().text();
                                                                     throw err;
@@ -174,7 +171,7 @@ void BcaaXmlReader::import() {
                                                     }
                                                     if (folio.MinorTaxing().get().IslandsTrusts().present()) {
                                                             auto it = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(
-                                                                                    converter::MinorTaxingJurisdictionConverter::convert(folio.MinorTaxing().get().IslandsTrusts().get()));
+                                                                                    model::minortaxing::MinorTaxingJurisdiction::fromXml(folio.MinorTaxing().get().IslandsTrusts().get()));
                                                             if (!it->save()) {
                                                                     QString err = QString("Failed to save island trust") + QDjango::database().lastError().text();
                                                                     throw err;
@@ -192,7 +189,7 @@ void BcaaXmlReader::import() {
                                                             for (auto ea : ea_seq)
                                                             {
                                                                     auto electoralarea = new model::minortaxing::ElectoralArea();
-                                                                    auto eaj = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(converter::MinorTaxingJurisdictionConverter::convert(ea));
+                                                                    auto eaj = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(model::minortaxing::MinorTaxingJurisdiction::fromXml(ea));
                                                                     if (!eaj->save())
                                                                     {
                                                                             QString err = QString("Failed to save electoral area") + QDjango::database().lastError().text();
@@ -216,7 +213,7 @@ void BcaaXmlReader::import() {
                                                         for (auto defined: de_seq)
                                                         {
                                                             auto definedmodel = std::make_unique<model::minortaxing::Defined>();
-                                                            auto dej = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(converter::MinorTaxingJurisdictionConverter::convert(defined));
+                                                            auto dej = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(model::minortaxing::MinorTaxingJurisdiction::fromXml(defined));
                                                             if (!dej->save())
                                                             {
                                                                 QString err = QString("Failed to save defined") + QDjango::database().lastError().text();
@@ -241,7 +238,7 @@ void BcaaXmlReader::import() {
                                                         for (auto sa: sa_seq)
                                                         {
                                                             auto servicearea = new model::minortaxing::ServiceArea();
-                                                            auto saj = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(converter::MinorTaxingJurisdictionConverter::convert(sa));
+                                                            auto saj = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(model::minortaxing::MinorTaxingJurisdiction::fromXml(sa));
                                                             if (!saj->save())
                                                             {
                                                                 QString err = QString("Failed to save service area") + QDjango::database().lastError().text();

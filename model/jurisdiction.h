@@ -27,6 +27,7 @@ namespace model {
         AssessmentArea *assessmentArea();
         void setAssessmentArea(AssessmentArea *area);
         void setAssessmentArea(std::shared_ptr<AssessmentArea> area);
+        static Jurisdiction* fromXml(dataadvice::Jurisdiction const &jurisdiction);
 
     signals:
 

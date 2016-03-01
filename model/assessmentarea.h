@@ -1,6 +1,7 @@
 #ifndef ASSESSMENTAREA_H
 #define ASSESSMENTAREA_H
 #include "QDjangoModel.h"
+#include "DataAdvice.hxx"
 
 
 namespace model {
@@ -19,6 +20,7 @@ public:
     void setAssessmentAreaCode(QString area);
     QString assessmentAreaDescription();
     void setAssessmentAreaDescription(QString descr);
+    static AssessmentArea *fromXml(dataadvice::AssessmentArea const &area);
 
 signals:
 

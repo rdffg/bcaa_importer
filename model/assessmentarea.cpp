@@ -27,3 +27,14 @@ void AssessmentArea::setAssessmentAreaDescription(QString descr)
 {
     m_assessmentAreaDescription = descr;
 }
+
+model::AssessmentArea* AssessmentArea::fromXml(dataadvice::AssessmentArea const &xml_model)
+{
+    auto aa = new model::AssessmentArea();
+    aa->setAssessmentAreaCode(QString::fromStdString(xml_model.AssessmentAreaCode()));
+    if (xml_model.AssessmentAreaDescription().present())
+            aa->setAssessmentAreaDescription(
+                        QString::fromStdString(
+                            xml_model.AssessmentAreaDescription().get()));
+    return aa;
+}

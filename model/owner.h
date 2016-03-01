@@ -51,6 +51,7 @@ public:
     OwnershipGroup *ownershipGroup() const;
     void setOwnershipGroup(OwnershipGroup *ownershipGroup);
 
+    static Owner *fromXml(dataadvice::Owner const &owner);
 private:
     QString m_firstname;
     QString m_middleName;
