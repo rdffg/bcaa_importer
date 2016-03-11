@@ -1,3 +1,4 @@
+#include <QApplication>
 #include <QDebug>
 #include <QSqlError>
 #include <QThread>
@@ -21,6 +22,9 @@
 #include "model/minortaxing/servicearea.h"
 #include "model/minortaxing/specifiedregional.h"
 #include "model/minortaxing/defined.h"
+#include "model/importmeta.h"
+#include "bcaafilereader.h"
+#include "DataAdvice.hxx"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
@@ -39,8 +43,10 @@ QString BCAADataImporter::dataFilePath()
 void BCAADataImporter::setDataFilePath(QString path)
 {
     m_datafilepath = path;
-    QSettings settings("rdffg", "BCAA Importer");
-    settings.setValue("history/lastFolder", m_datafilepath);
+    if (path != "") {
+        QSettings settings("rdffg", "BCAA Importer");
+        settings.setValue("history/lastFolder", m_datafilepath);
+    }
 }
 
 DbConnectionSettings *BCAADataImporter::dbConnection() {
@@ -58,6 +64,9 @@ bool BCAADataImporter::isRunning() {
 void BCAADataImporter::beginImport()
 {
     QDjango::setDebugEnabled(true);
+    m_progress = 0;
+    emit progressChanged();
+
     m_isrunning = true;
     emit runningChanged();
     if (m_dbconnection != NULL) {
@@ -83,12 +92,31 @@ void BCAADataImporter::beginImport()
     QObject::connect(t, &QThread::started, r, &BcaaXmlReader::import);
     QObject::connect(r, &BcaaXmlReader::finished, t, &QThread::quit);
     QObject::connect(t, &QThread::finished, t, &QThread::deleteLater);
+    QObject::connect(r, &BcaaXmlReader::finished, [=]() { m_isrunning = false; emit runningChanged(); });
     QObject::connect(r, &BcaaXmlReader::finished, r, &BcaaXmlReader::deleteLater);
+    QObject::connect(r, &BcaaXmlReader::folioSaved, [=]() { m_progress += 1; emit progressChanged(); QApplication::processEvents(); });
+    QObject::connect(this, &BCAADataImporter::cancelJob, [=]() { r->continueJob = false; });
     t->start();
+}
 
+void BCAADataImporter::cancel()
+{
+    emit cancelJob();
+}
 
-    m_isrunning = false;
-    emit runningChanged();
+bool BCAADataImporter::verifyDataFile()
+{
+    try {
+        auto advice = BCAAFileReader::openFile(m_datafilepath);
+        setRunType(QString::fromStdString(advice->RunType()));
+        if (advice->ReportSummary()->TotalFolioCount().present())
+                m_totalRecords = advice->ReportSummary()->TotalFolioCount().get();
+    } catch (const xml_schema::exception& e) {
+        qDebug() << e.what();
+        return false;
+    }
+    emit dataChanged();
+    return true;
 }
 
 void BCAADataImporter::registerModels()
@@ -106,4 +134,26 @@ void BCAADataImporter::registerModels()
     QDjango::registerModel<model::minortaxing::ServiceArea>();
     QDjango::registerModel<model::minortaxing::SpecifiedRegional>();
     QDjango::registerModel<model::minortaxing::Defined>();
+    QDjango::registerModel<model::ImportMeta>();
+}
+
+QString BCAADataImporter::runType() const
+{
+    return m_runType;
+}
+
+void BCAADataImporter::setRunType(const QString &runType)
+{
+    m_runType = runType;
+    emit dataChanged();
+}
+
+long long BCAADataImporter::totalRecords() const
+{
+    return m_totalRecords;
+}
+
+long long BCAADataImporter::progress() const
+{
+    return m_progress;
 }

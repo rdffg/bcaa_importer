@@ -17,9 +17,9 @@ ApplicationWindow {
         username: sqlconnection.username
         password: sqlconnection.password
         tryButton.onClicked: if (sqlconnection.tryDbConnection())
-                                 messageDialog.show("Connection Succeeded.")
+                                 testConnectionDialog.show("Connection Succeeded.")
                              else
-                                 messageDialog.show("Connection Failed.")
+                                 testConnectionDialog.show("Connection Failed.")
         saveButton.onClicked: {
             sqlconnection.saveSettings();
             settingsWindow.visible = false;
@@ -37,18 +37,6 @@ ApplicationWindow {
         visible: false
         modality: Qt.WindowModal
      }
-
-//    Binding {
-//       property: "driver"
-//       target: sqlconnection
-//       value: settingsWindow.driverType.currentText
-//       when:
-//           if (settingsWindow.driverType.currentText != "")
-//               return true;
-//           else
-//               console.log("driver type not selected");
-//    }
-
 
     Binding {
         property: "server"
@@ -79,12 +67,14 @@ ApplicationWindow {
             title: qsTr("&File")
             MenuItem {
                 text: qsTr("&Open")
+                shortcut: "Ctrl+O"
                 onTriggered: {
                     fileDialog.visible = true;
                 }
             }
             MenuItem {
                 text: qsTr("E&xit")
+                shortcut: "Alt+F4"
                 onTriggered: Qt.quit();
             }
         }
@@ -96,14 +86,29 @@ ApplicationWindow {
         folder: if (importer.dataFilePath == "") shortcuts.home; else importer.dataFilePath;
         onAccepted: {
             importer.dataFilePath = fileDialog.fileUrl;
+            importer.verifyDataFile();
             console.log("XML file " + importer.dataFilePath + " chosen.");
         }
     }
 
     MainForm {
+        id: mainForm1
         anchors.fill: parent
         textedit1.text: logdata.logtext
-        startbutton.onClicked: importer.beginImport();
+        startbutton.text: importer.isRunning ? qsTr("Stop"): qsTr("Start")
+        startbutton.onClicked: {
+            if (importer.isRunning)
+            {
+                importer.cancel();
+            }
+            else
+            {
+                verifyImportDialog.open();
+            }
+        }
+
+        startbutton.enabled: importer.verifyDataFile();
+
         settingsButton.onClicked: {
             sqlconnection.loadSettings();
             if(settingsWindow.driverType.find(sqlconnection.driver) >= 0)
@@ -113,15 +118,54 @@ ApplicationWindow {
             settingsWindow.visible = true;
         }
 
+        ProgressBar {
+            id: progressBar1
+            y: 426
+            height: 23
+            value: importer.progress
+            maximumValue: importer.totalRecords
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 23
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            anchors.right: parent.right
+            anchors.rightMargin: 0
+            visible: importer.isRunning
+
+            Text {
+                id: text1
+                y: 4
+                text: Math.round(100 * importer.progress / importer.totalRecords) + "%"
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+
+            NumberAnimation {
+                target: progressBar1
+                property: "value"
+                duration: 200
+                easing.type: Easing.Linear
+            }
+        }
+
     }
 
     MessageDialog {
-        id: messageDialog
+        id: verifyImportDialog
+        title: qsTr("Continue Import?")
+        text: "Run Type is " + importer.runType + ". There are " + importer.totalRecords + " records to process. Proceed?"
+        onAccepted: {
+            importer.beginImport();
+        }
+    }
+
+    MessageDialog {
+        id: testConnectionDialog
         title: qsTr("Connection Result")
 
         function show(caption) {
-            messageDialog.text = caption;
-            messageDialog.open();
+            testConnectionDialog.text = caption;
+            testConnectionDialog.open();
         }
     }
 }
