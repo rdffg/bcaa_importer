@@ -18,10 +18,7 @@
 #include "model/formattedmailingaddress.h"
 #include "model/minortaxing/minortaxingjurisdiction.h"
 #include "model/minortaxing/minortaxing.h"
-#include "model/minortaxing/electoralarea.h"
-#include "model/minortaxing/servicearea.h"
-#include "model/minortaxing/specifiedregional.h"
-#include "model/minortaxing/defined.h"
+#include "model/minortaxing/jurisdictiontype.h"
 #include "model/importmeta.h"
 #include "bcaafilereader.h"
 #include "DataAdvice.hxx"
@@ -116,6 +113,7 @@ bool BCAADataImporter::verifyDataFile()
         return false;
     }
     emit dataChanged();
+    emit progressChanged();
     return true;
 }
 
@@ -130,10 +128,8 @@ void BCAADataImporter::registerModels()
     QDjango::registerModel<model::MailingAddress>();
     QDjango::registerModel<model::FormattedMailingAddress>();
     QDjango::registerModel<model::minortaxing::MinorTaxingJurisdiction>();
-    QDjango::registerModel<model::minortaxing::ElectoralArea>();
-    QDjango::registerModel<model::minortaxing::ServiceArea>();
-    QDjango::registerModel<model::minortaxing::SpecifiedRegional>();
-    QDjango::registerModel<model::minortaxing::Defined>();
+    QDjango::registerModel<model::minortaxing::MinorTaxing>();
+    QDjango::registerModel<model::minortaxing::JurisdictionType>();
     QDjango::registerModel<model::ImportMeta>();
 }
 

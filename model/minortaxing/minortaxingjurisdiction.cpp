@@ -1,6 +1,7 @@
 #include "minortaxingjurisdiction.h"
 
 using namespace model::minortaxing;
+
 MinorTaxingJurisdiction::MinorTaxingJurisdiction(QObject *parent): QDjangoModel(parent)
 {
 }
@@ -35,9 +36,19 @@ void MinorTaxingJurisdiction::setMinorTaxingDescription(const QString &minorTaxi
     m_minorTaxingDescription = minorTaxingDescription;
 }
 
-model::minortaxing::MinorTaxingJurisdiction *MinorTaxingJurisdiction::fromXml(const dataadvice::MinorTaxingJurisdiction &taxing)
+JurisdictionType *MinorTaxingJurisdiction::jurisdictionType() const
 {
-    model::minortaxing::MinorTaxingJurisdiction* mtaxing = new model::minortaxing::MinorTaxingJurisdiction();
+    return qobject_cast<JurisdictionType *>(foreignKey("jurisdictionType"));
+}
+
+void MinorTaxingJurisdiction::setJurisdictionType(JurisdictionType *type)
+{
+    setForeignKey("jurisdictionType", type);
+}
+
+std::unique_ptr<MinorTaxingJurisdiction> MinorTaxingJurisdiction::fromXml(const dataadvice::MinorTaxingJurisdiction &taxing)
+{
+    auto mtaxing = std::make_unique<model::minortaxing::MinorTaxingJurisdiction>();
     if (taxing.MinorTaxingCode().present())
         mtaxing->setCode(QString::fromStdString(taxing.MinorTaxingCode().get()));
     if (taxing.MinorTaxingCodeShort().present())

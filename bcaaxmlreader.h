@@ -5,9 +5,7 @@
 #include <QObject>
 #include "DataAdvice.hxx"
 #include "model/folio.h"
-#include "model/minortaxing/electoralarea.h"
-#include "model/minortaxing/servicearea.h"
-#include "model/minortaxing/defined.h"
+#include "model/minortaxing/jurisdictiontype.h"
 #include "model/minortaxing/minortaxingjurisdiction.h"
 
 class BcaaXmlReader : public QObject
@@ -31,8 +29,11 @@ private:
     void processAssessmentArea(const dataadvice::AssessmentArea &area);
     std::unique_ptr<model::Folio> processFolio(const dataadvice::FolioRecord &folio, model::Jurisdiction *juris_model);
     void processMinorTaxing(const dataadvice::FolioRecord &folio, model::Folio *foliomodel);
+    void processMinorTaxJurisdiction(dataadvice::MinorTaxingJurisdiction const &mtj, std::unique_ptr<model::Folio> &folio, model::minortaxing::JurisdictionType::TaxingJurisdictionType taxType);
     void processOwnership(const dataadvice::FolioRecord &folio, model::Folio *foliomodel);
     void processMetaData(const dataadvice::DataAdvice &dataadvice);
+    void loadMinorTaxingJurisdictions();
+    std::map<model::minortaxing::JurisdictionType::TaxingJurisdictionType, std::unique_ptr<model::minortaxing::JurisdictionType> > m_jurisdictiontypes;
     QString m_filePath;
 };
 

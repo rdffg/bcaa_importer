@@ -137,14 +137,11 @@ ApplicationWindow {
                 y: 4
                 text: Math.round(100 * importer.progress / importer.totalRecords) + "%"
                 anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-
-            NumberAnimation {
-                target: progressBar1
-                property: "value"
-                duration: 200
-                easing.type: Easing.Linear
+                //hackety hack, why doesn't the progress bar notice on its own?
+                onTextChanged: {
+                    progressBar1.maximumValue = importer.totalRecords;
+                    progressBar1.value = importer.progress;
+                }
             }
         }
 

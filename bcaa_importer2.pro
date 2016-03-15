@@ -5,7 +5,9 @@ TEMPLATE = app
 
 QT += qml quick widgets sql xml
 
-CONFIG += qtquickcompiler c++14
+#CONFIG += qtquickcompiler c++14
+
+QMAKE_CXXFLAGS += -std=c++14
 
 SOURCES += main.cpp \
     bcaadataimporter.cpp \
@@ -30,12 +32,9 @@ SOURCES += main.cpp \
     model/manualclass.cpp \
     model/minortaxing/minortaxing.cpp \
     model/minortaxing/minortaxingjurisdiction.cpp \
-    model/minortaxing/electoralarea.cpp \
-    model/minortaxing/servicearea.cpp \
-    model/minortaxing/specifiedregional.cpp \
-    model/minortaxing/defined.cpp \
     bcaafilereader.cpp \
-    model/importmeta.cpp
+    model/importmeta.cpp \
+    model/minortaxing/jurisdictiontype.cpp
 
 RESOURCES += qml.qrc
 
@@ -71,12 +70,9 @@ HEADERS += \
     model/manualclass.h \
     model/minortaxing/minortaxing.h \
     model/minortaxing/minortaxingjurisdiction.h \
-    model/minortaxing/electoralarea.h \
-    model/minortaxing/servicearea.h \
-    model/minortaxing/specifiedregional.h \
-    model/minortaxing/defined.h \
     bcaafilereader.h \
-    model/importmeta.h
+    model/importmeta.h \
+    model/minortaxing/jurisdictiontype.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d

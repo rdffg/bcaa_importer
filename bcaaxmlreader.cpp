@@ -11,20 +11,34 @@
 #include "model/formattedmailingaddress.h"
 #include "model/owner.h"
 #include "model/ownergroup.h"
-#include "model/minortaxing/electoralarea.h"
-#include "model/minortaxing/servicearea.h"
-#include "model/minortaxing/defined.h"
-#include "model/minortaxing/minortaxingjurisdiction.h"
+#include "model/minortaxing/minortaxing.h"
 #include "saveerror.h"
 #include "QSqlDatabase"
 
 
 BcaaXmlReader::BcaaXmlReader(QString filePath, QObject *parent) : QObject(parent)
+  , continueJob(true)
+  , m_jurisdictiontypes(std::map<model::minortaxing::JurisdictionType::TaxingJurisdictionType, std::unique_ptr<model::minortaxing::JurisdictionType> >())
   , m_filePath(filePath)
 {
 }
 
+void BcaaXmlReader::loadMinorTaxingJurisdictions() {
+    auto meta = QMetaEnum::fromType<model::minortaxing::JurisdictionType::TaxingJurisdictionType>();
+    for (int i = 0; i < meta.keyCount(); ++i) {
+        auto jurisdiction_type = std::make_unique<model::minortaxing::JurisdictionType>();
+        jurisdiction_type->setType(static_cast<model::minortaxing::JurisdictionType::TaxingJurisdictionType>(meta.value(i)));
+        jurisdiction_type->setDescription(meta.key(i));
+        if (!jurisdiction_type->save()) {
+            QString err = QString("Failed to insert minor taxin jurisdiction type: ") + QDjango::database().lastError().text();
+            throw SaveError(err);
+        }
+        m_jurisdictiontypes.insert(std::make_pair(jurisdiction_type->type(), std::move(jurisdiction_type)));
+    }
+}
+
 void BcaaXmlReader::import() {
+    continueJob = true;
     std::unique_ptr<dataadvice::DataAdvice> da;
     xml_schema::properties props;
     emit message(QString("Opening file ") + m_filePath);
@@ -59,14 +73,16 @@ void BcaaXmlReader::import() {
         return;
     }
 
-    QDjango::database().transaction();
+    try {
 
-    qDebug() << "Opened XML file...";
-    emit message("Successfully opened the XML file");
-    dataadvice::DataAdvice::AssessmentAreas_optional aac = da.get()->AssessmentAreas();
-    if (aac.present()) {
-            dataadvice::DataAdvice::AssessmentAreas_type dat = aac.get();
-            try {
+            QDjango::database().transaction();
+            loadMinorTaxingJurisdictions();
+
+            qDebug() << "Opened XML file...";
+            emit message("Successfully opened the XML file");
+            dataadvice::DataAdvice::AssessmentAreas_optional aac = da.get()->AssessmentAreas();
+            if (aac.present()) {
+                    dataadvice::DataAdvice::AssessmentAreas_type dat = aac.get();
                     // assessment area
                     auto aa_seq = dat.AssessmentArea();
                     for (auto &&a : aa_seq) {
@@ -94,6 +110,10 @@ void BcaaXmlReader::import() {
                                     // folio
                                     auto folio_seq = juris.FolioRecords().get().FolioRecord();
                                     for (auto &&folio : folio_seq) {
+                                        QThread::msleep(500);
+                                        if (!continueJob) {
+                                            throw SaveError("Job cancelled");
+                                        }
                                             auto foliomodel = std::unique_ptr<model::Folio>(model::Folio::fromXml(folio));
                                             foliomodel->setJurisdiction(juris_model.get());
                                             if (!foliomodel->save()) {
@@ -102,6 +122,7 @@ void BcaaXmlReader::import() {
 
                                             }
                                             emit message(QString(" - ") + foliomodel->rollNumber());
+                                            emit folioSaved();
 
                                             // Folio addresses
                                             if (folio.FolioAddresses().present()) {
@@ -159,121 +180,123 @@ void BcaaXmlReader::import() {
 
                                             // minor taxings
                                             if (folio.MinorTaxing().present()) {
-                                                    if (folio.MinorTaxing().get().GeneralServices().present()) {
-                                                            auto gs = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(
-                                                                                    model::minortaxing::MinorTaxingJurisdiction::fromXml(folio.MinorTaxing().get().GeneralServices().get()));
-                                                            if (!gs->save()) {
-                                                                    QString err = QString("Failed to save general services") + QDjango::database().lastError().text();
-                                                                    throw err;
-                                                            }
+                                                // general service
+                                                if (folio.MinorTaxing().get().GeneralServices().present()) {
+                                                        auto gs = folio.MinorTaxing().get().GeneralServices().get();
+                                                        processMinorTaxJurisdiction(gs, foliomodel, model::minortaxing::JurisdictionType::GeneralService);
+                                                }
+                                                // island trusts
+                                                if (folio.MinorTaxing().get().IslandsTrusts().present()) {
+                                                        auto it = folio.MinorTaxing().get().IslandsTrusts().get();
+                                                        processMinorTaxJurisdiction(it, foliomodel, model::minortaxing::JurisdictionType::IslandTrust);
+                                                }
 
-                                                            foliomodel->setGeneralService(gs.get());
-                                                    }
-                                                    if (folio.MinorTaxing().get().IslandsTrusts().present()) {
-                                                            auto it = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(
-                                                                                    model::minortaxing::MinorTaxingJurisdiction::fromXml(folio.MinorTaxing().get().IslandsTrusts().get()));
-                                                            if (!it->save()) {
-                                                                    QString err = QString("Failed to save island trust") + QDjango::database().lastError().text();
-                                                                    throw err;
-                                                            }
-                                                            foliomodel->setIslandTrust(it.get());
-                                                    }
-                                                    if (!foliomodel->save()) {
-                                                            QString err = QString("Failed to save minor taxings") + QDjango::database().lastError().text();
-                                                            throw err;
-                                                    }
+                                                // electoral areas
+                                                if (folio.MinorTaxing().get().ElectoralAreas().present()) {
+                                                        auto ea_seq = folio.MinorTaxing().get().ElectoralAreas().get().MinorTaxingJurisdiction();
+                                                        for (auto ea : ea_seq)
+                                                        {
+                                                                processMinorTaxJurisdiction(ea, foliomodel, model::minortaxing::JurisdictionType::ElectoralArea);
+                                                        }
+                                                }
 
-                                                    // electoral areas
-                                                    if (folio.MinorTaxing().get().ElectoralAreas().present()) {
-                                                            auto ea_seq = folio.MinorTaxing().get().ElectoralAreas().get().MinorTaxingJurisdiction();
-                                                            for (auto ea : ea_seq)
-                                                            {
-                                                                    auto electoralarea = new model::minortaxing::ElectoralArea();
-                                                                    auto eaj = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(model::minortaxing::MinorTaxingJurisdiction::fromXml(ea));
-                                                                    if (!eaj->save())
-                                                                    {
-                                                                            QString err = QString("Failed to save electoral area") + QDjango::database().lastError().text();
-                                                                            throw err;
-                                                                    }
-
-                                                                    electoralarea->setMinorTaxingJurisdiction(eaj.get());
-                                                                    electoralarea->setFolio(foliomodel.get());
-                                                                    if (!electoralarea->save())
-                                                                    {
-                                                                            QString err = QString("Failed to save electoral area") + QDjango::database().lastError().text();
-                                                                            throw err;
-                                                                    }
-                                                            }
-                                                    }
-
-                                                    // Defined
-                                                    if (folio.MinorTaxing().get().Defined().present())
-                                                    {
+                                                // Defined
+                                                if (folio.MinorTaxing().get().Defined().present())
+                                                {
                                                         auto de_seq = folio.MinorTaxing().get().Defined().get().MinorTaxingJurisdiction();
-                                                        for (auto defined: de_seq)
+                                                        for (auto &&defined: de_seq)
                                                         {
-                                                            auto definedmodel = std::make_unique<model::minortaxing::Defined>();
-                                                            auto dej = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(model::minortaxing::MinorTaxingJurisdiction::fromXml(defined));
-                                                            if (!dej->save())
-                                                            {
-                                                                QString err = QString("Failed to save defined") + QDjango::database().lastError().text();
-                                                                throw err;
-                                                            }
-                                                            definedmodel->setFolio(foliomodel.get());
-                                                            definedmodel->setMinorTaxingJurisdiction(dej.get());
-                                                            if (!definedmodel->save())
-                                                            {
-                                                                 QString err = QString("Failed to save defined") + QDjango::database().lastError().text();
-                                                                 throw err;
-                                                            }
+                                                                processMinorTaxJurisdiction(defined, foliomodel, model::minortaxing::JurisdictionType::Defined);
                                                         }
-                                                    }
+                                                }
 
-                                                    // Specified Regional
+                                                // Specified Regional
+                                                if (folio.MinorTaxing().get().SpecifiedRegional().present()) {
+                                                        auto sr_seq = folio.MinorTaxing().get().SpecifiedRegional().get().MinorTaxingJurisdiction();
+                                                        for (auto &&sr: sr_seq) {
+                                                                processMinorTaxJurisdiction(sr, foliomodel, model::minortaxing::JurisdictionType::SpecifiedRegional);
+                                                        }
+                                                }
 
-                                                    // Service Areas
-                                                    if (folio.MinorTaxing().get().ServiceAreas().present())
-                                                    {
+                                                // Service Areas
+                                                if (folio.MinorTaxing().get().ServiceAreas().present())
+                                                {
                                                         auto sa_seq = folio.MinorTaxing().get().ServiceAreas().get().MinorTaxingJurisdiction();
-                                                        for (auto sa: sa_seq)
-                                                        {
-                                                            auto servicearea = new model::minortaxing::ServiceArea();
-                                                            auto saj = std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>(model::minortaxing::MinorTaxingJurisdiction::fromXml(sa));
-                                                            if (!saj->save())
-                                                            {
-                                                                QString err = QString("Failed to save service area") + QDjango::database().lastError().text();
-                                                                throw err;
-                                                            }
-                                                            servicearea->setFolio(foliomodel.get());
-                                                            servicearea->setMinorTaxingJurisdiction(saj.get());
-                                                            if (!servicearea->save())
-                                                            {
-                                                                QString err = QString("Failed to save service area") + QDjango::database().lastError().text();
-                                                                throw err;
-                                                            }
+                                                        for (auto &&sa: sa_seq) {
+                                                                processMinorTaxJurisdiction(sa, foliomodel, model::minortaxing::JurisdictionType::ServiceArea);
                                                         }
-                                                    }
+                                                }
 
-                                                    // Specified Municipal
+                                                // Specified Municipal
+                                                if (folio.MinorTaxing().get().SpecifiedMunicipal().present()) {
+                                                        auto sm_seq = folio.MinorTaxing().get().SpecifiedMunicipal().get().MinorTaxingJurisdiction();
+                                                        for (auto &&sm: sm_seq) {
+                                                                processMinorTaxJurisdiction(sm, foliomodel, model::minortaxing::JurisdictionType::SpecifiedMunicipal);
+                                                        }
+                                                }
 
-                                                    // Improvement Districts
+                                                // Improvement Districts
+                                                if (folio.MinorTaxing().get().ImprovementDistricts().present()) {
+                                                        auto id_seq = folio.MinorTaxing().get().ImprovementDistricts().get().MinorTaxingJurisdiction();
+                                                        for (auto &&id : id_seq) {
+                                                                processMinorTaxJurisdiction(id, foliomodel, model::minortaxing::JurisdictionType::ImprovementDistrict);
+                                                        }
+                                                }
 
-                                                    // Local Areas
+                                                // Local Areas
+                                                if (folio.MinorTaxing().get().LocalAreas().present()) {
+                                                        auto la_seq = folio.MinorTaxing().get().LocalAreas().get().MinorTaxingJurisdiction();
+                                                        for (auto &&la: la_seq) {
+                                                                processMinorTaxJurisdiction(la, foliomodel, model::minortaxing::JurisdictionType::LocalArea);
+                                                        }
+                                                }
                                             }
                                     }
                             }
                     }
             }
-
-            catch (SaveError err) {
-                    QDjango::database().rollback();
-                    QDjango::database().close();
-                    emit message(QString("Error: ") +  err.text());
-                    emit finished();
-                return;
-            }
         }
+
+    catch (SaveError err) {
+            QDjango::database().rollback();
+            QDjango::database().close();
+            emit message(QString("Error: ") +  err.text());
+            emit finished();
+            return;
+    }
     QDjango::database().commit();
     QDjango::database().close();
     emit finished();
+}
+
+void BcaaXmlReader::processMinorTaxJurisdiction(dataadvice::MinorTaxingJurisdiction const &mtj
+                                                , std::unique_ptr<model::Folio> &folio
+                                                , model::minortaxing::JurisdictionType::TaxingJurisdictionType taxType)
+{
+    auto jurisdiction = model::minortaxing::MinorTaxingJurisdiction::fromXml(mtj);
+    try {
+        jurisdiction->setJurisdictionType(m_jurisdictiontypes.at(taxType).get());
+    }
+    catch (const std::out_of_range&) {
+        throw SaveError(QString("Failed to find jurisdiction type ") + QString::number(taxType));
+    }
+
+    if (!jurisdiction->save())
+    {
+            QString err = QString("Failed to save ")
+                    + m_jurisdictiontypes[taxType]->description()
+                    + QDjango::database().lastError().text();
+            throw err;
+    }
+    auto minortaxing = std::make_unique<model::minortaxing::MinorTaxing>();
+    minortaxing->setFolio(folio.get());
+    minortaxing->setMinorTaxingJurisdiction(jurisdiction.get());
+    if (!minortaxing->save())
+    {
+            QString err = QString("Failed to save ")
+                    + m_jurisdictiontypes[taxType]->description()
+                    + QDjango::database().lastError().text();
+            throw err;
+    }
+
 }

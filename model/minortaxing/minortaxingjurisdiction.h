@@ -1,7 +1,9 @@
 #ifndef MINORTAXINGJURISDICTION_H
 #define MINORTAXINGJURISDICTION_H
 #include "QDjangoModel.h"
+#include "jurisdictiontype.h"
 #include "DataAdvice.hxx"
+#include <memory>
 
 namespace model {
 namespace minortaxing {
@@ -11,14 +13,17 @@ class MinorTaxingJurisdiction : public QDjangoModel
     Q_PROPERTY(QString code READ code WRITE setCode)
     Q_PROPERTY(QString shortCode READ shortCode WRITE setShortCode)
     Q_PROPERTY(QString minorTaxingDescription READ minorTaxingDescription WRITE setMinorTaxingDescription)
+    Q_PROPERTY(model::minortaxing::JurisdictionType *jurisdictionType READ jurisdictionType WRITE setJurisdictionType)
 
     Q_CLASSINFO("__meta__", "db_table=minor_taxing_jurisdiction")
     Q_CLASSINFO("code", "null=true")
     Q_CLASSINFO("shortCode", "null=true")
     Q_CLASSINFO("minorTaxingDescription", "null=true")
+    Q_CLASSINFO("jurisdictionType", "on_delete=setnull")
 
 public:
     explicit MinorTaxingJurisdiction(QObject *parent=0);
+
     QString code() const;
     void setCode(const QString &code);
 
@@ -28,7 +33,12 @@ public:
     QString minorTaxingDescription() const;
     void setMinorTaxingDescription(const QString &minorTaxingDescription);
 
-    static MinorTaxingJurisdiction *fromXml(dataadvice::MinorTaxingJurisdiction const &jurisdiction);
+    JurisdictionType *jurisdictionType() const;
+    void setJurisdictionType(JurisdictionType *type);
+
+
+
+    static std::unique_ptr<MinorTaxingJurisdiction> fromXml(dataadvice::MinorTaxingJurisdiction const &jurisdiction);
 
 private:
     QString m_code;
