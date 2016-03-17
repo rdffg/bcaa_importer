@@ -34,7 +34,16 @@ SOURCES += main.cpp \
     model/minortaxing/minortaxingjurisdiction.cpp \
     bcaafilereader.cpp \
     model/importmeta.cpp \
-    model/minortaxing/jurisdictiontype.cpp
+    model/minortaxing/jurisdictiontype.cpp \
+    model/manufacturedhome.cpp \
+    model/sale.cpp \
+    model/taxexemptpropertyclassvalue.cpp \
+    model/ivaluation.cpp \
+    model/valuation.cpp \
+    model/propertyclassvalue.cpp \
+    model/farm.cpp \
+    model/oilandgas.cpp \
+    model/landcharacteristic.cpp
 
 RESOURCES += qml.qrc
 
@@ -72,7 +81,16 @@ HEADERS += \
     model/minortaxing/minortaxingjurisdiction.h \
     bcaafilereader.h \
     model/importmeta.h \
-    model/minortaxing/jurisdictiontype.h
+    model/minortaxing/jurisdictiontype.h \
+    model/manufacturedhome.h \
+    model/sale.h \
+    model/taxexemptpropertyclassvalue.h \
+    model/ivaluation.h \
+    model/valuation.h \
+    model/propertyclassvalue.h \
+    model/farm.h \
+    model/oilandgas.h \
+    model/landcharacteristic.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d

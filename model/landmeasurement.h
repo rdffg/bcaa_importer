@@ -22,7 +22,7 @@ class LandMeasurement : public QDjangoModel
     Q_CLASSINFO("landDimension", "null=true")
     Q_CLASSINFO("landWidth", "null=true")
     Q_CLASSINFO("landDepth", "null=true")
-    Q_CLASSINFO("folioDescription", "null=true")
+    Q_CLASSINFO("folioDescription", "null=true, on_delete=cascade")
 
 public:
     explicit LandMeasurement(QObject *parent=0);
@@ -43,6 +43,8 @@ public:
 
     model::FolioDescription* folioDescription() const;
     void setFolioDescription(model::FolioDescription* folioDescription);
+
+    std::unique_ptr<LandMeasurement> fromXml(const dataadvice::LandMeasurement &measurement);
 
 private:
     QString m_landDimensionType;

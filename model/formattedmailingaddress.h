@@ -22,6 +22,7 @@ class FormattedMailingAddress : public QDjangoModel
     Q_CLASSINFO("line4", "null=true")
     Q_CLASSINFO("line5", "null=true")
     Q_CLASSINFO("line6", "null=true")
+    Q_CLASSINFO(OWNERSHIPGROUP_PROPERTY, "on_delete=cascade")
 
 public:
     explicit FormattedMailingAddress(QObject *parent=0);

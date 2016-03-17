@@ -39,6 +39,7 @@ class FolioAddress : public QDjangoModel
     Q_CLASSINFO("city", "null=true")
     Q_CLASSINFO("postalCode", "null=true")
     Q_CLASSINFO("mapReferenceNumber", "null=true")
+    Q_CLASSINFO(FOLIO_PROPERTY, "on_delete=cascade")
 
 public:
     explicit FolioAddress(QObject *parent = 0);

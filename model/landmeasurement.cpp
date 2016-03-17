@@ -63,3 +63,19 @@ model::FolioDescription* LandMeasurement::folioDescription() const {
 void LandMeasurement::setFolioDescription(model::FolioDescription* folioDescription) {
     setForeignKey(LANDMEASUREMENT_FOLIODESCRIPTION_PROPERTY, folioDescription);
 }
+
+std::unique_ptr<LandMeasurement> LandMeasurement::fromXml(const dataadvice::LandMeasurement &measurement)
+{
+    auto model = std::make_unique<LandMeasurement>();
+    if (measurement.LandDimensionType().present())
+        model->setLandDimensionType(QString::fromStdString(measurement.LandDimensionType().get()));
+    if (measurement.LandDimensionTypeDescription().present())
+        model->setLandDimensionTypeDescription(QString::fromStdString(measurement.LandDimensionTypeDescription().get()));
+    if (measurement.LandDepth().present())
+        model->setLandDepth(QString::fromStdString(measurement.LandDepth().get()));
+    if (measurement.LandDimension().present())
+        model->setLandDimension(QString::fromStdString(measurement.LandDimension().get()));
+    if (measurement.LandWidth().present())
+        model->setLandWidth(QString::fromStdString(measurement.LandWidth().get()));
+    return model;
+}
