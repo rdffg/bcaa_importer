@@ -1,0 +1,35 @@
+#ifndef MODEL_H
+#define MODEL_H
+
+#include "model/assessmentarea.h"
+#include "model/farm.h"
+#include "model/folioaddress.h"
+#include "model/foliodescription.h"
+#include "model/folio.h"
+#include "model/formattedmailingaddress.h"
+#include "model/importmeta.h"
+#include "model/ivaluation.h"
+#include "model/jurisdiction.h"
+#include "model/landcharacteristic.h"
+#include "model/landmeasurement.h"
+#include "model/legaldescription.h"
+#include "model/mailingaddress.h"
+#include "model/manualclass.h"
+#include "model/manufacturedhome.h"
+#include "model/neighbourhood.h"
+#include "model/oilandgas.h"
+#include "model/ownergroup.h"
+#include "model/owner.h"
+#include "model/propertyclassvalue.h"
+#include "model/propertyclassvaluetype.h"
+#include "model/sale.h"
+#include "model/specialdistrict.h"
+#include "model/taxexemptpropertyclassvalue.h"
+#include "model/valuation.h"
+#include "model/managedforest.h"
+
+#include "model/minortaxing/jurisdictiontype.h"
+#include "model/minortaxing/minortaxing.h"
+#include "model/minortaxing/minortaxingjurisdiction.h"
+
+#endif // MODEL_H

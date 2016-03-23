@@ -84,6 +84,8 @@ public:
     model::SpecialDistrict* regionalHospitalDistrict() const;
     void setRegionalHospitalDistrict(SpecialDistrict* district);
 
+    static std::unique_ptr<FolioDescription> fromXml(const dataadvice::FolioDescription &descr);
+
 private:
     QString m_actualUseCode;
     QString m_actualUseDescription;

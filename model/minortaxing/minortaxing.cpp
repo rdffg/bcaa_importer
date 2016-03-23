@@ -11,7 +11,7 @@ model::Folio *MinorTaxing::folio() const
     return qobject_cast<model::Folio*>(foreignKey("folio"));
 }
 
-void MinorTaxing::setFolio(Folio *folio)
+void MinorTaxing::setFolio(model::Folio *folio)
 {
     setForeignKey("folio", folio);
 }

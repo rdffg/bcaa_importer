@@ -5,9 +5,9 @@ TEMPLATE = app
 
 QT += qml quick widgets sql xml
 
-#CONFIG += qtquickcompiler c++14
+CONFIG += qtquickcompiler
 
-QMAKE_CXXFLAGS += -std=c++14
+unix:QMAKE_CXXFLAGS += -std=c++14
 
 SOURCES += main.cpp \
     bcaadataimporter.cpp \
@@ -43,7 +43,9 @@ SOURCES += main.cpp \
     model/propertyclassvalue.cpp \
     model/farm.cpp \
     model/oilandgas.cpp \
-    model/landcharacteristic.cpp
+    model/landcharacteristic.cpp \
+    model/propertyclassvaluetype.cpp \
+    model/managedforest.cpp
 
 RESOURCES += qml.qrc
 
@@ -90,7 +92,10 @@ HEADERS += \
     model/propertyclassvalue.h \
     model/farm.h \
     model/oilandgas.h \
-    model/landcharacteristic.h
+    model/landcharacteristic.h \
+    model/propertyclassvaluetype.h \
+    model/model.h \
+    model/managedforest.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d

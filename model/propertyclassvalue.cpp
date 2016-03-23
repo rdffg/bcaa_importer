@@ -77,6 +77,31 @@ void PropertyClassValue::setPropertySubClassDescription(const QString &descripti
     m_propertySubClassDescription = description;
 }
 
+PropertyClassValueType* PropertyClassValue::valueType() const
+{
+    return qobject_cast<PropertyClassValueType *>(foreignKey("valueType"));
+}
+
+void PropertyClassValue::setValueType(PropertyClassValueType *type)
+{
+    setForeignKey("valueType", type);
+}
+
+void PropertyClassValue::setValueType(std::unique_ptr<PropertyClassValueType> type)
+{
+    setForeignKey("valueType", type.get());
+}
+
+Folio *PropertyClassValue::folio() const
+{
+   return qobject_cast<Folio *>(foreignKey("folio"));
+}
+
+void PropertyClassValue::setFolio(Folio *folio)
+{
+    setForeignKey("folio", folio);
+}
+
 std::unique_ptr<PropertyClassValue> PropertyClassValue::fromXml(const dataadvice::PropertyClassValues &values)
 {
     auto pcvalue = std::make_unique<PropertyClassValue>();

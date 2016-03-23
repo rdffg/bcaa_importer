@@ -4,14 +4,7 @@
 #include <QDebug>
 #include <ios>
 #include "QDjango.h"
-#include "model/jurisdiction.h"
-#include "model/folio.h"
-#include "model/folioaddress.h"
-#include "model/mailingaddress.h"
-#include "model/formattedmailingaddress.h"
-#include "model/owner.h"
-#include "model/ownergroup.h"
-#include "model/minortaxing/minortaxing.h"
+#include "model/model.h"
 #include "saveerror.h"
 #include "QSqlDatabase"
 
@@ -19,6 +12,7 @@
 BcaaXmlReader::BcaaXmlReader(QString filePath, QObject *parent) : QObject(parent)
   , continueJob(true)
   , m_jurisdictiontypes(std::map<model::minortaxing::JurisdictionType::TaxingJurisdictionType, std::unique_ptr<model::minortaxing::JurisdictionType> >())
+  , m_valueTypes(std::map<model::PropertyClassValueType::ValueType, std::unique_ptr<model::PropertyClassValueType> >())
   , m_filePath(filePath)
 {
 }
@@ -30,10 +24,24 @@ void BcaaXmlReader::loadMinorTaxingJurisdictions() {
         jurisdiction_type->setType(static_cast<model::minortaxing::JurisdictionType::TaxingJurisdictionType>(meta.value(i)));
         jurisdiction_type->setDescription(meta.key(i));
         if (!jurisdiction_type->save()) {
-            QString err = QString("Failed to insert minor taxin jurisdiction type: ") + QDjango::database().lastError().text();
+            QString err = QString("Failed to insert minor taxing jurisdiction type: ") + QDjango::database().lastError().text();
             throw SaveError(err);
         }
         m_jurisdictiontypes.insert(std::make_pair(jurisdiction_type->type(), std::move(jurisdiction_type)));
+    }
+}
+
+void BcaaXmlReader::loadPropertyClassValueTypes() {
+    auto meta = QMetaEnum::fromType<model::PropertyClassValueType::ValueType>();
+    for (int i = 0; i < meta.keyCount(); ++i) {
+        auto valueType = model::PropertyClassValueType::fromValueType(
+                    static_cast<model::PropertyClassValueType::ValueType>(meta.value(i)));
+        if (!valueType->save())
+        {
+            QString err = QString("Failed to insert Property Class Value Type: ") + QDjango::database().lastError().text();
+            throw SaveError(err);
+        }
+        m_valueTypes.insert(std::make_pair(valueType->type(), std::move(valueType)));
     }
 }
 
@@ -75,8 +83,10 @@ void BcaaXmlReader::import() {
 
     try {
 
-            QDjango::database().transaction();
+            // FIXME re-enable transactions
+            //QDjango::database().transaction();
             loadMinorTaxingJurisdictions();
+            loadPropertyClassValueTypes();
 
             qDebug() << "Opened XML file...";
             emit message("Successfully opened the XML file");
@@ -110,7 +120,7 @@ void BcaaXmlReader::import() {
                                     // folio
                                     auto folio_seq = juris.FolioRecords().get().FolioRecord();
                                     for (auto &&folio : folio_seq) {
-                                        QThread::msleep(500);
+                                        //QThread::msleep(500);
                                         if (!continueJob) {
                                             throw SaveError("Job cancelled");
                                         }
@@ -135,6 +145,11 @@ void BcaaXmlReader::import() {
                                                                     throw SaveError(err);
                                                             }
                                                     }
+                                            }
+
+                                            // Folio Description
+                                            if (folio.FolioDescription().present()) {
+                                                auto descr = model::FolioDescription::fromXml(folio.FolioDescription().get());
                                             }
 
                                             // ownership groups
@@ -173,7 +188,7 @@ void BcaaXmlReader::import() {
                                                             fma->setOwnershipGroup(groupmodel.get());
                                                             if (!fma->save()) {
                                                                     QString err = QString("Failed to save formatted mailing address: ") + QDjango::database().lastError().text();
-                                                                    throw err;
+                                                                    throw SaveError(err);
                                                             }
                                                     }
                                             }
@@ -251,6 +266,132 @@ void BcaaXmlReader::import() {
                                                         }
                                                 }
                                             }
+
+                                            // Sales
+                                            if (folio.Sales().present())
+                                            {
+                                                auto sale_seq = folio.Sales().get().Sale();
+                                                for (auto &&sale : sale_seq)
+                                                {
+                                                    auto salemodel = model::Sale::fromXml(sale);
+                                                    salemodel->setFolio(foliomodel.get());
+                                                    if (!salemodel->save())
+                                                    {
+                                                        QString err = QString("Failed to save property sale: ") + QDjango::database().lastError().text();
+                                                        throw SaveError(err);
+                                                    }
+                                                }
+                                            }
+
+                                            // Farm
+                                            if (folio.Farms().present())
+                                            {
+                                                auto farm_seq = folio.Farms().get().Farm();
+                                                for (auto &&farm: farm_seq)
+                                                {
+                                                    for (auto &&farmnumber: farm.FarmNumber())
+                                                    {
+                                                        auto farmmodel = model::Farm::fromXml(farmnumber);
+                                                        farmmodel->setFolio(foliomodel.get());
+                                                        if (!farmmodel->save())
+                                                        {
+                                                            QString err = QString("Failed to save property farm: ") + QDjango::database().lastError().text();
+                                                            throw SaveError(err);
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            // tax exempt property class
+                                            if (folio.Values().present())
+                                            {
+                                                if (folio.Values().get().TaxExemptValues().present())
+                                                {
+                                                    auto te_seq = folio.Values().get().TaxExemptValues().get().TaxExemptPropertyClassValues();
+                                                    for (auto &&tevalue: te_seq)
+                                                    {
+                                                        auto temodel = model::TaxExemptPropertyClassValue::fromXml(tevalue);
+                                                        temodel->setFolio(foliomodel.get());
+                                                        if (!temodel->save())
+                                                        {
+                                                            QString err = QString("Failed to save tax exempt value: ") + QDjango::database().lastError().text();
+                                                            throw SaveError(err);
+                                                        }
+                                                    }
+                                                }
+                                                if (folio.Values().get().BCTransitValues().present())
+                                                {
+                                                    auto transit_seq = folio.Values().get().BCTransitValues().get().PropertyClassValues();
+                                                    for (auto &&bct : transit_seq)
+                                                    {
+                                                        auto transitmodel = model::PropertyClassValue::fromXml(bct);
+                                                        transitmodel->setFolio(foliomodel.get());
+                                                        if (bct.GrossValues().present())
+                                                            transitmodel->setGrossValues(model::Valuation::fromXml(bct.GrossValues().get()).get());
+                                                        auto valueType = model::PropertyClassValueType::fromValueType(model::PropertyClassValueType::BCTransit);
+                                                        //auto valueType = m_valueTypes[model::PropertyClassValueType::ValueType::BCTransit].get();
+                                                        transitmodel->setValueType(std::move(valueType));
+                                                        if (!transitmodel->save())
+                                                        {
+                                                            QString err = QString("Failed to save BC transit value: ") + QDjango::database().lastError().text();
+                                                            throw SaveError(err);
+                                                        }
+                                                    }
+                                                }
+                                                if (folio.Values().get().GeneralValues().present())
+                                                {
+                                                    auto general_seq = folio.Values().get().GeneralValues().get().PropertyClassValues();
+                                                    for (auto &&general :  general_seq) {
+                                                        auto value = model::PropertyClassValue::fromXml(general);
+                                                        value->setFolio(foliomodel.get());
+                                                        auto valueType = model::PropertyClassValueType::fromValueType(model::PropertyClassValueType::General);
+                                                        value->setValueType(std::move(valueType));
+                                                        if (!value->save())
+                                                        {
+                                                            QString err = QString("Failed to save General Value: ") + QDjango::database().lastError().text();
+                                                            throw SaveError(err);
+                                                        }
+                                                    }
+                                                }
+                                                if (folio.Values().get().SchoolValues().present()) {
+                                                    auto school_seq = folio.Values().get().SchoolValues().get().PropertyClassValues();
+                                                    for (auto &&school: school_seq) {
+                                                        auto schoolmodel = model::PropertyClassValue::fromXml(school);
+                                                        schoolmodel->setFolio(foliomodel.get());
+                                                        schoolmodel->setValueType(model::PropertyClassValueType::fromValueType(model::PropertyClassValueType::School));
+                                                        if (!schoolmodel->save()) {
+                                                            QString err = QString("Failed to save School Value: ") + QDjango::database().lastError().text();
+                                                            throw SaveError(err);
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            // Oil and Gas
+                                            if (folio.OilAndGas().present()) {
+                                                auto og_seq = folio.OilAndGas().get().OilAndGas();
+                                                for (auto &&og : og_seq) {
+                                                    auto ogmodel = model::OilAndGas::fromXml(og);
+                                                    ogmodel->setFolio(foliomodel.get());
+                                                    if (!ogmodel->save()) {
+                                                        QString err = QString("Failed to save Oil and Gas: ") + QDjango::database().lastError().text();
+                                                        throw SaveError(err);
+                                                    }
+                                                }
+                                            }
+
+                                            // Managed Forest
+                                            if (folio.ManagedForests().present()) {
+                                                auto mf_seq = folio.ManagedForests().get().ManagedForest();
+                                                for (auto mf: mf_seq) {
+                                                    auto mfmodel = model::ManagedForest::fromXml(mf);
+                                                    mfmodel->setFolio(foliomodel.get());
+                                                    if (!mfmodel->save()) {
+                                                        QString err = QString("Failed to save Managed Forest: ") + QDjango::database().lastError().text();
+                                                        throw SaveError(err);
+                                                    }
+                                                }
+                                            }
                                     }
                             }
                     }
@@ -286,7 +427,7 @@ void BcaaXmlReader::processMinorTaxJurisdiction(dataadvice::MinorTaxingJurisdict
             QString err = QString("Failed to save ")
                     + m_jurisdictiontypes[taxType]->description()
                     + QDjango::database().lastError().text();
-            throw err;
+            throw SaveError(err);
     }
     auto minortaxing = std::make_unique<model::minortaxing::MinorTaxing>();
     minortaxing->setFolio(folio.get());
@@ -296,7 +437,7 @@ void BcaaXmlReader::processMinorTaxJurisdiction(dataadvice::MinorTaxingJurisdict
             QString err = QString("Failed to save ")
                     + m_jurisdictiontypes[taxType]->description()
                     + QDjango::database().lastError().text();
-            throw err;
+            throw SaveError(err);
     }
 
 }

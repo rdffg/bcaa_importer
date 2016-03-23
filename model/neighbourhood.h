@@ -13,8 +13,8 @@ class Neighbourhood : public QDjangoModel
     Q_PROPERTY(model::FolioDescription* folioDescription READ folioDescription WRITE setFolioDescription)
 
     Q_CLASSINFO("__meta__", "db_table=neighbourhood")
-    Q_CLASSINFO("neighbourhoodCode", "null=true")
-    Q_CLASSINFO("neighbourhoodDescription", "null=true")
+    Q_CLASSINFO("neighbourhoodCode", "null=true, max_length=16")
+    Q_CLASSINFO("neighbourhoodDescription", "null=true, max_length=255")
     Q_CLASSINFO(NEIGHBOURHOOD_FOLIODESCRIPTION_PROPERTY, "on_delete=cascade")
 public:
     explicit Neighbourhood(QObject *parent=0);

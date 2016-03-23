@@ -7,6 +7,7 @@
 #include "model/folio.h"
 #include "model/minortaxing/jurisdictiontype.h"
 #include "model/minortaxing/minortaxingjurisdiction.h"
+#include "model/propertyclassvaluetype.h"
 
 class BcaaXmlReader : public QObject
 {
@@ -33,7 +34,9 @@ private:
     void processOwnership(const dataadvice::FolioRecord &folio, model::Folio *foliomodel);
     void processMetaData(const dataadvice::DataAdvice &dataadvice);
     void loadMinorTaxingJurisdictions();
+    void loadPropertyClassValueTypes();
     std::map<model::minortaxing::JurisdictionType::TaxingJurisdictionType, std::unique_ptr<model::minortaxing::JurisdictionType> > m_jurisdictiontypes;
+    std::map<model::PropertyClassValueType::ValueType, std::unique_ptr<model::PropertyClassValueType> > m_valueTypes;
     QString m_filePath;
 };
 

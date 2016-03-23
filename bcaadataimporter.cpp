@@ -8,18 +8,7 @@
 #include "QDjango.h"
 #include "bcaadataimporter.h"
 #include "bcaaxmlreader.h"
-#include "model/folio.h"
-#include "model/jurisdiction.h"
-#include "model/folioaddress.h"
-#include "model/assessmentarea.h"
-#include "model/ownergroup.h"
-#include "model/owner.h"
-#include "model/mailingaddress.h"
-#include "model/formattedmailingaddress.h"
-#include "model/minortaxing/minortaxingjurisdiction.h"
-#include "model/minortaxing/minortaxing.h"
-#include "model/minortaxing/jurisdictiontype.h"
-#include "model/importmeta.h"
+#include "model/model.h"
 #include "bcaafilereader.h"
 #include "DataAdvice.hxx"
 
@@ -120,17 +109,31 @@ bool BCAADataImporter::verifyDataFile()
 void BCAADataImporter::registerModels()
 {
     QDjango::registerModel<model::AssessmentArea>();
-    QDjango::registerModel<model::FolioAddress>();
-    QDjango::registerModel<model::Jurisdiction>();
+    QDjango::registerModel<model::Farm>();
     QDjango::registerModel<model::Folio>();
-    QDjango::registerModel<model::OwnershipGroup>();
-    QDjango::registerModel<model::Owner>();
-    QDjango::registerModel<model::MailingAddress>();
+    QDjango::registerModel<model::FolioAddress>();
+    QDjango::registerModel<model::FolioDescription>();
     QDjango::registerModel<model::FormattedMailingAddress>();
-    QDjango::registerModel<model::minortaxing::MinorTaxingJurisdiction>();
-    QDjango::registerModel<model::minortaxing::MinorTaxing>();
-    QDjango::registerModel<model::minortaxing::JurisdictionType>();
     QDjango::registerModel<model::ImportMeta>();
+    QDjango::registerModel<model::Jurisdiction>();
+    QDjango::registerModel<model::MailingAddress>();
+    QDjango::registerModel<model::ManagedForest>();
+    QDjango::registerModel<model::ManualClass>();
+    QDjango::registerModel<model::ManufacturedHome>();
+    QDjango::registerModel<model::minortaxing::JurisdictionType>();
+    QDjango::registerModel<model::minortaxing::MinorTaxing>();
+    QDjango::registerModel<model::minortaxing::MinorTaxingJurisdiction>();
+    QDjango::registerModel<model::Neighbourhood>();
+    QDjango::registerModel<model::OilAndGas>();
+    QDjango::registerModel<model::Owner>();
+    QDjango::registerModel<model::OwnershipGroup>();
+    QDjango::registerModel<model::PropertyClassValue>();
+    QDjango::registerModel<model::PropertyClassValueType>();
+    QDjango::registerModel<model::Sale>();
+    QDjango::registerModel<model::SpecialDistrict>();
+    QDjango::registerModel<model::TaxExemptPropertyClassValue>();
+    QDjango::registerModel<model::Valuation>();
+
 }
 
 QString BCAADataImporter::runType() const
