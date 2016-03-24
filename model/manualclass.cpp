@@ -25,3 +25,25 @@ void ManualClass::setManualClassDescription(const QString &manualClassDescriptio
 {
     m_manualClassDescription = manualClassDescription;
 }
+
+std::unique_ptr<ManualClass> ManualClass::fromXml(const dataadvice::ManualClass &mclass)
+{
+    auto model = std::make_unique<ManualClass>();
+    if (mclass.ManualClassCode().present())
+            model->setManualClassCode(QString::fromStdString(mclass.ManualClassCode().get()));
+    if (mclass.ManualClassDescription().present())
+        model->setManualClassDescription(QString::fromStdString(mclass.ManualClassDescription().get()));
+    if (mclass.PercentDeviation().present())
+        model->setDeviation(mclass.PercentDeviation().get());
+    return model;
+}
+
+double ManualClass::deviation() const
+{
+    return m_deviation;
+}
+
+void ManualClass::setDeviation(double deviation)
+{
+    m_deviation = deviation;
+}

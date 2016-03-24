@@ -96,6 +96,11 @@ void FolioDescription::setSchoolDistrict(SpecialDistrict *district)
     setForeignKey(FOLIODESCRIPTION_SCHOOLDISTRICT_PROPERTY, district);
 }
 
+void FolioDescription::setSchoolDistrict(std::unique_ptr<SpecialDistrict> district)
+{
+    setForeignKey(FOLIODESCRIPTION_SCHOOLDISTRICT_PROPERTY, district.get());
+}
+
 SpecialDistrict *FolioDescription::regionalDistrict() const
 {
     return qobject_cast<SpecialDistrict*>(foreignKey(FOLIODESCRIPTION_REGIONALDISTRICT_PROPERTY));
@@ -106,6 +111,11 @@ void FolioDescription::setRegionalDistrict(SpecialDistrict *district)
     setForeignKey(FOLIODESCRIPTION_REGIONALDISTRICT_PROPERTY, district);
 }
 
+void FolioDescription::setRegionalDistrict(std::unique_ptr<SpecialDistrict> district)
+{
+    setForeignKey(FOLIODESCRIPTION_REGIONALDISTRICT_PROPERTY, district.get());
+}
+
 SpecialDistrict* FolioDescription::regionalHospitalDistrict() const
 {
     return qobject_cast<SpecialDistrict*>(foreignKey(FOLIODESCRIPTION_HOSPITALDISTRICT_PROPERTY));
@@ -114,6 +124,11 @@ SpecialDistrict* FolioDescription::regionalHospitalDistrict() const
 void FolioDescription::setRegionalHospitalDistrict(SpecialDistrict *district)
 {
     setForeignKey(FOLIODESCRIPTION_HOSPITALDISTRICT_PROPERTY, district);
+}
+
+void FolioDescription::setRegionalHospitalDistrict(std::unique_ptr<SpecialDistrict> district)
+{
+    setForeignKey(FOLIODESCRIPTION_HOSPITALDISTRICT_PROPERTY, district.get());
 }
 
 std::unique_ptr<FolioDescription> FolioDescription::fromXml(const dataadvice::FolioDescription &descr)
@@ -138,14 +153,19 @@ std::unique_ptr<FolioDescription> FolioDescription::fromXml(const dataadvice::Fo
     return model;
 }
 
-QString FolioDescription::predominantManualClass() const
+ManualClass* FolioDescription::predominantManualClass() const
 {
-    return m_predominantManualClass;
+    return qobject_cast<ManualClass *>(foreignKey(FOLIODESCRIPTION_PREDOMINANT_MANUALCLASS));
 }
 
-void FolioDescription::setPredominantManualClass(const QString &predominantManualClass)
+void FolioDescription::setPredominantManualClass(std::unique_ptr<ManualClass> predominantManualClass)
 {
-    m_predominantManualClass = predominantManualClass;
+    setForeignKey(FOLIODESCRIPTION_PREDOMINANT_MANUALCLASS, predominantManualClass.get());
+}
+
+void FolioDescription::setPredominantManualClass(ManualClass *predominantManualClass)
+{
+    setForeignKey(FOLIODESCRIPTION_PREDOMINANT_MANUALCLASS, predominantManualClass);
 }
 
 model::Folio* FolioDescription::folio() const

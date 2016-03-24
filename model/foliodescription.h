@@ -6,9 +6,10 @@
 #include "model/manualclass.h"
 
 #define FOLIODESCRIPTION_FOLIO_PROPERTY "folio"
-#define FOLIODESCRIPTION_SCHOOLDISTRICT_PROPERTY "folio"
-#define FOLIODESCRIPTION_REGIONALDISTRICT_PROPERTY "folio"
-#define FOLIODESCRIPTION_HOSPITALDISTRICT_PROPERTY "folio"
+#define FOLIODESCRIPTION_SCHOOLDISTRICT_PROPERTY "schoolDistrict"
+#define FOLIODESCRIPTION_REGIONALDISTRICT_PROPERTY "regionalDistrict"
+#define FOLIODESCRIPTION_HOSPITALDISTRICT_PROPERTY "regionalHospitalDistrict"
+#define FOLIODESCRIPTION_PREDOMINANT_MANUALCLASS "predominantManualClass"
 namespace model {
 class FolioDescription : public QDjangoModel
 {
@@ -24,7 +25,7 @@ class FolioDescription : public QDjangoModel
     Q_PROPERTY(model::SpecialDistrict *schoolDistrict READ schoolDistrict WRITE setSchoolDistrict)
     Q_PROPERTY(model::SpecialDistrict *regionalDistrict READ regionalDistrict WRITE setRegionalDistrict)
     Q_PROPERTY(model::SpecialDistrict *regionalHospitalDistrict READ regionalHospitalDistrict WRITE setRegionalHospitalDistrict)
-    Q_PROPERTY(QString predominantManualClass READ predominantManualClass WRITE setPredominantManualClass)
+    Q_PROPERTY(model::ManualClass *predominantManualClass READ predominantManualClass WRITE setPredominantManualClass)
     Q_PROPERTY(model::Folio* folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=folio_description")
@@ -39,6 +40,7 @@ class FolioDescription : public QDjangoModel
     Q_CLASSINFO(FOLIODESCRIPTION_SCHOOLDISTRICT_PROPERTY, "null=true")
     Q_CLASSINFO(FOLIODESCRIPTION_REGIONALDISTRICT_PROPERTY, "null=true")
     Q_CLASSINFO(FOLIODESCRIPTION_HOSPITALDISTRICT_PROPERTY, "null=true")
+    Q_CLASSINFO(FOLIODESCRIPTION_PREDOMINANT_MANUALCLASS, "null=true")
     Q_CLASSINFO("predominantManualClass", "null=true")
     Q_CLASSINFO("folio", "null=true")
 
@@ -69,20 +71,24 @@ public:
     QString parkingArea() const;
     void setParkingArea(const QString &parkingArea);
 
-    QString predominantManualClass() const;
-    void setPredominantManualClass(const QString &predominantManualClass);
+    ManualClass *predominantManualClass() const;
+    void setPredominantManualClass(ManualClass *predominantManualClass);
+    void setPredominantManualClass(std::unique_ptr<ManualClass> predominantManualClass);
 
     model::Folio* folio() const;
     void setFolio(model::Folio* folio);
 
     model::SpecialDistrict* schoolDistrict() const;
     void setSchoolDistrict(SpecialDistrict *district);
+    void setSchoolDistrict(std::unique_ptr<SpecialDistrict> district);
 
     model::SpecialDistrict* regionalDistrict() const;
     void setRegionalDistrict(SpecialDistrict *district);
+    void setRegionalDistrict(std::unique_ptr<SpecialDistrict> district);
 
     model::SpecialDistrict* regionalHospitalDistrict() const;
     void setRegionalHospitalDistrict(SpecialDistrict* district);
+    void setRegionalHospitalDistrict(std::unique_ptr<SpecialDistrict> district);
 
     static std::unique_ptr<FolioDescription> fromXml(const dataadvice::FolioDescription &descr);
 

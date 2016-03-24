@@ -12,7 +12,6 @@
 BcaaXmlReader::BcaaXmlReader(QString filePath, QObject *parent) : QObject(parent)
   , continueJob(true)
   , m_jurisdictiontypes(std::map<model::minortaxing::JurisdictionType::TaxingJurisdictionType, std::unique_ptr<model::minortaxing::JurisdictionType> >())
-  , m_valueTypes(std::map<model::PropertyClassValueType::ValueType, std::unique_ptr<model::PropertyClassValueType> >())
   , m_filePath(filePath)
 {
 }
@@ -41,7 +40,6 @@ void BcaaXmlReader::loadPropertyClassValueTypes() {
             QString err = QString("Failed to insert Property Class Value Type: ") + QDjango::database().lastError().text();
             throw SaveError(err);
         }
-        m_valueTypes.insert(std::make_pair(valueType->type(), std::move(valueType)));
     }
 }
 
@@ -83,8 +81,7 @@ void BcaaXmlReader::import() {
 
     try {
 
-            // FIXME re-enable transactions
-            //QDjango::database().transaction();
+            QDjango::database().transaction();
             loadMinorTaxingJurisdictions();
             loadPropertyClassValueTypes();
 
@@ -150,6 +147,57 @@ void BcaaXmlReader::import() {
                                             // Folio Description
                                             if (folio.FolioDescription().present()) {
                                                 auto descr = model::FolioDescription::fromXml(folio.FolioDescription().get());
+                                                descr->setFolio(foliomodel.get());
+                                                if (folio.FolioDescription().get().PredominantManualClass().present())
+                                                {
+                                                    auto manualclass = model::ManualClass::fromXml(folio.FolioDescription().get().PredominantManualClass().get());
+                                                    if (!manualclass->save())
+                                                    {
+                                                        QString err = QString("Failed to save manual class: ") + QDjango::database().lastError().text();
+                                                        throw SaveError(err);
+                                                    }
+                                                    descr->setPredominantManualClass(std::move(manualclass));
+                                                }
+                                                if (folio.FolioDescription().get().RegionalDistrict().present())
+                                                {
+                                                    auto rd = model::SpecialDistrict::fromXml(folio.FolioDescription().get().RegionalDistrict().get());
+                                                    if (!rd->save())
+                                                    {
+                                                        QString err = QString("Failed to save Special District: ") + QDjango::database().lastError().text();
+                                                        throw SaveError(err);
+                                                    }
+                                                    descr->setRegionalDistrict(std::move(rd));
+                                                }
+
+
+                                                if (folio.FolioDescription().get().SchoolDistrict().present())
+                                                {
+                                                    auto rd = model::SpecialDistrict::fromXml(folio.FolioDescription().get().SchoolDistrict().get());
+                                                    if (!rd->save())
+                                                    {
+                                                        QString err = QString("Failed to save Special District: ") + QDjango::database().lastError().text();
+                                                        throw SaveError(err);
+                                                    }
+                                                    descr->setSchoolDistrict(std::move(rd));
+                                                }
+
+                                                if (folio.FolioDescription().get().RegionalHospitalDistrict().present())
+                                                {
+                                                    auto rd = model::SpecialDistrict::fromXml(folio.FolioDescription().get().RegionalHospitalDistrict().get());
+                                                    if (!rd->save())
+                                                    {
+                                                        QString err = QString("Failed to save Special District: ") + QDjango::database().lastError().text();
+                                                        throw SaveError(err);
+                                                    }
+                                                    descr->setRegionalHospitalDistrict(std::move(rd));
+                                                }
+
+                                                if (!descr->save())
+                                                {
+                                                    QString err = QString("Failed to save folio description: ") + QDjango::database().lastError().text();
+                                                    throw SaveError(err);
+
+                                                }
                                             }
 
                                             // ownership groups
@@ -302,7 +350,7 @@ void BcaaXmlReader::import() {
                                                 }
                                             }
 
-                                            // tax exempt property class
+                                            // Property valuation
                                             if (folio.Values().present())
                                             {
                                                 if (folio.Values().get().TaxExemptValues().present())
@@ -329,7 +377,6 @@ void BcaaXmlReader::import() {
                                                         if (bct.GrossValues().present())
                                                             transitmodel->setGrossValues(model::Valuation::fromXml(bct.GrossValues().get()).get());
                                                         auto valueType = model::PropertyClassValueType::fromValueType(model::PropertyClassValueType::BCTransit);
-                                                        //auto valueType = m_valueTypes[model::PropertyClassValueType::ValueType::BCTransit].get();
                                                         transitmodel->setValueType(std::move(valueType));
                                                         if (!transitmodel->save())
                                                         {

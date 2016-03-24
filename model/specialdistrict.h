@@ -1,23 +1,27 @@
 #ifndef SPECIALDISTRICT_H
 #define SPECIALDISTRICT_H
 #include "QDjangoModel.h"
+#include "DataAdvice.hxx"
+#include <memory>
 
 namespace model {
 class SpecialDistrict : public QDjangoModel
 {
     Q_OBJECT
-    Q_PROPERTY(QString districtCode READ districtCode WRITE setDistrictCode)
-    Q_PROPERTY(QString districtDescription READ districtDescription WRITE setDistrictDescription)
-    Q_CLASSINFO("__meta__", "db_table=special_district")
-    Q_CLASSINFO("districtCode", "max_length=16")
-    Q_CLASSINFO("districtDescription", "null=true, max_length=255")
+    Q_PROPERTY(QString code READ code WRITE setCode)
+    Q_PROPERTY(QString description READ description WRITE setDescription)
+
+    Q_CLASSINFO("__meta__", "db_table=special_district null=true")
+    Q_CLASSINFO("code", "null=true")
 public:
     explicit SpecialDistrict(QObject *parent=0);
-    QString districtDescription() const;
-    void setDistrictDescription(const QString &districtDescription);
+    QString description() const;
+    void setDescription(const QString &description);
 
-    QString districtCode() const;
-    void setDistrictCode(const QString &districtCode);
+    QString code() const;
+    void setCode(const QString &code);
+
+    static std::unique_ptr<SpecialDistrict> fromXml(const dataadvice::SpecialDistrict &district);
 
 private:
     QString m_districtCode;

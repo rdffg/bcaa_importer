@@ -36,7 +36,6 @@ private:
     void loadMinorTaxingJurisdictions();
     void loadPropertyClassValueTypes();
     std::map<model::minortaxing::JurisdictionType::TaxingJurisdictionType, std::unique_ptr<model::minortaxing::JurisdictionType> > m_jurisdictiontypes;
-    std::map<model::PropertyClassValueType::ValueType, std::unique_ptr<model::PropertyClassValueType> > m_valueTypes;
     QString m_filePath;
 };
 
