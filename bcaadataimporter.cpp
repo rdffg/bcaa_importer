@@ -5,12 +5,14 @@
 #include <QUrl>
 #include <QFileInfo>
 #include <QSettings>
+#include <QPluginLoader>
 #include "QDjango.h"
 #include "bcaadataimporter.h"
 #include "bcaaxmlreader.h"
 #include "model/model.h"
 #include "bcaafilereader.h"
 #include "DataAdvice.hxx"
+#include "post_process_interface.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
@@ -19,6 +21,7 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
     QSettings settings("rdffg", "BCAA Importer");
     m_datafilepath = settings.value("history/lastFolder").toString();
     registerModels();
+    loadPlugins();
 }
 
 QString BCAADataImporter::dataFilePath()
@@ -49,7 +52,7 @@ bool BCAADataImporter::isRunning() {
 
 void BCAADataImporter::beginImport()
 {
-    QDjango::setDebugEnabled(true);
+    QDjango::setDebugEnabled(false);
     m_progress = 0;
     emit progressChanged();
 
@@ -109,31 +112,30 @@ bool BCAADataImporter::verifyDataFile()
 void BCAADataImporter::registerModels()
 {
     QDjango::registerModel<model::AssessmentArea>();
-    QDjango::registerModel<model::Farm>();
+    QDjango::registerModel<model::Jurisdiction>();
     QDjango::registerModel<model::Folio>();
     QDjango::registerModel<model::FolioAddress>();
-    QDjango::registerModel<model::FolioDescription>();
-    QDjango::registerModel<model::FormattedMailingAddress>();
     QDjango::registerModel<model::ImportMeta>();
-    QDjango::registerModel<model::Jurisdiction>();
-    QDjango::registerModel<model::MailingAddress>();
     QDjango::registerModel<model::ManagedForest>();
     QDjango::registerModel<model::ManualClass>();
     QDjango::registerModel<model::ManufacturedHome>();
     QDjango::registerModel<model::minortaxing::JurisdictionType>();
-    QDjango::registerModel<model::minortaxing::MinorTaxing>();
     QDjango::registerModel<model::minortaxing::MinorTaxingJurisdiction>();
-    QDjango::registerModel<model::Neighbourhood>();
+    QDjango::registerModel<model::minortaxing::MinorTaxing>();
     QDjango::registerModel<model::OilAndGas>();
-    QDjango::registerModel<model::Owner>();
     QDjango::registerModel<model::OwnershipGroup>();
-    QDjango::registerModel<model::PropertyClassValue>();
+    QDjango::registerModel<model::Owner>();
     QDjango::registerModel<model::PropertyClassValueType>();
     QDjango::registerModel<model::Sale>();
     QDjango::registerModel<model::SpecialDistrict>();
     QDjango::registerModel<model::TaxExemptPropertyClassValue>();
     QDjango::registerModel<model::Valuation>();
-
+    QDjango::registerModel<model::PropertyClassValue>();
+    QDjango::registerModel<model::Farm>();
+    QDjango::registerModel<model::FolioDescription>();
+    QDjango::registerModel<model::FormattedMailingAddress>();
+    QDjango::registerModel<model::MailingAddress>();
+    QDjango::registerModel<model::Neighbourhood>();
 }
 
 QString BCAADataImporter::runType() const
@@ -155,4 +157,27 @@ long long BCAADataImporter::totalRecords() const
 long long BCAADataImporter::progress() const
 {
     return m_progress;
+}
+
+void BCAADataImporter::loadPlugins()
+{
+    auto pluginsDir = QDir(qApp->applicationDirPath());
+    qDebug() << pluginsDir.path();
+    pluginsDir.cdUp();
+    pluginsDir.cdUp();
+    qDebug() << pluginsDir.path();
+    pluginsDir.cd("build-PostProcess-Desktop_Qt_5_5_0_MSVC2013_64bit-Debug");
+    pluginsDir.cd("debug");
+    qDebug() << pluginsDir.path();
+    qDebug() << pluginsDir.isReadable();
+    foreach (QString filename, pluginsDir.entryList(QDir::Files)) {
+        if (filename.startsWith("Post")) {
+            QPluginLoader loader(pluginsDir.absoluteFilePath(filename));
+            QObject* plugin = loader.instance();
+            if (plugin) {
+                rdffg::IPostProcess *post = qobject_cast<rdffg::IPostProcess *>(plugin);
+                qDebug() << "Found Post-process plugin for " << post->databaseType();
+            }
+        }
+    }
 }

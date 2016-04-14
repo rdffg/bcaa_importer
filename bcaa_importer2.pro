@@ -95,7 +95,8 @@ HEADERS += \
     model/landcharacteristic.h \
     model/propertyclassvaluetype.h \
     model/model.h \
-    model/managedforest.h
+    model/managedforest.h \
+    post_process_interface.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d
@@ -118,8 +119,10 @@ QMAKE_EXTRA_TARGETS += mytarget schema
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/qdjango/lib/ -lqdjango-db0
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/qdjango/lib/ -lqdjango-dbd0
-else:unix: LIBS += -L/usr/local/lib -lqdjango-db
+##else:unix: LIBS += -L/usr/local/lib -lqdjango-db
+else:unix: LIBS += -L/home/dmahoney/src/qdjango/src/db -lqdjango-db
 
-unix: INCLUDEPATH += /usr/local/include/qdjango/db
+##unix: INCLUDEPATH += /usr/local/include/qdjango/db
+unix: INCLUDEPATH += /home/dmahoney/src/qdjango/src/db
 win32:INCLUDEPATH += $$PWD/../libs/qdjango/include
 win32:DEPENDPATH += $$PWD/../libs/qdjango/include

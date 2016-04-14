@@ -15,7 +15,7 @@ public:
   explicit JurisdictionType(QObject *parent = 0);
 
   enum TaxingJurisdictionType {
-      ElectoralArea,
+      ElectoralArea = 1,
       ServiceArea,
       Defined,
       SpecifiedRegional,

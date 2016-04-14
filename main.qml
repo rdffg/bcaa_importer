@@ -29,7 +29,12 @@ ApplicationWindow {
             settingsWindow.visible = false;
         }
 
-        driverType.onAccepted: function() {
+        driverType.onAccepted: {
+            console.log(driverType.currentText);
+            sqlconnection.driver = driverType.currentText;
+        }
+
+        driverType.onCurrentTextChanged: {
             console.log(driverType.currentText);
             sqlconnection.driver = driverType.currentText;
         }

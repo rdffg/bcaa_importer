@@ -71,7 +71,7 @@ void DbConnectionSettings::setPassword(QString password) {
 
 bool DbConnectionSettings::tryDbConnection() {
     auto db = this->makeDbConnection();
-    if (!db.open()) {
+    if (!db.open() || !db.isValid()) {
         qDebug() << Q_FUNC_INFO << db.lastError();
         return false;
     } else {

@@ -17,7 +17,7 @@ public:
     explicit PropertyClassValueType(QObject *parent = 0);
     enum ValueType
     {
-        BCTransit,
+        BCTransit = 1,
         General,
         School
     };

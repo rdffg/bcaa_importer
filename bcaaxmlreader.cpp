@@ -6,6 +6,7 @@
 #include "QDjango.h"
 #include "model/model.h"
 #include "saveerror.h"
+#include "QDjangoQuerySet.h"
 #include "QSqlDatabase"
 
 
@@ -23,7 +24,7 @@ void BcaaXmlReader::loadMinorTaxingJurisdictions() {
         jurisdiction_type->setType(static_cast<model::minortaxing::JurisdictionType::TaxingJurisdictionType>(meta.value(i)));
         jurisdiction_type->setDescription(meta.key(i));
         if (!jurisdiction_type->save()) {
-            QString err = QString("Failed to insert minor taxing jurisdiction type: ") + QDjango::database().lastError().text();
+            QString err = QString("Failed to insert minor taxing jurisdiction type: ") + jurisdiction_type->lastError().text();
             throw SaveError(err);
         }
         m_jurisdictiontypes.insert(std::make_pair(jurisdiction_type->type(), std::move(jurisdiction_type)));
@@ -33,11 +34,18 @@ void BcaaXmlReader::loadMinorTaxingJurisdictions() {
 void BcaaXmlReader::loadPropertyClassValueTypes() {
     auto meta = QMetaEnum::fromType<model::PropertyClassValueType::ValueType>();
     for (int i = 0; i < meta.keyCount(); ++i) {
+        QDjangoQuerySet<model::PropertyClassValueType> propertyClassTypes;
+        propertyClassTypes.all();
         auto valueType = model::PropertyClassValueType::fromValueType(
                     static_cast<model::PropertyClassValueType::ValueType>(meta.value(i)));
         if (!valueType->save())
         {
-            QString err = QString("Failed to insert Property Class Value Type: ") + QDjango::database().lastError().text();
+            QSqlError lastErr = valueType->lastError();
+            int errnum = lastErr.number();
+            QString driverText = lastErr.driverText();
+            QString errtext = lastErr.databaseText();
+            auto errType = lastErr.type();
+            QString err = QString("Failed to insert Property Class Value Type: ") + valueType->lastError().text();
             throw SaveError(err);
         }
     }
@@ -71,19 +79,19 @@ void BcaaXmlReader::import() {
     db.open();
     QDjango::setDatabase(db);
     // FIXME: don't drop tables in production!
-    QDjango::dropTables();
+    /* QDjango::dropTables();
     if (!QDjango::createTables())
     {
         emit message(QString("Failed to create tables."));
         QDjango::database().close();
         return;
-    }
+    } */
 
     try {
 
-            QDjango::database().transaction();
-            loadMinorTaxingJurisdictions();
+            //QDjango::database().transaction();
             loadPropertyClassValueTypes();
+            loadMinorTaxingJurisdictions();
 
             qDebug() << "Opened XML file...";
             emit message("Successfully opened the XML file");

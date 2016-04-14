@@ -39,6 +39,7 @@ public slots:
 
 private:
     void registerModels();
+    void loadPlugins();
     DbConnectionSettings *m_dbconnection;
     QString m_datafilepath;
     bool m_isrunning;
