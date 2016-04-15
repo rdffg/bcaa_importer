@@ -30,7 +30,7 @@ class PropertyClassValue : public QDjangoModel
     Q_CLASSINFO("propertySubClassDescription", "null=true max_length=255")
     Q_CLASSINFO("grossValues", "null=true blank=true")
     Q_CLASSINFO("taxExemptValues", "null=true")
-    Q_CLASSINFO("netValues", "null=true")
+    Q_CLASSINFO("netValues", "null=true on_delete=cascade")
     Q_CLASSINFO("folio", "on_delete=cascade")
     Q_CLASSINFO("valueType", "on_delete=cascade")
 
@@ -39,10 +39,15 @@ public:
     explicit PropertyClassValue(QObject *parent = 0);
     Valuation *grossValues() const;
     void setGrossValues(Valuation *valuation);
+    void setGrossValues(std::unique_ptr<Valuation> valuation);
+
     Valuation *taxExemptValues() const;
     void setTaxExemptValues(Valuation *valuation);
+    void setTaxExemptValues(std::unique_ptr<Valuation> valuation);
+
     Valuation *netValues() const;
     void setNetValues(Valuation *valuation);
+    void setNetValues(std::unique_ptr<Valuation> valuation);
 
     QString propertyClassCode() const;
     void setPropertyClassCode(const QString &propertyClassCode);

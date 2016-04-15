@@ -17,6 +17,11 @@ void PropertyClassValue::setGrossValues(Valuation *valuation)
     setForeignKey("grossValues", valuation);
 }
 
+void PropertyClassValue::setGrossValues(std::unique_ptr<Valuation> valuation)
+{
+    setGrossValues(valuation.get());
+}
+
 Valuation *PropertyClassValue::taxExemptValues() const
 {
     return qobject_cast<Valuation *>(foreignKey("taxExemptValues"));
@@ -27,6 +32,11 @@ void PropertyClassValue::setTaxExemptValues(Valuation *valuation)
     setForeignKey("taxExemptValues", valuation);
 }
 
+void PropertyClassValue::setTaxExemptValues(std::unique_ptr<Valuation> valuation)
+{
+    setTaxExemptValues(valuation.get());
+}
+
 Valuation *PropertyClassValue::netValues() const
 {
     return qobject_cast<Valuation *>(foreignKey("netValues"));
@@ -35,6 +45,11 @@ Valuation *PropertyClassValue::netValues() const
 void PropertyClassValue::setNetValues(Valuation *valuation)
 {
     setForeignKey("netValues", valuation);
+}
+
+void PropertyClassValue::setNetValues(std::unique_ptr<Valuation> valuation)
+{
+    setNetValues(valuation.get());
 }
 
 QString PropertyClassValue::propertyClassCode() const

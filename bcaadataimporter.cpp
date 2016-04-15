@@ -52,7 +52,7 @@ bool BCAADataImporter::isRunning() {
 
 void BCAADataImporter::beginImport()
 {
-    QDjango::setDebugEnabled(false);
+    QDjango::setDebugEnabled(true);
     m_progress = 0;
     emit progressChanged();
 

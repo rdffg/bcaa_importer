@@ -40,11 +40,6 @@ void BcaaXmlReader::loadPropertyClassValueTypes() {
                     static_cast<model::PropertyClassValueType::ValueType>(meta.value(i)));
         if (!valueType->save())
         {
-            QSqlError lastErr = valueType->lastError();
-            int errnum = lastErr.number();
-            QString driverText = lastErr.driverText();
-            QString errtext = lastErr.databaseText();
-            auto errType = lastErr.type();
             QString err = QString("Failed to insert Property Class Value Type: ") + valueType->lastError().text();
             throw SaveError(err);
         }
@@ -125,11 +120,10 @@ void BcaaXmlReader::import() {
                                     // folio
                                     auto folio_seq = juris.FolioRecords().get().FolioRecord();
                                     for (auto &&folio : folio_seq) {
-                                        //QThread::msleep(500);
                                         if (!continueJob) {
                                             throw SaveError("Job cancelled");
                                         }
-                                            auto foliomodel = std::unique_ptr<model::Folio>(model::Folio::fromXml(folio));
+                                            auto foliomodel = std::shared_ptr<model::Folio>(model::Folio::fromXml(folio));
                                             foliomodel->setJurisdiction(juris_model.get());
                                             if (!foliomodel->save()) {
                                                     QString err = QString("Failed to save Folio: ") + QDjango::database().lastError().text();
@@ -375,47 +369,44 @@ void BcaaXmlReader::import() {
                                                         }
                                                     }
                                                 }
+                                                // BC Transit Values
                                                 if (folio.Values().get().BCTransitValues().present())
                                                 {
                                                     auto transit_seq = folio.Values().get().BCTransitValues().get().PropertyClassValues();
                                                     for (auto &&bct : transit_seq)
                                                     {
-                                                        auto transitmodel = model::PropertyClassValue::fromXml(bct);
-                                                        transitmodel->setFolio(foliomodel.get());
-                                                        if (bct.GrossValues().present())
-                                                            transitmodel->setGrossValues(model::Valuation::fromXml(bct.GrossValues().get()).get());
-                                                        auto valueType = model::PropertyClassValueType::fromValueType(model::PropertyClassValueType::BCTransit);
-                                                        transitmodel->setValueType(std::move(valueType));
-                                                        if (!transitmodel->save())
+                                                        auto valuemodel = processPropertyClassValue(bct, model::PropertyClassValueType::BCTransit);
+                                                        valuemodel->setFolio(foliomodel.get());
+                                                        if (!valuemodel->save())
                                                         {
-                                                            QString err = QString("Failed to save BC transit value: ") + QDjango::database().lastError().text();
+                                                            QString err = QString("Failed to save BC transit value: ") + valuemodel->lastError().text();
                                                             throw SaveError(err);
                                                         }
                                                     }
                                                 }
+                                                // General Values
                                                 if (folio.Values().get().GeneralValues().present())
                                                 {
                                                     auto general_seq = folio.Values().get().GeneralValues().get().PropertyClassValues();
                                                     for (auto &&general :  general_seq) {
-                                                        auto value = model::PropertyClassValue::fromXml(general);
-                                                        value->setFolio(foliomodel.get());
-                                                        auto valueType = model::PropertyClassValueType::fromValueType(model::PropertyClassValueType::General);
-                                                        value->setValueType(std::move(valueType));
-                                                        if (!value->save())
+                                                        auto valuemodel = processPropertyClassValue(general, model::PropertyClassValueType::General);
+                                                        valuemodel->setFolio(foliomodel.get());
+                                                        if (!valuemodel->save())
                                                         {
-                                                            QString err = QString("Failed to save General Value: ") + QDjango::database().lastError().text();
+                                                            QString err = QString("Failed to save General value: ") + valuemodel->lastError().text();
                                                             throw SaveError(err);
                                                         }
                                                     }
                                                 }
+                                                // School values
                                                 if (folio.Values().get().SchoolValues().present()) {
                                                     auto school_seq = folio.Values().get().SchoolValues().get().PropertyClassValues();
                                                     for (auto &&school: school_seq) {
-                                                        auto schoolmodel = model::PropertyClassValue::fromXml(school);
-                                                        schoolmodel->setFolio(foliomodel.get());
-                                                        schoolmodel->setValueType(model::PropertyClassValueType::fromValueType(model::PropertyClassValueType::School));
-                                                        if (!schoolmodel->save()) {
-                                                            QString err = QString("Failed to save School Value: ") + QDjango::database().lastError().text();
+                                                        auto valuemodel = processPropertyClassValue(school, model::PropertyClassValueType::School);
+                                                        valuemodel->setFolio(foliomodel.get());
+                                                        if (!valuemodel->save())
+                                                        {
+                                                            QString err = QString("Failed to save School value: ") + valuemodel->lastError().text();
                                                             throw SaveError(err);
                                                         }
                                                     }
@@ -465,8 +456,47 @@ void BcaaXmlReader::import() {
     emit finished();
 }
 
+std::unique_ptr<model::PropertyClassValue> BcaaXmlReader::processPropertyClassValue(
+        dataadvice::PropertyClassValues const &pcv
+        , model::PropertyClassValueType::ValueType valueType)
+{
+    auto transitmodel = model::PropertyClassValue::fromXml(pcv);
+    if (pcv.GrossValues().present())
+    {
+        auto grossValues = model::Valuation::fromXml(pcv.GrossValues().get());
+        if (!grossValues->save()) {
+            QString err = QString("Failed to save Valuation: ") + grossValues->lastError().text();
+            throw SaveError(err);
+        }
+        transitmodel->setGrossValues(std::move(grossValues));
+    }
+    if (pcv.NetValues().present())
+    {
+        auto netValues = model::Valuation::fromXml(pcv.NetValues().get());
+        if (!netValues->save())
+        {
+            QString err = QString("Failed to save Valuation: ") + netValues->lastError().text();
+            throw SaveError(err);
+        }
+        transitmodel->setNetValues(std::move(netValues));
+    }
+    if (pcv.TaxExemptValues().present())
+    {
+        auto taxExemptValues = model::Valuation::fromXml(pcv.TaxExemptValues().get());
+        if (!taxExemptValues->save())
+        {
+            QString err = QString("Failed to save Valuation: ") + taxExemptValues->lastError().text();
+            throw SaveError(err);
+        }
+        transitmodel->setTaxExemptValues(std::move(taxExemptValues));
+    }
+    auto valueTypeModel = model::PropertyClassValueType::fromValueType(valueType);
+    transitmodel->setValueType(std::move(valueTypeModel));
+    return transitmodel;
+}
+
 void BcaaXmlReader::processMinorTaxJurisdiction(dataadvice::MinorTaxingJurisdiction const &mtj
-                                                , std::unique_ptr<model::Folio> &folio
+                                                , std::shared_ptr<model::Folio> &folio
                                                 , model::minortaxing::JurisdictionType::TaxingJurisdictionType taxType)
 {
     auto jurisdiction = model::minortaxing::MinorTaxingJurisdiction::fromXml(mtj);
