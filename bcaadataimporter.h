@@ -1,6 +1,8 @@
 #ifndef BCAADATAIMPORTER_H
 #define BCAADATAIMPORTER_H
 #include <QObject>
+#include <map>
+#include "post_process_interface.h"
 #include "dbconnectionsettings.h"
 
 class BCAADataImporter : public QObject
@@ -27,7 +29,7 @@ public:
     void setRunType(const QString &runType);
 
 signals:
-    void statusChanged(QString message);
+    void statusChanged(QString const &message);
     void runningChanged();
     void dataChanged();
     void progressChanged();
@@ -36,6 +38,9 @@ signals:
 public slots:
     Q_INVOKABLE void beginImport();
     Q_INVOKABLE void cancel();
+
+private slots:
+    void onStatusChanged(QString const &message);
 
 private:
     void registerModels();
@@ -46,6 +51,7 @@ private:
     long long m_totalRecords;
     long long m_progress;
     QString m_runType;
+    std::map<QString, std::unique_ptr<rdffg::IPostProcess> > m_plugins;
 };
 
 #endif // BCAADATAIMPORTER_H

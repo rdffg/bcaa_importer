@@ -6,17 +6,18 @@
 #include <QFileInfo>
 #include <QSettings>
 #include <QPluginLoader>
+#include <QtCore>
 #include "QDjango.h"
 #include "bcaadataimporter.h"
 #include "bcaaxmlreader.h"
 #include "model/model.h"
 #include "bcaafilereader.h"
 #include "DataAdvice.hxx"
-#include "post_process_interface.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
   , m_isrunning(false)
+  , m_plugins(std::map<QString, std::unique_ptr<rdffg::IPostProcess> >())
 {
     QSettings settings("rdffg", "BCAA Importer");
     m_datafilepath = settings.value("history/lastFolder").toString();
@@ -62,7 +63,6 @@ void BCAADataImporter::beginImport()
         auto db = m_dbconnection->makeDbConnection();
         if(db.open()) {
             QDjango::setDatabase(db);
-            QDjango::createTables();
         } else {
             qDebug() << "Failed to open database:" << db.lastError();
         }
@@ -81,7 +81,13 @@ void BCAADataImporter::beginImport()
     QObject::connect(t, &QThread::started, r, &BcaaXmlReader::import);
     QObject::connect(r, &BcaaXmlReader::finished, t, &QThread::quit);
     QObject::connect(t, &QThread::finished, t, &QThread::deleteLater);
-    QObject::connect(r, &BcaaXmlReader::finished, [=]() { m_isrunning = false; emit runningChanged(); });
+    QObject::connect(r, &BcaaXmlReader::finished, [=]()
+    {
+        // if we have a post-processing plugin for this database type, run it
+        if (m_plugins.count(m_dbconnection->driver()) > 0)
+            m_plugins[m_dbconnection->driver()]->processDatabase(&m_dbconnection->makeDbConnection(), this->runType());
+        m_isrunning = false; emit runningChanged();
+    });
     QObject::connect(r, &BcaaXmlReader::finished, r, &BcaaXmlReader::deleteLater);
     QObject::connect(r, &BcaaXmlReader::folioSaved, [=]() { m_progress += 1; emit progressChanged(); QApplication::processEvents(); });
     QObject::connect(this, &BCAADataImporter::cancelJob, [=]() { r->continueJob = false; });
@@ -91,6 +97,11 @@ void BCAADataImporter::beginImport()
 void BCAADataImporter::cancel()
 {
     emit cancelJob();
+}
+
+void BCAADataImporter::onStatusChanged(const QString &message)
+{
+    emit statusChanged(message);
 }
 
 bool BCAADataImporter::verifyDataFile()
@@ -176,6 +187,8 @@ void BCAADataImporter::loadPlugins()
             QObject* plugin = loader.instance();
             if (plugin) {
                 rdffg::IPostProcess *post = qobject_cast<rdffg::IPostProcess *>(plugin);
+                QObject::connect(plugin, SIGNAL(statusChanged(QString const &)), this, SLOT(onStatusChanged(QString const &)));
+                m_plugins[post->databaseType()] = std::unique_ptr<rdffg::IPostProcess>(post);
                 qDebug() << "Found Post-process plugin for " << post->databaseType();
             }
         }

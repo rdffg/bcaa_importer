@@ -81,6 +81,8 @@ bool DbConnectionSettings::tryDbConnection() {
 
 QSqlDatabase DbConnectionSettings::makeDbConnection()
 {
+    //TODO: added username/password to database connection
+
     QSqlDatabase db;
     if (this->driver() == "MSSQL") {
         db = QSqlDatabase::addDatabase("QODBC");
@@ -99,7 +101,7 @@ QSqlDatabase DbConnectionSettings::makeDbConnection()
 }
 
 QString DbConnectionSettings::makeMssqlConnString() {
-    QString connstr = "Driver={SQL Server Native Client 11.0};Server="
+    QString connstr = "Driver={SQL Server Native Client 11.0};MARS_Connection=yes;Server="
             % this->server()
             % ";Database="
             % this->database();

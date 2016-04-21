@@ -34,8 +34,6 @@ void BcaaXmlReader::loadMinorTaxingJurisdictions() {
 void BcaaXmlReader::loadPropertyClassValueTypes() {
     auto meta = QMetaEnum::fromType<model::PropertyClassValueType::ValueType>();
     for (int i = 0; i < meta.keyCount(); ++i) {
-        QDjangoQuerySet<model::PropertyClassValueType> propertyClassTypes;
-        propertyClassTypes.all();
         auto valueType = model::PropertyClassValueType::fromValueType(
                     static_cast<model::PropertyClassValueType::ValueType>(meta.value(i)));
         if (!valueType->save())
@@ -73,20 +71,21 @@ void BcaaXmlReader::import() {
     db.setDatabaseName(QDjango::database().databaseName());
     db.open();
     QDjango::setDatabase(db);
+    QDjango::createTables();
     // FIXME: don't drop tables in production!
-    /* QDjango::dropTables();
+    /* QDjango::dropTables();*/
     if (!QDjango::createTables())
     {
-        emit message(QString("Failed to create tables."));
-        QDjango::database().close();
-        return;
-    } */
+        emit message(QString("Failed to create tables. This is okay if the tables already exist"));
+        //QDjango::database().close();
+        //return;
+    }
 
     try {
 
             //QDjango::database().transaction();
-            loadPropertyClassValueTypes();
             loadMinorTaxingJurisdictions();
+            loadPropertyClassValueTypes();
 
             qDebug() << "Opened XML file...";
             emit message("Successfully opened the XML file");

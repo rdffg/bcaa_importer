@@ -20,7 +20,7 @@ class MinorTaxing : public QDjangoModel
     Q_PROPERTY(model::minortaxing::MinorTaxingJurisdiction *minorTaxingJurisdiction READ minorTaxingJurisdiction WRITE setMinorTaxingJurisdiction)
 
     Q_CLASSINFO("__meta__", "db_table=folio_minortaxjurisdiction")
-    Q_CLASSINFO("folio", "null=true")
+    Q_CLASSINFO("folio", "null=true on_delete=cascade")
     Q_CLASSINFO("minorTaxingJurisdiction", "null=true")
 
 public:

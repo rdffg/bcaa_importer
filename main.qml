@@ -29,14 +29,10 @@ ApplicationWindow {
             settingsWindow.visible = false;
         }
 
-        driverType.onAccepted: {
-            console.log(driverType.currentText);
-            sqlconnection.driver = driverType.currentText;
-        }
-
-        driverType.onCurrentTextChanged: {
-            console.log(driverType.currentText);
-            sqlconnection.driver = driverType.currentText;
+        driverType.onActivated: {
+            console.log(index);
+            console.log(driverType.model[index]);
+            sqlconnection.driver = driverType.model[index];
         }
 
         visible: false
@@ -136,6 +132,14 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.rightMargin: 0
             visible: importer.isRunning
+
+            Rectangle {
+                width: text1.width + 2
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                height: text1.height
+                opacity: 0.5
+            }
 
             Text {
                 id: text1

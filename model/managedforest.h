@@ -13,7 +13,7 @@ class ManagedForest : public QDjangoModel
     Q_PROPERTY(model::Folio *folio READ folio WRITE setFolio)
     Q_CLASSINFO("__meta__", "db_table=managed_forest")
     Q_CLASSINFO("folio", "on_delete=cascade")
-    Q_CLASSINFO("managedForestNumber", "null=true, max_length=255")
+    Q_CLASSINFO("managedForestNumber", "null=true max_length=255")
 public:
     explicit ManagedForest(QObject *parent = 0);
 

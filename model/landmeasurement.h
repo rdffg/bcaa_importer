@@ -22,7 +22,7 @@ class LandMeasurement : public QDjangoModel
     Q_CLASSINFO("landDimension", "null=true")
     Q_CLASSINFO("landWidth", "null=true")
     Q_CLASSINFO("landDepth", "null=true")
-    Q_CLASSINFO("folioDescription", "null=true, on_delete=cascade")
+    Q_CLASSINFO("folioDescription", "null=true on_delete=cascade")
 
 public:
     explicit LandMeasurement(QObject *parent=0);

@@ -37,12 +37,12 @@ class FolioDescription : public QDjangoModel
     Q_CLASSINFO("alrCode", "null=true")
     Q_CLASSINFO("alrDescription", "null=true")
     Q_CLASSINFO("parkingArea", "null=true")
-    Q_CLASSINFO(FOLIODESCRIPTION_SCHOOLDISTRICT_PROPERTY, "null=true")
-    Q_CLASSINFO(FOLIODESCRIPTION_REGIONALDISTRICT_PROPERTY, "null=true")
-    Q_CLASSINFO(FOLIODESCRIPTION_HOSPITALDISTRICT_PROPERTY, "null=true")
-    Q_CLASSINFO(FOLIODESCRIPTION_PREDOMINANT_MANUALCLASS, "null=true")
-    Q_CLASSINFO("predominantManualClass", "null=true")
-    Q_CLASSINFO("folio", "null=true")
+    Q_CLASSINFO(FOLIODESCRIPTION_SCHOOLDISTRICT_PROPERTY, "null=true on_delete=setnull")
+    Q_CLASSINFO(FOLIODESCRIPTION_REGIONALDISTRICT_PROPERTY, "on_delete=setnull null=true")
+    Q_CLASSINFO(FOLIODESCRIPTION_HOSPITALDISTRICT_PROPERTY, "null=true on_delete=setnull")
+    Q_CLASSINFO(FOLIODESCRIPTION_PREDOMINANT_MANUALCLASS, "null=true on_delete=setnull")
+    Q_CLASSINFO("predominantManualClass", "null=true on_delete=setnull")
+    Q_CLASSINFO("folio", "on_delete=cascade")
 
 public:
     explicit FolioDescription(QObject *parent=0);
