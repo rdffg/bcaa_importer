@@ -22,8 +22,10 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_plugins(std::map<QString, std::unique_ptr<rdffg::IPostProcess> >())
 {
     QSettings settings("rdffg", "BCAA Importer");
-    m_datafilepath = settings.value("history/lastFolder").toString();
-    qDebug() << m_datafilepath;
+    QString dataFilePath = QUrl::fromLocalFile(
+                settings.value("history/lastFolder").toString()).toString();
+    if (QDir(dataFilePath).exists())
+        m_datafilepath = dataFilePath;
     registerModels();
     loadPlugins();
 }
@@ -39,11 +41,10 @@ void BCAADataImporter::setDataFilePath(QString path)
     QUrl url(path);
     QDir pth(url.toLocalFile());
     pth.cdUp();
-    qDebug() << pth.path();
     m_canRun = verifyDataFile();
     if (path != "") {
         QSettings settings("rdffg", "BCAA Importer");
-        settings.setValue("history/lastFolder", pth.absolutePath());
+        settings.setValue("history/lastFolder",QUrl::fromLocalFile(pth.absolutePath()));
     }
 }
 
