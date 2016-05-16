@@ -92,11 +92,16 @@ QSqlDatabase DbConnectionSettings::makeDbConnection()
     }
     if (this->driver() == "QSQLITE" && this->database() == "") {
         db.setDatabaseName(":memory:");
+        return db;
     } else if (this->driver() == "MSSQL") {
         db.setDatabaseName(makeMssqlConnString());
     } else {
         db.setDatabaseName(this->database());
     }
+    if (!m_username.isEmpty())
+        db.setUserName(m_username);
+    if (!m_password.isEmpty())
+        db.setPassword(m_password);
     return db;
 }
 

@@ -13,6 +13,7 @@ class BCAADataImporter : public QObject
     Q_PROPERTY(long long totalRecords READ totalRecords NOTIFY progressChanged)
     Q_PROPERTY(long long progress READ progress NOTIFY progressChanged)
     Q_PROPERTY(QString runType READ runType WRITE setRunType NOTIFY dataChanged)
+    Q_PROPERTY(bool canRun READ canRun NOTIFY dataChanged)
 
 public:
     explicit BCAADataImporter(QObject *parent = 0);
@@ -27,6 +28,7 @@ public:
 
     QString runType() const;
     void setRunType(const QString &runType);
+    bool canRun() const;
 
 signals:
     void statusChanged(QString const &message);
@@ -51,6 +53,7 @@ private:
     long long m_totalRecords;
     long long m_progress;
     QString m_runType;
+    bool m_canRun;
     std::map<QString, std::unique_ptr<rdffg::IPostProcess> > m_plugins;
 };
 

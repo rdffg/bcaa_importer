@@ -1,4 +1,4 @@
-#include <QApplication>
+﻿#include <QApplication>
 #include <QDebug>
 #include <QSqlError>
 #include <QThread>
@@ -6,6 +6,7 @@
 #include <QFileInfo>
 #include <QSettings>
 #include <QPluginLoader>
+#include <QSqlDatabase>
 #include <QtCore>
 #include "QDjango.h"
 #include "bcaadataimporter.h"
@@ -17,10 +18,12 @@
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
   , m_isrunning(false)
+  , m_canRun(false)
   , m_plugins(std::map<QString, std::unique_ptr<rdffg::IPostProcess> >())
 {
     QSettings settings("rdffg", "BCAA Importer");
     m_datafilepath = settings.value("history/lastFolder").toString();
+    qDebug() << m_datafilepath;
     registerModels();
     loadPlugins();
 }
@@ -33,9 +36,14 @@ QString BCAADataImporter::dataFilePath()
 void BCAADataImporter::setDataFilePath(QString path)
 {
     m_datafilepath = path;
+    QUrl url(path);
+    QDir pth(url.toLocalFile());
+    pth.cdUp();
+    qDebug() << pth.path();
+    m_canRun = verifyDataFile();
     if (path != "") {
         QSettings settings("rdffg", "BCAA Importer");
-        settings.setValue("history/lastFolder", m_datafilepath);
+        settings.setValue("history/lastFolder", pth.absolutePath());
     }
 }
 
@@ -84,8 +92,9 @@ void BCAADataImporter::beginImport()
     QObject::connect(r, &BcaaXmlReader::finished, [=]()
     {
         // if we have a post-processing plugin for this database type, run it
+        //TODO: don't run if the import didn't complete successfully.
         if (m_plugins.count(m_dbconnection->driver()) > 0)
-            m_plugins[m_dbconnection->driver()]->processDatabase(&m_dbconnection->makeDbConnection(), this->runType());
+            m_plugins[m_dbconnection->driver()]->processDatabase(new QSqlDatabase(m_dbconnection->makeDbConnection()), this->runType());
         m_isrunning = false; emit runningChanged();
     });
     QObject::connect(r, &BcaaXmlReader::finished, r, &BcaaXmlReader::deleteLater);
@@ -174,11 +183,11 @@ void BCAADataImporter::loadPlugins()
 {
     auto pluginsDir = QDir(qApp->applicationDirPath());
     qDebug() << pluginsDir.path();
-    pluginsDir.cdUp();
-    pluginsDir.cdUp();
-    qDebug() << pluginsDir.path();
-    pluginsDir.cd("build-PostProcess-Desktop_Qt_5_5_0_MSVC2013_64bit-Debug");
-    pluginsDir.cd("debug");
+    //pluginsDir.cdUp();
+    //pluginsDir.cdUp();
+    //qDebug() << pluginsDir.path();
+    //pluginsDir.cd("build-PostProcess-Desktop_Qt_5_5_0_MSVC2013_64bit-Debug");
+    //pluginsDir.cd("debug");
     qDebug() << pluginsDir.path();
     qDebug() << pluginsDir.isReadable();
     foreach (QString filename, pluginsDir.entryList(QDir::Files)) {
@@ -193,4 +202,9 @@ void BCAADataImporter::loadPlugins()
             }
         }
     }
+}
+
+bool BCAADataImporter::canRun() const
+{
+    return m_canRun;
 }

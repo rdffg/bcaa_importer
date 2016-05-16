@@ -67,9 +67,9 @@ void BcaaXmlReader::import() {
         return;
     }
 
-    auto db = QSqlDatabase::addDatabase(QDjango::database().driverName(), "conn_from_thread");
-    db.setDatabaseName(QDjango::database().databaseName());
-    db.open();
+    auto db = QSqlDatabase::cloneDatabase(QDjango::database(), "conn_from_thread");
+    bool success = db.open();
+    success = QDjango::database().isOpen();
     QDjango::setDatabase(db);
     QDjango::createTables();
     // FIXME: don't drop tables in production!
@@ -83,7 +83,7 @@ void BcaaXmlReader::import() {
 
     try {
 
-            //QDjango::database().transaction();
+            QDjango::database().transaction();
             loadMinorTaxingJurisdictions();
             loadPropertyClassValueTypes();
 

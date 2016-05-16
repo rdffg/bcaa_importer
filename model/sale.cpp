@@ -3,6 +3,7 @@
 namespace model {
 
 Sale::Sale(QObject *parent) : QDjangoModel(parent)
+  , m_conveyancePrice(0)
 {
 
 }

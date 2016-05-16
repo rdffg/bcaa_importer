@@ -1,5 +1,5 @@
-import QtQuick 2.5
-import QtQuick.Controls 1.4
+﻿import QtQuick 2.0
+import QtQuick.Controls 1.0
 import QtQuick.Window 2.0
 import QtQuick.Dialogs 1.2
 
@@ -70,6 +70,15 @@ ApplicationWindow {
                 text: qsTr("&Open")
                 shortcut: "Ctrl+O"
                 onTriggered: {
+                    if (importer.dataFilePath == "")
+                    {
+                        fileDialog.folder = fileDialog.shortcuts.home;
+                    }
+                    else
+                    {
+                        fileDialog.folder = importer.dataFilePath;
+                    }
+
                     fileDialog.visible = true;
                 }
             }
@@ -84,7 +93,6 @@ ApplicationWindow {
     FileDialog {
         id: fileDialog
         title: qsTr("Select Data Advice File")
-        folder: if (importer.dataFilePath == "") shortcuts.home; else importer.dataFilePath;
         onAccepted: {
             importer.dataFilePath = fileDialog.fileUrl;
             importer.verifyDataFile();
@@ -108,7 +116,7 @@ ApplicationWindow {
             }
         }
 
-        startbutton.enabled: importer.verifyDataFile();
+        startbutton.enabled: importer.canRun
 
         settingsButton.onClicked: {
             sqlconnection.loadSettings();
