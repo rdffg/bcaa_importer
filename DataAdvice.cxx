@@ -1186,30 +1186,6 @@ namespace dataadvice
     this->ImprovementValue_.set (x);
   }
 
-  const FolioGroupValues::ParkingAreaValue_optional& FolioGroupValues::
-  ParkingAreaValue () const
-  {
-    return this->ParkingAreaValue_;
-  }
-
-  FolioGroupValues::ParkingAreaValue_optional& FolioGroupValues::
-  ParkingAreaValue ()
-  {
-    return this->ParkingAreaValue_;
-  }
-
-  void FolioGroupValues::
-  ParkingAreaValue (const ParkingAreaValue_type& x)
-  {
-    this->ParkingAreaValue_.set (x);
-  }
-
-  void FolioGroupValues::
-  ParkingAreaValue (const ParkingAreaValue_optional& x)
-  {
-    this->ParkingAreaValue_ = x;
-  }
-
 
   // FolioRecordCollection
   // 
@@ -1738,6 +1714,36 @@ namespace dataadvice
   LandCharacteristics (::std::unique_ptr< LandCharacteristics_type > x)
   {
     this->LandCharacteristics_.set (std::move (x));
+  }
+
+  const FolioRecord::ID_optional& FolioRecord::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  FolioRecord::ID_optional& FolioRecord::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void FolioRecord::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void FolioRecord::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void FolioRecord::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
   }
 
 
@@ -2526,6 +2532,36 @@ namespace dataadvice
     this->MapReferenceNumber_.set (std::move (x));
   }
 
+  const FolioAddress::ID_optional& FolioAddress::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  FolioAddress::ID_optional& FolioAddress::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void FolioAddress::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void FolioAddress::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void FolioAddress::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
+  }
+
 
   // OwnershipGroupCollection
   // 
@@ -2580,66 +2616,6 @@ namespace dataadvice
   OwnershipGroupID (::std::unique_ptr< OwnershipGroupID_type > x)
   {
     this->OwnershipGroupID_.set (std::move (x));
-  }
-
-  const OwnershipGroup::TenureCode_optional& OwnershipGroup::
-  TenureCode () const
-  {
-    return this->TenureCode_;
-  }
-
-  OwnershipGroup::TenureCode_optional& OwnershipGroup::
-  TenureCode ()
-  {
-    return this->TenureCode_;
-  }
-
-  void OwnershipGroup::
-  TenureCode (const TenureCode_type& x)
-  {
-    this->TenureCode_.set (x);
-  }
-
-  void OwnershipGroup::
-  TenureCode (const TenureCode_optional& x)
-  {
-    this->TenureCode_ = x;
-  }
-
-  void OwnershipGroup::
-  TenureCode (::std::unique_ptr< TenureCode_type > x)
-  {
-    this->TenureCode_.set (std::move (x));
-  }
-
-  const OwnershipGroup::TenureDescription_optional& OwnershipGroup::
-  TenureDescription () const
-  {
-    return this->TenureDescription_;
-  }
-
-  OwnershipGroup::TenureDescription_optional& OwnershipGroup::
-  TenureDescription ()
-  {
-    return this->TenureDescription_;
-  }
-
-  void OwnershipGroup::
-  TenureDescription (const TenureDescription_type& x)
-  {
-    this->TenureDescription_.set (x);
-  }
-
-  void OwnershipGroup::
-  TenureDescription (const TenureDescription_optional& x)
-  {
-    this->TenureDescription_ = x;
-  }
-
-  void OwnershipGroup::
-  TenureDescription (::std::unique_ptr< TenureDescription_type > x)
-  {
-    this->TenureDescription_.set (std::move (x));
   }
 
   const OwnershipGroup::AssessmentNoticeReturned_optional& OwnershipGroup::
@@ -3058,22 +3034,28 @@ namespace dataadvice
     this->MiddleInitial_.set (std::move (x));
   }
 
-  const Owner::CompanyOrLastName_type& Owner::
+  const Owner::CompanyOrLastName_optional& Owner::
   CompanyOrLastName () const
   {
-    return this->CompanyOrLastName_.get ();
+    return this->CompanyOrLastName_;
   }
 
-  Owner::CompanyOrLastName_type& Owner::
+  Owner::CompanyOrLastName_optional& Owner::
   CompanyOrLastName ()
   {
-    return this->CompanyOrLastName_.get ();
+    return this->CompanyOrLastName_;
   }
 
   void Owner::
   CompanyOrLastName (const CompanyOrLastName_type& x)
   {
     this->CompanyOrLastName_.set (x);
+  }
+
+  void Owner::
+  CompanyOrLastName (const CompanyOrLastName_optional& x)
+  {
+    this->CompanyOrLastName_ = x;
   }
 
   void Owner::
@@ -3170,6 +3152,36 @@ namespace dataadvice
   EquityTypeDescription (::std::unique_ptr< EquityTypeDescription_type > x)
   {
     this->EquityTypeDescription_.set (std::move (x));
+  }
+
+  const Owner::ID_optional& Owner::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  Owner::ID_optional& Owner::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void Owner::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void Owner::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void Owner::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
   }
 
 
@@ -3806,6 +3818,36 @@ namespace dataadvice
     this->BulkMailCode_.set (std::move (x));
   }
 
+  const MailingAddress::ID_optional& MailingAddress::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  MailingAddress::ID_optional& MailingAddress::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void MailingAddress::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void MailingAddress::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void MailingAddress::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
+  }
+
 
   // FormattedMailingAddress
   // 
@@ -3988,6 +4030,36 @@ namespace dataadvice
   Line6 (::std::unique_ptr< Line6_type > x)
   {
     this->Line6_.set (std::move (x));
+  }
+
+  const FormattedMailingAddress::ID_optional& FormattedMailingAddress::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  FormattedMailingAddress::ID_optional& FormattedMailingAddress::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void FormattedMailingAddress::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void FormattedMailingAddress::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void FormattedMailingAddress::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
   }
 
 
@@ -4984,6 +5056,36 @@ namespace dataadvice
     this->AirSpaceParcelNumber_.set (std::move (x));
   }
 
+  const LegalDescription::NtsLocation_optional& LegalDescription::
+  NtsLocation () const
+  {
+    return this->NtsLocation_;
+  }
+
+  LegalDescription::NtsLocation_optional& LegalDescription::
+  NtsLocation ()
+  {
+    return this->NtsLocation_;
+  }
+
+  void LegalDescription::
+  NtsLocation (const NtsLocation_type& x)
+  {
+    this->NtsLocation_.set (x);
+  }
+
+  void LegalDescription::
+  NtsLocation (const NtsLocation_optional& x)
+  {
+    this->NtsLocation_ = x;
+  }
+
+  void LegalDescription::
+  NtsLocation (::std::unique_ptr< NtsLocation_type > x)
+  {
+    this->NtsLocation_.set (std::move (x));
+  }
+
   const LegalDescription::LegalText_optional& LegalDescription::
   LegalText () const
   {
@@ -5012,6 +5114,36 @@ namespace dataadvice
   LegalText (::std::unique_ptr< LegalText_type > x)
   {
     this->LegalText_.set (std::move (x));
+  }
+
+  const LegalDescription::ID_optional& LegalDescription::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  LegalDescription::ID_optional& LegalDescription::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void LegalDescription::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void LegalDescription::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void LegalDescription::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
   }
 
 
@@ -5246,6 +5378,36 @@ namespace dataadvice
     this->MHParkRollNumber_.set (std::move (x));
   }
 
+  const ManufacturedHome::ID_optional& ManufacturedHome::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  ManufacturedHome::ID_optional& ManufacturedHome::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void ManufacturedHome::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void ManufacturedHome::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void ManufacturedHome::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
+  }
+
 
   // FarmCollection
   // 
@@ -5288,6 +5450,36 @@ namespace dataadvice
   FarmNumber (const FarmNumber_sequence& s)
   {
     this->FarmNumber_ = s;
+  }
+
+  const Farm::ID_optional& Farm::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  Farm::ID_optional& Farm::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void Farm::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void Farm::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void Farm::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
   }
 
 
@@ -5346,6 +5538,36 @@ namespace dataadvice
     this->PipelineProjectNumber_.set (std::move (x));
   }
 
+  const OilAndGas::ID_optional& OilAndGas::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  OilAndGas::ID_optional& OilAndGas::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void OilAndGas::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void OilAndGas::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void OilAndGas::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
+  }
+
 
   // ManagedForestCollection
   // 
@@ -5400,6 +5622,36 @@ namespace dataadvice
   ManagedForestNumber (::std::unique_ptr< ManagedForestNumber_type > x)
   {
     this->ManagedForestNumber_.set (std::move (x));
+  }
+
+  const ManagedForest::ID_optional& ManagedForest::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  ManagedForest::ID_optional& ManagedForest::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void ManagedForest::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void ManagedForest::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void ManagedForest::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
   }
 
 
@@ -5606,6 +5858,36 @@ namespace dataadvice
   SuppOccupancyCode (::std::unique_ptr< SuppOccupancyCode_type > x)
   {
     this->SuppOccupancyCode_.set (std::move (x));
+  }
+
+  const FolioAmendment::ID_optional& FolioAmendment::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  FolioAmendment::ID_optional& FolioAmendment::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void FolioAmendment::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void FolioAmendment::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void FolioAmendment::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
   }
 
 
@@ -5842,6 +6124,36 @@ namespace dataadvice
   RejectReasonDescription (::std::unique_ptr< RejectReasonDescription_type > x)
   {
     this->RejectReasonDescription_.set (std::move (x));
+  }
+
+  const Sale::ID_optional& Sale::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  Sale::ID_optional& Sale::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void Sale::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void Sale::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void Sale::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
   }
 
 
@@ -6086,6 +6398,66 @@ namespace dataadvice
   ALRDescription (::std::unique_ptr< ALRDescription_type > x)
   {
     this->ALRDescription_.set (std::move (x));
+  }
+
+  const FolioDescription::TenureCode_optional& FolioDescription::
+  TenureCode () const
+  {
+    return this->TenureCode_;
+  }
+
+  FolioDescription::TenureCode_optional& FolioDescription::
+  TenureCode ()
+  {
+    return this->TenureCode_;
+  }
+
+  void FolioDescription::
+  TenureCode (const TenureCode_type& x)
+  {
+    this->TenureCode_.set (x);
+  }
+
+  void FolioDescription::
+  TenureCode (const TenureCode_optional& x)
+  {
+    this->TenureCode_ = x;
+  }
+
+  void FolioDescription::
+  TenureCode (::std::unique_ptr< TenureCode_type > x)
+  {
+    this->TenureCode_.set (std::move (x));
+  }
+
+  const FolioDescription::TenureDescription_optional& FolioDescription::
+  TenureDescription () const
+  {
+    return this->TenureDescription_;
+  }
+
+  FolioDescription::TenureDescription_optional& FolioDescription::
+  TenureDescription ()
+  {
+    return this->TenureDescription_;
+  }
+
+  void FolioDescription::
+  TenureDescription (const TenureDescription_type& x)
+  {
+    this->TenureDescription_.set (x);
+  }
+
+  void FolioDescription::
+  TenureDescription (const TenureDescription_optional& x)
+  {
+    this->TenureDescription_ = x;
+  }
+
+  void FolioDescription::
+  TenureDescription (::std::unique_ptr< TenureDescription_type > x)
+  {
+    this->TenureDescription_.set (std::move (x));
   }
 
   const FolioDescription::ParkingArea_optional& FolioDescription::
@@ -7034,6 +7406,36 @@ namespace dataadvice
     this->MinorTaxingDescription_.set (std::move (x));
   }
 
+  const MinorTaxingJurisdiction::ID_optional& MinorTaxingJurisdiction::
+  ID () const
+  {
+    return this->ID_;
+  }
+
+  MinorTaxingJurisdiction::ID_optional& MinorTaxingJurisdiction::
+  ID ()
+  {
+    return this->ID_;
+  }
+
+  void MinorTaxingJurisdiction::
+  ID (const ID_type& x)
+  {
+    this->ID_.set (x);
+  }
+
+  void MinorTaxingJurisdiction::
+  ID (const ID_optional& x)
+  {
+    this->ID_ = x;
+  }
+
+  void MinorTaxingJurisdiction::
+  ID (::std::unique_ptr< ID_type > x)
+  {
+    this->ID_.set (std::move (x));
+  }
+
 
   // PropertyValues
   // 
@@ -7128,201 +7530,201 @@ namespace dataadvice
     this->SchoolValues_.set (std::move (x));
   }
 
-  const PropertyValues::TaxExemptValues_optional& PropertyValues::
-  TaxExemptValues () const
+  const PropertyValues::Valuation_optional& PropertyValues::
+  Valuation () const
   {
-    return this->TaxExemptValues_;
+    return this->Valuation_;
   }
 
-  PropertyValues::TaxExemptValues_optional& PropertyValues::
-  TaxExemptValues ()
+  PropertyValues::Valuation_optional& PropertyValues::
+  Valuation ()
   {
-    return this->TaxExemptValues_;
-  }
-
-  void PropertyValues::
-  TaxExemptValues (const TaxExemptValues_type& x)
-  {
-    this->TaxExemptValues_.set (x);
+    return this->Valuation_;
   }
 
   void PropertyValues::
-  TaxExemptValues (const TaxExemptValues_optional& x)
+  Valuation (const Valuation_type& x)
   {
-    this->TaxExemptValues_ = x;
+    this->Valuation_.set (x);
   }
 
   void PropertyValues::
-  TaxExemptValues (::std::unique_ptr< TaxExemptValues_type > x)
+  Valuation (const Valuation_optional& x)
   {
-    this->TaxExemptValues_.set (std::move (x));
+    this->Valuation_ = x;
+  }
+
+  void PropertyValues::
+  Valuation (::std::unique_ptr< Valuation_type > x)
+  {
+    this->Valuation_.set (std::move (x));
   }
 
 
-  // TaxExemptValuesCollection
+  // ValuationCollection
   // 
 
-  const TaxExemptValuesCollection::TaxExemptPropertyClassValues_sequence& TaxExemptValuesCollection::
-  TaxExemptPropertyClassValues () const
+  const ValuationCollection::ValuesByETC_sequence& ValuationCollection::
+  ValuesByETC () const
   {
-    return this->TaxExemptPropertyClassValues_;
+    return this->ValuesByETC_;
   }
 
-  TaxExemptValuesCollection::TaxExemptPropertyClassValues_sequence& TaxExemptValuesCollection::
-  TaxExemptPropertyClassValues ()
+  ValuationCollection::ValuesByETC_sequence& ValuationCollection::
+  ValuesByETC ()
   {
-    return this->TaxExemptPropertyClassValues_;
+    return this->ValuesByETC_;
   }
 
-  void TaxExemptValuesCollection::
-  TaxExemptPropertyClassValues (const TaxExemptPropertyClassValues_sequence& s)
+  void ValuationCollection::
+  ValuesByETC (const ValuesByETC_sequence& s)
   {
-    this->TaxExemptPropertyClassValues_ = s;
+    this->ValuesByETC_ = s;
   }
 
 
-  // TaxExemptPropertyClassValues
+  // ValuesByETC
   // 
 
-  const TaxExemptPropertyClassValues::TaxExemptCode_type& TaxExemptPropertyClassValues::
+  const ValuesByETC::TaxExemptCode_type& ValuesByETC::
   TaxExemptCode () const
   {
     return this->TaxExemptCode_.get ();
   }
 
-  TaxExemptPropertyClassValues::TaxExemptCode_type& TaxExemptPropertyClassValues::
+  ValuesByETC::TaxExemptCode_type& ValuesByETC::
   TaxExemptCode ()
   {
     return this->TaxExemptCode_.get ();
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   TaxExemptCode (const TaxExemptCode_type& x)
   {
     this->TaxExemptCode_.set (x);
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   TaxExemptCode (::std::unique_ptr< TaxExemptCode_type > x)
   {
     this->TaxExemptCode_.set (std::move (x));
   }
 
-  const TaxExemptPropertyClassValues::TaxExemptDescription_optional& TaxExemptPropertyClassValues::
+  const ValuesByETC::TaxExemptDescription_optional& ValuesByETC::
   TaxExemptDescription () const
   {
     return this->TaxExemptDescription_;
   }
 
-  TaxExemptPropertyClassValues::TaxExemptDescription_optional& TaxExemptPropertyClassValues::
+  ValuesByETC::TaxExemptDescription_optional& ValuesByETC::
   TaxExemptDescription ()
   {
     return this->TaxExemptDescription_;
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   TaxExemptDescription (const TaxExemptDescription_type& x)
   {
     this->TaxExemptDescription_.set (x);
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   TaxExemptDescription (const TaxExemptDescription_optional& x)
   {
     this->TaxExemptDescription_ = x;
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   TaxExemptDescription (::std::unique_ptr< TaxExemptDescription_type > x)
   {
     this->TaxExemptDescription_.set (std::move (x));
   }
 
-  const TaxExemptPropertyClassValues::PropertyClassCode_type& TaxExemptPropertyClassValues::
+  const ValuesByETC::PropertyClassCode_type& ValuesByETC::
   PropertyClassCode () const
   {
     return this->PropertyClassCode_.get ();
   }
 
-  TaxExemptPropertyClassValues::PropertyClassCode_type& TaxExemptPropertyClassValues::
+  ValuesByETC::PropertyClassCode_type& ValuesByETC::
   PropertyClassCode ()
   {
     return this->PropertyClassCode_.get ();
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   PropertyClassCode (const PropertyClassCode_type& x)
   {
     this->PropertyClassCode_.set (x);
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   PropertyClassCode (::std::unique_ptr< PropertyClassCode_type > x)
   {
     this->PropertyClassCode_.set (std::move (x));
   }
 
-  const TaxExemptPropertyClassValues::PropertyClassDescription_optional& TaxExemptPropertyClassValues::
+  const ValuesByETC::PropertyClassDescription_optional& ValuesByETC::
   PropertyClassDescription () const
   {
     return this->PropertyClassDescription_;
   }
 
-  TaxExemptPropertyClassValues::PropertyClassDescription_optional& TaxExemptPropertyClassValues::
+  ValuesByETC::PropertyClassDescription_optional& ValuesByETC::
   PropertyClassDescription ()
   {
     return this->PropertyClassDescription_;
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   PropertyClassDescription (const PropertyClassDescription_type& x)
   {
     this->PropertyClassDescription_.set (x);
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   PropertyClassDescription (const PropertyClassDescription_optional& x)
   {
     this->PropertyClassDescription_ = x;
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   PropertyClassDescription (::std::unique_ptr< PropertyClassDescription_type > x)
   {
     this->PropertyClassDescription_.set (std::move (x));
   }
 
-  const TaxExemptPropertyClassValues::LandValue_type& TaxExemptPropertyClassValues::
+  const ValuesByETC::LandValue_type& ValuesByETC::
   LandValue () const
   {
     return this->LandValue_.get ();
   }
 
-  TaxExemptPropertyClassValues::LandValue_type& TaxExemptPropertyClassValues::
+  ValuesByETC::LandValue_type& ValuesByETC::
   LandValue ()
   {
     return this->LandValue_.get ();
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   LandValue (const LandValue_type& x)
   {
     this->LandValue_.set (x);
   }
 
-  const TaxExemptPropertyClassValues::ImprovementValue_type& TaxExemptPropertyClassValues::
+  const ValuesByETC::ImprovementValue_type& ValuesByETC::
   ImprovementValue () const
   {
     return this->ImprovementValue_.get ();
   }
 
-  TaxExemptPropertyClassValues::ImprovementValue_type& TaxExemptPropertyClassValues::
+  ValuesByETC::ImprovementValue_type& ValuesByETC::
   ImprovementValue ()
   {
     return this->ImprovementValue_.get ();
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   ImprovementValue (const ImprovementValue_type& x)
   {
     this->ImprovementValue_.set (x);
@@ -7981,68 +8383,68 @@ namespace dataadvice
   }
 
 
-  // Character
+  // String1
   // 
 
 
-  // FolioCharacterItem
+  // FolioString1Item
   // 
 
-  const FolioCharacterItem::Action_optional& FolioCharacterItem::
+  const FolioString1Item::Action_optional& FolioString1Item::
   Action () const
   {
     return this->Action_;
   }
 
-  FolioCharacterItem::Action_optional& FolioCharacterItem::
+  FolioString1Item::Action_optional& FolioString1Item::
   Action ()
   {
     return this->Action_;
   }
 
-  void FolioCharacterItem::
+  void FolioString1Item::
   Action (const Action_type& x)
   {
     this->Action_.set (x);
   }
 
-  void FolioCharacterItem::
+  void FolioString1Item::
   Action (const Action_optional& x)
   {
     this->Action_ = x;
   }
 
-  void FolioCharacterItem::
+  void FolioString1Item::
   Action (::std::unique_ptr< Action_type > x)
   {
     this->Action_.set (std::move (x));
   }
 
-  const FolioCharacterItem::OldValue_optional& FolioCharacterItem::
+  const FolioString1Item::OldValue_optional& FolioString1Item::
   OldValue () const
   {
     return this->OldValue_;
   }
 
-  FolioCharacterItem::OldValue_optional& FolioCharacterItem::
+  FolioString1Item::OldValue_optional& FolioString1Item::
   OldValue ()
   {
     return this->OldValue_;
   }
 
-  void FolioCharacterItem::
+  void FolioString1Item::
   OldValue (const OldValue_type& x)
   {
     this->OldValue_.set (x);
   }
 
-  void FolioCharacterItem::
+  void FolioString1Item::
   OldValue (const OldValue_optional& x)
   {
     this->OldValue_ = x;
   }
 
-  void FolioCharacterItem::
+  void FolioString1Item::
   OldValue (::std::unique_ptr< OldValue_type > x)
   {
     this->OldValue_.set (std::move (x));
@@ -8238,7 +8640,7 @@ namespace dataadvice
   //
 
   const DataAdvice::Version_type DataAdvice::Version_default_value_ (
-    "1.3");
+    "1.6");
 
   DataAdvice::
   DataAdvice (const RollYear_type& RollYear,
@@ -9991,8 +10393,7 @@ namespace dataadvice
                     const ImprovementValue_type& ImprovementValue)
   : ::xml_schema::type (),
     LandValue_ (LandValue, this),
-    ImprovementValue_ (ImprovementValue, this),
-    ParkingAreaValue_ (this)
+    ImprovementValue_ (ImprovementValue, this)
   {
   }
 
@@ -10002,8 +10403,7 @@ namespace dataadvice
                     ::xml_schema::container* c)
   : ::xml_schema::type (x, f, c),
     LandValue_ (x.LandValue_, f, this),
-    ImprovementValue_ (x.ImprovementValue_, f, this),
-    ParkingAreaValue_ (x.ParkingAreaValue_, f, this)
+    ImprovementValue_ (x.ImprovementValue_, f, this)
   {
   }
 
@@ -10013,8 +10413,7 @@ namespace dataadvice
                     ::xml_schema::container* c)
   : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
     LandValue_ (this),
-    ImprovementValue_ (this),
-    ParkingAreaValue_ (this)
+    ImprovementValue_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -10055,17 +10454,6 @@ namespace dataadvice
         }
       }
 
-      // ParkingAreaValue
-      //
-      if (n.name () == "ParkingAreaValue" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
-      {
-        if (!this->ParkingAreaValue_)
-        {
-          this->ParkingAreaValue_.set (ParkingAreaValue_traits::create (i, f, this));
-          continue;
-        }
-      }
-
       break;
     }
 
@@ -10099,7 +10487,6 @@ namespace dataadvice
       static_cast< ::xml_schema::type& > (*this) = x;
       this->LandValue_ = x.LandValue_;
       this->ImprovementValue_ = x.ImprovementValue_;
-      this->ParkingAreaValue_ = x.ParkingAreaValue_;
     }
 
     return *this;
@@ -10214,7 +10601,8 @@ namespace dataadvice
     ManufacturedHomes_ (this),
     ManagedForests_ (this),
     OilAndGas_ (this),
-    LandCharacteristics_ (this)
+    LandCharacteristics_ (this),
+    ID_ (this)
   {
   }
 
@@ -10237,7 +10625,8 @@ namespace dataadvice
     ManufacturedHomes_ (this),
     ManagedForests_ (this),
     OilAndGas_ (this),
-    LandCharacteristics_ (this)
+    LandCharacteristics_ (this),
+    ID_ (this)
   {
   }
 
@@ -10262,7 +10651,8 @@ namespace dataadvice
     ManufacturedHomes_ (x.ManufacturedHomes_, f, this),
     ManagedForests_ (x.ManagedForests_, f, this),
     OilAndGas_ (x.OilAndGas_, f, this),
-    LandCharacteristics_ (x.LandCharacteristics_, f, this)
+    LandCharacteristics_ (x.LandCharacteristics_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -10287,11 +10677,12 @@ namespace dataadvice
     ManufacturedHomes_ (this),
     ManagedForests_ (this),
     OilAndGas_ (this),
-    LandCharacteristics_ (this)
+    LandCharacteristics_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
-      ::xsd::cxx::xml::dom::parser< char > p (e, true, false, false);
+      ::xsd::cxx::xml::dom::parser< char > p (e, true, false, true);
       this->parse (p, f);
     }
   }
@@ -10553,6 +10944,19 @@ namespace dataadvice
         "RollNumber",
         "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd");
     }
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
+    }
   }
 
   FolioRecord* FolioRecord::
@@ -10585,6 +10989,7 @@ namespace dataadvice
       this->ManagedForests_ = x.ManagedForests_;
       this->OilAndGas_ = x.OilAndGas_;
       this->LandCharacteristics_ = x.LandCharacteristics_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -11440,7 +11845,8 @@ namespace dataadvice
     City_ (this),
     ProvinceState_ (this),
     PostalZip_ (this),
-    MapReferenceNumber_ (this)
+    MapReferenceNumber_ (this),
+    ID_ (this)
   {
   }
 
@@ -11459,7 +11865,8 @@ namespace dataadvice
     City_ (x.City_, f, this),
     ProvinceState_ (x.ProvinceState_, f, this),
     PostalZip_ (x.PostalZip_, f, this),
-    MapReferenceNumber_ (x.MapReferenceNumber_, f, this)
+    MapReferenceNumber_ (x.MapReferenceNumber_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -11478,7 +11885,8 @@ namespace dataadvice
     City_ (this),
     ProvinceState_ (this),
     PostalZip_ (this),
-    MapReferenceNumber_ (this)
+    MapReferenceNumber_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -11655,6 +12063,21 @@ namespace dataadvice
 
       break;
     }
+
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
+    }
   }
 
   FolioAddress* FolioAddress::
@@ -11681,6 +12104,7 @@ namespace dataadvice
       this->ProvinceState_ = x.ProvinceState_;
       this->PostalZip_ = x.PostalZip_;
       this->MapReferenceNumber_ = x.MapReferenceNumber_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -11782,8 +12206,6 @@ namespace dataadvice
   OwnershipGroup ()
   : ::dataadvice::FolioItemGroup (),
     OwnershipGroupID_ (this),
-    TenureCode_ (this),
-    TenureDescription_ (this),
     AssessmentNoticeReturned_ (this),
     AssessmentNoticeSuppressed_ (this),
     ChangeType_ (this),
@@ -11803,8 +12225,6 @@ namespace dataadvice
                   ::xml_schema::container* c)
   : ::dataadvice::FolioItemGroup (x, f, c),
     OwnershipGroupID_ (x.OwnershipGroupID_, f, this),
-    TenureCode_ (x.TenureCode_, f, this),
-    TenureDescription_ (x.TenureDescription_, f, this),
     AssessmentNoticeReturned_ (x.AssessmentNoticeReturned_, f, this),
     AssessmentNoticeSuppressed_ (x.AssessmentNoticeSuppressed_, f, this),
     ChangeType_ (x.ChangeType_, f, this),
@@ -11824,8 +12244,6 @@ namespace dataadvice
                   ::xml_schema::container* c)
   : ::dataadvice::FolioItemGroup (e, f | ::xml_schema::flags::base, c),
     OwnershipGroupID_ (this),
-    TenureCode_ (this),
-    TenureDescription_ (this),
     AssessmentNoticeReturned_ (this),
     AssessmentNoticeSuppressed_ (this),
     ChangeType_ (this),
@@ -11866,34 +12284,6 @@ namespace dataadvice
         if (!this->OwnershipGroupID_)
         {
           this->OwnershipGroupID_.set (::std::move (r));
-          continue;
-        }
-      }
-
-      // TenureCode
-      //
-      if (n.name () == "TenureCode" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
-      {
-        ::std::unique_ptr< TenureCode_type > r (
-          TenureCode_traits::create (i, f, this));
-
-        if (!this->TenureCode_)
-        {
-          this->TenureCode_.set (::std::move (r));
-          continue;
-        }
-      }
-
-      // TenureDescription
-      //
-      if (n.name () == "TenureDescription" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
-      {
-        ::std::unique_ptr< TenureDescription_type > r (
-          TenureDescription_traits::create (i, f, this));
-
-        if (!this->TenureDescription_)
-        {
-          this->TenureDescription_.set (::std::move (r));
           continue;
         }
       }
@@ -12056,8 +12446,6 @@ namespace dataadvice
     {
       static_cast< ::dataadvice::FolioItemGroup& > (*this) = x;
       this->OwnershipGroupID_ = x.OwnershipGroupID_;
-      this->TenureCode_ = x.TenureCode_;
-      this->TenureDescription_ = x.TenureDescription_;
       this->AssessmentNoticeReturned_ = x.AssessmentNoticeReturned_;
       this->AssessmentNoticeSuppressed_ = x.AssessmentNoticeSuppressed_;
       this->ChangeType_ = x.ChangeType_;
@@ -12166,28 +12554,16 @@ namespace dataadvice
   //
 
   Owner::
-  Owner (const CompanyOrLastName_type& CompanyOrLastName)
+  Owner ()
   : ::dataadvice::FolioItemGroup (),
     FirstName_ (this),
     MiddleName_ (this),
     MiddleInitial_ (this),
-    CompanyOrLastName_ (CompanyOrLastName, this),
+    CompanyOrLastName_ (this),
     OwnerSequenceID_ (this),
     EquityType_ (this),
-    EquityTypeDescription_ (this)
-  {
-  }
-
-  Owner::
-  Owner (::std::unique_ptr< CompanyOrLastName_type > CompanyOrLastName)
-  : ::dataadvice::FolioItemGroup (),
-    FirstName_ (this),
-    MiddleName_ (this),
-    MiddleInitial_ (this),
-    CompanyOrLastName_ (std::move (CompanyOrLastName), this),
-    OwnerSequenceID_ (this),
-    EquityType_ (this),
-    EquityTypeDescription_ (this)
+    EquityTypeDescription_ (this),
+    ID_ (this)
   {
   }
 
@@ -12202,7 +12578,8 @@ namespace dataadvice
     CompanyOrLastName_ (x.CompanyOrLastName_, f, this),
     OwnerSequenceID_ (x.OwnerSequenceID_, f, this),
     EquityType_ (x.EquityType_, f, this),
-    EquityTypeDescription_ (x.EquityTypeDescription_, f, this)
+    EquityTypeDescription_ (x.EquityTypeDescription_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -12217,7 +12594,8 @@ namespace dataadvice
     CompanyOrLastName_ (this),
     OwnerSequenceID_ (this),
     EquityType_ (this),
-    EquityTypeDescription_ (this)
+    EquityTypeDescription_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -12287,7 +12665,7 @@ namespace dataadvice
         ::std::unique_ptr< CompanyOrLastName_type > r (
           CompanyOrLastName_traits::create (i, f, this));
 
-        if (!CompanyOrLastName_.present ())
+        if (!this->CompanyOrLastName_)
         {
           this->CompanyOrLastName_.set (::std::move (r));
           continue;
@@ -12339,11 +12717,19 @@ namespace dataadvice
       break;
     }
 
-    if (!CompanyOrLastName_.present ())
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
     {
-      throw ::xsd::cxx::tree::expected_element< char > (
-        "CompanyOrLastName",
-        "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd");
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
     }
   }
 
@@ -12367,6 +12753,7 @@ namespace dataadvice
       this->OwnerSequenceID_ = x.OwnerSequenceID_;
       this->EquityType_ = x.EquityType_;
       this->EquityTypeDescription_ = x.EquityTypeDescription_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -12403,7 +12790,8 @@ namespace dataadvice
     ModeOfDelivery_ (this),
     ModeOfDeliveryValue_ (this),
     Site_ (this),
-    BulkMailCode_ (this)
+    BulkMailCode_ (this),
+    ID_ (this)
   {
   }
 
@@ -12432,7 +12820,8 @@ namespace dataadvice
     ModeOfDelivery_ (x.ModeOfDelivery_, f, this),
     ModeOfDeliveryValue_ (x.ModeOfDeliveryValue_, f, this),
     Site_ (x.Site_, f, this),
-    BulkMailCode_ (x.BulkMailCode_, f, this)
+    BulkMailCode_ (x.BulkMailCode_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -12461,7 +12850,8 @@ namespace dataadvice
     ModeOfDelivery_ (this),
     ModeOfDeliveryValue_ (this),
     Site_ (this),
-    BulkMailCode_ (this)
+    BulkMailCode_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -12778,6 +13168,21 @@ namespace dataadvice
 
       break;
     }
+
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
+    }
   }
 
   MailingAddress* MailingAddress::
@@ -12814,6 +13219,7 @@ namespace dataadvice
       this->ModeOfDeliveryValue_ = x.ModeOfDeliveryValue_;
       this->Site_ = x.Site_;
       this->BulkMailCode_ = x.BulkMailCode_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -12835,7 +13241,8 @@ namespace dataadvice
     Line3_ (this),
     Line4_ (this),
     Line5_ (this),
-    Line6_ (this)
+    Line6_ (this),
+    ID_ (this)
   {
   }
 
@@ -12849,7 +13256,8 @@ namespace dataadvice
     Line3_ (x.Line3_, f, this),
     Line4_ (x.Line4_, f, this),
     Line5_ (x.Line5_, f, this),
-    Line6_ (x.Line6_, f, this)
+    Line6_ (x.Line6_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -12863,7 +13271,8 @@ namespace dataadvice
     Line3_ (this),
     Line4_ (this),
     Line5_ (this),
-    Line6_ (this)
+    Line6_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -12970,6 +13379,21 @@ namespace dataadvice
 
       break;
     }
+
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
+    }
   }
 
   FormattedMailingAddress* FormattedMailingAddress::
@@ -12991,6 +13415,7 @@ namespace dataadvice
       this->Line4_ = x.Line4_;
       this->Line5_ = x.Line5_;
       this->Line6_ = x.Line6_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -13302,7 +13727,9 @@ namespace dataadvice
     LeaseLicenceNumber_ (this),
     LandBranchFileNumber_ (this),
     AirSpaceParcelNumber_ (this),
-    LegalText_ (this)
+    NtsLocation_ (this),
+    LegalText_ (this),
+    ID_ (this)
   {
   }
 
@@ -13341,7 +13768,9 @@ namespace dataadvice
     LeaseLicenceNumber_ (x.LeaseLicenceNumber_, f, this),
     LandBranchFileNumber_ (x.LandBranchFileNumber_, f, this),
     AirSpaceParcelNumber_ (x.AirSpaceParcelNumber_, f, this),
-    LegalText_ (x.LegalText_, f, this)
+    NtsLocation_ (x.NtsLocation_, f, this),
+    LegalText_ (x.LegalText_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -13380,7 +13809,9 @@ namespace dataadvice
     LeaseLicenceNumber_ (this),
     LandBranchFileNumber_ (this),
     AirSpaceParcelNumber_ (this),
-    LegalText_ (this)
+    NtsLocation_ (this),
+    LegalText_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -13821,6 +14252,20 @@ namespace dataadvice
         }
       }
 
+      // NtsLocation
+      //
+      if (n.name () == "NtsLocation" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+      {
+        ::std::unique_ptr< NtsLocation_type > r (
+          NtsLocation_traits::create (i, f, this));
+
+        if (!this->NtsLocation_)
+        {
+          this->NtsLocation_.set (::std::move (r));
+          continue;
+        }
+      }
+
       // LegalText
       //
       if (n.name () == "LegalText" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
@@ -13836,6 +14281,21 @@ namespace dataadvice
       }
 
       break;
+    }
+
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
     }
   }
 
@@ -13882,7 +14342,9 @@ namespace dataadvice
       this->LeaseLicenceNumber_ = x.LeaseLicenceNumber_;
       this->LandBranchFileNumber_ = x.LandBranchFileNumber_;
       this->AirSpaceParcelNumber_ = x.AirSpaceParcelNumber_;
+      this->NtsLocation_ = x.NtsLocation_;
       this->LegalText_ = x.LegalText_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -14175,7 +14637,8 @@ namespace dataadvice
     MHRegistryNumber_ (this),
     MHBayNumber_ (this),
     MHPark_ (this),
-    MHParkRollNumber_ (this)
+    MHParkRollNumber_ (this),
+    ID_ (this)
   {
   }
 
@@ -14187,7 +14650,8 @@ namespace dataadvice
     MHRegistryNumber_ (x.MHRegistryNumber_, f, this),
     MHBayNumber_ (x.MHBayNumber_, f, this),
     MHPark_ (x.MHPark_, f, this),
-    MHParkRollNumber_ (x.MHParkRollNumber_, f, this)
+    MHParkRollNumber_ (x.MHParkRollNumber_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -14199,7 +14663,8 @@ namespace dataadvice
     MHRegistryNumber_ (this),
     MHBayNumber_ (this),
     MHPark_ (this),
-    MHParkRollNumber_ (this)
+    MHParkRollNumber_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -14278,6 +14743,21 @@ namespace dataadvice
 
       break;
     }
+
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
+    }
   }
 
   ManufacturedHome* ManufacturedHome::
@@ -14297,6 +14777,7 @@ namespace dataadvice
       this->MHBayNumber_ = x.MHBayNumber_;
       this->MHPark_ = x.MHPark_;
       this->MHParkRollNumber_ = x.MHParkRollNumber_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -14397,7 +14878,8 @@ namespace dataadvice
   Farm::
   Farm ()
   : ::dataadvice::FolioItemGroup (),
-    FarmNumber_ (this)
+    FarmNumber_ (this),
+    ID_ (this)
   {
   }
 
@@ -14406,7 +14888,8 @@ namespace dataadvice
         ::xml_schema::flags f,
         ::xml_schema::container* c)
   : ::dataadvice::FolioItemGroup (x, f, c),
-    FarmNumber_ (x.FarmNumber_, f, this)
+    FarmNumber_ (x.FarmNumber_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -14415,7 +14898,8 @@ namespace dataadvice
         ::xml_schema::flags f,
         ::xml_schema::container* c)
   : ::dataadvice::FolioItemGroup (e, f | ::xml_schema::flags::base, c),
-    FarmNumber_ (this)
+    FarmNumber_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -14449,6 +14933,21 @@ namespace dataadvice
 
       break;
     }
+
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
+    }
   }
 
   Farm* Farm::
@@ -14465,6 +14964,7 @@ namespace dataadvice
     {
       static_cast< ::dataadvice::FolioItemGroup& > (*this) = x;
       this->FarmNumber_ = x.FarmNumber_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -14565,7 +15065,8 @@ namespace dataadvice
   OilAndGas::
   OilAndGas ()
   : ::dataadvice::FolioItemGroup (),
-    PipelineProjectNumber_ (this)
+    PipelineProjectNumber_ (this),
+    ID_ (this)
   {
   }
 
@@ -14574,7 +15075,8 @@ namespace dataadvice
              ::xml_schema::flags f,
              ::xml_schema::container* c)
   : ::dataadvice::FolioItemGroup (x, f, c),
-    PipelineProjectNumber_ (x.PipelineProjectNumber_, f, this)
+    PipelineProjectNumber_ (x.PipelineProjectNumber_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -14583,7 +15085,8 @@ namespace dataadvice
              ::xml_schema::flags f,
              ::xml_schema::container* c)
   : ::dataadvice::FolioItemGroup (e, f | ::xml_schema::flags::base, c),
-    PipelineProjectNumber_ (this)
+    PipelineProjectNumber_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -14620,6 +15123,21 @@ namespace dataadvice
 
       break;
     }
+
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
+    }
   }
 
   OilAndGas* OilAndGas::
@@ -14636,6 +15154,7 @@ namespace dataadvice
     {
       static_cast< ::dataadvice::FolioItemGroup& > (*this) = x;
       this->PipelineProjectNumber_ = x.PipelineProjectNumber_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -14736,7 +15255,8 @@ namespace dataadvice
   ManagedForest::
   ManagedForest ()
   : ::dataadvice::FolioItemGroup (),
-    ManagedForestNumber_ (this)
+    ManagedForestNumber_ (this),
+    ID_ (this)
   {
   }
 
@@ -14745,7 +15265,8 @@ namespace dataadvice
                  ::xml_schema::flags f,
                  ::xml_schema::container* c)
   : ::dataadvice::FolioItemGroup (x, f, c),
-    ManagedForestNumber_ (x.ManagedForestNumber_, f, this)
+    ManagedForestNumber_ (x.ManagedForestNumber_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -14754,7 +15275,8 @@ namespace dataadvice
                  ::xml_schema::flags f,
                  ::xml_schema::container* c)
   : ::dataadvice::FolioItemGroup (e, f | ::xml_schema::flags::base, c),
-    ManagedForestNumber_ (this)
+    ManagedForestNumber_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -14791,6 +15313,21 @@ namespace dataadvice
 
       break;
     }
+
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
+    }
   }
 
   ManagedForest* ManagedForest::
@@ -14807,6 +15344,7 @@ namespace dataadvice
     {
       static_cast< ::dataadvice::FolioItemGroup& > (*this) = x;
       this->ManagedForestNumber_ = x.ManagedForestNumber_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -14912,7 +15450,8 @@ namespace dataadvice
     AmendmentReasonCode_ (this),
     AmendmentReasonDescription_ (this),
     SuppOccupancyDate_ (this),
-    SuppOccupancyCode_ (this)
+    SuppOccupancyCode_ (this),
+    ID_ (this)
   {
   }
 
@@ -14926,7 +15465,8 @@ namespace dataadvice
     AmendmentReasonCode_ (x.AmendmentReasonCode_, f, this),
     AmendmentReasonDescription_ (x.AmendmentReasonDescription_, f, this),
     SuppOccupancyDate_ (x.SuppOccupancyDate_, f, this),
-    SuppOccupancyCode_ (x.SuppOccupancyCode_, f, this)
+    SuppOccupancyCode_ (x.SuppOccupancyCode_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -14940,7 +15480,8 @@ namespace dataadvice
     AmendmentReasonCode_ (this),
     AmendmentReasonDescription_ (this),
     SuppOccupancyDate_ (this),
-    SuppOccupancyCode_ (this)
+    SuppOccupancyCode_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -15047,6 +15588,21 @@ namespace dataadvice
 
       break;
     }
+
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
+    }
   }
 
   FolioAmendment* FolioAmendment::
@@ -15068,6 +15624,7 @@ namespace dataadvice
       this->AmendmentReasonDescription_ = x.AmendmentReasonDescription_;
       this->SuppOccupancyDate_ = x.SuppOccupancyDate_;
       this->SuppOccupancyCode_ = x.SuppOccupancyCode_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -15174,7 +15731,8 @@ namespace dataadvice
     ConveyanceType_ (this),
     ConveyanceTypeDescription_ (this),
     RejectReasonCode_ (this),
-    RejectReasonDescription_ (this)
+    RejectReasonDescription_ (this),
+    ID_ (this)
   {
   }
 
@@ -15189,7 +15747,8 @@ namespace dataadvice
     ConveyanceType_ (x.ConveyanceType_, f, this),
     ConveyanceTypeDescription_ (x.ConveyanceTypeDescription_, f, this),
     RejectReasonCode_ (x.RejectReasonCode_, f, this),
-    RejectReasonDescription_ (x.RejectReasonDescription_, f, this)
+    RejectReasonDescription_ (x.RejectReasonDescription_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -15204,7 +15763,8 @@ namespace dataadvice
     ConveyanceType_ (this),
     ConveyanceTypeDescription_ (this),
     RejectReasonCode_ (this),
-    RejectReasonDescription_ (this)
+    RejectReasonDescription_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -15325,6 +15885,21 @@ namespace dataadvice
 
       break;
     }
+
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
+    }
   }
 
   Sale* Sale::
@@ -15347,6 +15922,7 @@ namespace dataadvice
       this->ConveyanceTypeDescription_ = x.ConveyanceTypeDescription_;
       this->RejectReasonCode_ = x.RejectReasonCode_;
       this->RejectReasonDescription_ = x.RejectReasonDescription_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -15371,6 +15947,8 @@ namespace dataadvice
     PoliceTaxFlag_ (this),
     ALRCode_ (this),
     ALRDescription_ (this),
+    TenureCode_ (this),
+    TenureDescription_ (this),
     ParkingArea_ (this),
     LandMeasurement_ (this),
     SchoolDistrict_ (this),
@@ -15393,6 +15971,8 @@ namespace dataadvice
     PoliceTaxFlag_ (x.PoliceTaxFlag_, f, this),
     ALRCode_ (x.ALRCode_, f, this),
     ALRDescription_ (x.ALRDescription_, f, this),
+    TenureCode_ (x.TenureCode_, f, this),
+    TenureDescription_ (x.TenureDescription_, f, this),
     ParkingArea_ (x.ParkingArea_, f, this),
     LandMeasurement_ (x.LandMeasurement_, f, this),
     SchoolDistrict_ (x.SchoolDistrict_, f, this),
@@ -15415,6 +15995,8 @@ namespace dataadvice
     PoliceTaxFlag_ (this),
     ALRCode_ (this),
     ALRDescription_ (this),
+    TenureCode_ (this),
+    TenureDescription_ (this),
     ParkingArea_ (this),
     LandMeasurement_ (this),
     SchoolDistrict_ (this),
@@ -15553,6 +16135,34 @@ namespace dataadvice
         }
       }
 
+      // TenureCode
+      //
+      if (n.name () == "TenureCode" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+      {
+        ::std::unique_ptr< TenureCode_type > r (
+          TenureCode_traits::create (i, f, this));
+
+        if (!this->TenureCode_)
+        {
+          this->TenureCode_.set (::std::move (r));
+          continue;
+        }
+      }
+
+      // TenureDescription
+      //
+      if (n.name () == "TenureDescription" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+      {
+        ::std::unique_ptr< TenureDescription_type > r (
+          TenureDescription_traits::create (i, f, this));
+
+        if (!this->TenureDescription_)
+        {
+          this->TenureDescription_.set (::std::move (r));
+          continue;
+        }
+      }
+
       // ParkingArea
       //
       if (n.name () == "ParkingArea" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
@@ -15662,6 +16272,8 @@ namespace dataadvice
       this->PoliceTaxFlag_ = x.PoliceTaxFlag_;
       this->ALRCode_ = x.ALRCode_;
       this->ALRDescription_ = x.ALRDescription_;
+      this->TenureCode_ = x.TenureCode_;
+      this->TenureDescription_ = x.TenureDescription_;
       this->ParkingArea_ = x.ParkingArea_;
       this->LandMeasurement_ = x.LandMeasurement_;
       this->SchoolDistrict_ = x.SchoolDistrict_;
@@ -16493,7 +17105,8 @@ namespace dataadvice
   : ::dataadvice::FolioItemGroup (),
     MinorTaxingCode_ (this),
     MinorTaxingCodeShort_ (this),
-    MinorTaxingDescription_ (this)
+    MinorTaxingDescription_ (this),
+    ID_ (this)
   {
   }
 
@@ -16504,7 +17117,8 @@ namespace dataadvice
   : ::dataadvice::FolioItemGroup (x, f, c),
     MinorTaxingCode_ (x.MinorTaxingCode_, f, this),
     MinorTaxingCodeShort_ (x.MinorTaxingCodeShort_, f, this),
-    MinorTaxingDescription_ (x.MinorTaxingDescription_, f, this)
+    MinorTaxingDescription_ (x.MinorTaxingDescription_, f, this),
+    ID_ (x.ID_, f, this)
   {
   }
 
@@ -16515,7 +17129,8 @@ namespace dataadvice
   : ::dataadvice::FolioItemGroup (e, f | ::xml_schema::flags::base, c),
     MinorTaxingCode_ (this),
     MinorTaxingCodeShort_ (this),
-    MinorTaxingDescription_ (this)
+    MinorTaxingDescription_ (this),
+    ID_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -16580,6 +17195,21 @@ namespace dataadvice
 
       break;
     }
+
+    p.reset_attributes ();
+
+    while (p.more_attributes ())
+    {
+      const ::xercesc::DOMAttr& i (p.next_attribute ());
+      const ::xsd::cxx::xml::qualified_name< char > n (
+        ::xsd::cxx::xml::dom::name< char > (i));
+
+      if (n.name () == "ID" && n.namespace_ ().empty ())
+      {
+        this->ID_.set (ID_traits::create (i, f, this));
+        continue;
+      }
+    }
   }
 
   MinorTaxingJurisdiction* MinorTaxingJurisdiction::
@@ -16598,6 +17228,7 @@ namespace dataadvice
       this->MinorTaxingCode_ = x.MinorTaxingCode_;
       this->MinorTaxingCodeShort_ = x.MinorTaxingCodeShort_;
       this->MinorTaxingDescription_ = x.MinorTaxingDescription_;
+      this->ID_ = x.ID_;
     }
 
     return *this;
@@ -16617,7 +17248,7 @@ namespace dataadvice
     GeneralValues_ (this),
     BCTransitValues_ (this),
     SchoolValues_ (this),
-    TaxExemptValues_ (this)
+    Valuation_ (this)
   {
   }
 
@@ -16629,7 +17260,7 @@ namespace dataadvice
     GeneralValues_ (x.GeneralValues_, f, this),
     BCTransitValues_ (x.BCTransitValues_, f, this),
     SchoolValues_ (x.SchoolValues_, f, this),
-    TaxExemptValues_ (x.TaxExemptValues_, f, this)
+    Valuation_ (x.Valuation_, f, this)
   {
   }
 
@@ -16641,7 +17272,7 @@ namespace dataadvice
     GeneralValues_ (this),
     BCTransitValues_ (this),
     SchoolValues_ (this),
-    TaxExemptValues_ (this)
+    Valuation_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -16702,16 +17333,16 @@ namespace dataadvice
         }
       }
 
-      // TaxExemptValues
+      // Valuation
       //
-      if (n.name () == "TaxExemptValues" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+      if (n.name () == "Valuation" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
       {
-        ::std::unique_ptr< TaxExemptValues_type > r (
-          TaxExemptValues_traits::create (i, f, this));
+        ::std::unique_ptr< Valuation_type > r (
+          Valuation_traits::create (i, f, this));
 
-        if (!this->TaxExemptValues_)
+        if (!this->Valuation_)
         {
-          this->TaxExemptValues_.set (::std::move (r));
+          this->Valuation_.set (::std::move (r));
           continue;
         }
       }
@@ -16736,7 +17367,7 @@ namespace dataadvice
       this->GeneralValues_ = x.GeneralValues_;
       this->BCTransitValues_ = x.BCTransitValues_;
       this->SchoolValues_ = x.SchoolValues_;
-      this->TaxExemptValues_ = x.TaxExemptValues_;
+      this->Valuation_ = x.Valuation_;
     }
 
     return *this;
@@ -16747,31 +17378,31 @@ namespace dataadvice
   {
   }
 
-  // TaxExemptValuesCollection
+  // ValuationCollection
   //
 
-  TaxExemptValuesCollection::
-  TaxExemptValuesCollection ()
+  ValuationCollection::
+  ValuationCollection ()
   : ::xml_schema::type (),
-    TaxExemptPropertyClassValues_ (this)
+    ValuesByETC_ (this)
   {
   }
 
-  TaxExemptValuesCollection::
-  TaxExemptValuesCollection (const TaxExemptValuesCollection& x,
-                             ::xml_schema::flags f,
-                             ::xml_schema::container* c)
+  ValuationCollection::
+  ValuationCollection (const ValuationCollection& x,
+                       ::xml_schema::flags f,
+                       ::xml_schema::container* c)
   : ::xml_schema::type (x, f, c),
-    TaxExemptPropertyClassValues_ (x.TaxExemptPropertyClassValues_, f, this)
+    ValuesByETC_ (x.ValuesByETC_, f, this)
   {
   }
 
-  TaxExemptValuesCollection::
-  TaxExemptValuesCollection (const ::xercesc::DOMElement& e,
-                             ::xml_schema::flags f,
-                             ::xml_schema::container* c)
+  ValuationCollection::
+  ValuationCollection (const ::xercesc::DOMElement& e,
+                       ::xml_schema::flags f,
+                       ::xml_schema::container* c)
   : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
-    TaxExemptPropertyClassValues_ (this)
+    ValuesByETC_ (this)
   {
     if ((f & ::xml_schema::flags::base) == 0)
     {
@@ -16780,7 +17411,7 @@ namespace dataadvice
     }
   }
 
-  void TaxExemptValuesCollection::
+  void ValuationCollection::
   parse (::xsd::cxx::xml::dom::parser< char >& p,
          ::xml_schema::flags f)
   {
@@ -16790,14 +17421,14 @@ namespace dataadvice
       const ::xsd::cxx::xml::qualified_name< char > n (
         ::xsd::cxx::xml::dom::name< char > (i));
 
-      // TaxExemptPropertyClassValues
+      // ValuesByETC
       //
-      if (n.name () == "TaxExemptPropertyClassValues" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+      if (n.name () == "ValuesByETC" && n.namespace_ () == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
       {
-        ::std::unique_ptr< TaxExemptPropertyClassValues_type > r (
-          TaxExemptPropertyClassValues_traits::create (i, f, this));
+        ::std::unique_ptr< ValuesByETC_type > r (
+          ValuesByETC_traits::create (i, f, this));
 
-        this->TaxExemptPropertyClassValues_.push_back (::std::move (r));
+        this->ValuesByETC_.push_back (::std::move (r));
         continue;
       }
 
@@ -16805,38 +17436,38 @@ namespace dataadvice
     }
   }
 
-  TaxExemptValuesCollection* TaxExemptValuesCollection::
+  ValuationCollection* ValuationCollection::
   _clone (::xml_schema::flags f,
           ::xml_schema::container* c) const
   {
-    return new class TaxExemptValuesCollection (*this, f, c);
+    return new class ValuationCollection (*this, f, c);
   }
 
-  TaxExemptValuesCollection& TaxExemptValuesCollection::
-  operator= (const TaxExemptValuesCollection& x)
+  ValuationCollection& ValuationCollection::
+  operator= (const ValuationCollection& x)
   {
     if (this != &x)
     {
       static_cast< ::xml_schema::type& > (*this) = x;
-      this->TaxExemptPropertyClassValues_ = x.TaxExemptPropertyClassValues_;
+      this->ValuesByETC_ = x.ValuesByETC_;
     }
 
     return *this;
   }
 
-  TaxExemptValuesCollection::
-  ~TaxExemptValuesCollection ()
+  ValuationCollection::
+  ~ValuationCollection ()
   {
   }
 
-  // TaxExemptPropertyClassValues
+  // ValuesByETC
   //
 
-  TaxExemptPropertyClassValues::
-  TaxExemptPropertyClassValues (const TaxExemptCode_type& TaxExemptCode,
-                                const PropertyClassCode_type& PropertyClassCode,
-                                const LandValue_type& LandValue,
-                                const ImprovementValue_type& ImprovementValue)
+  ValuesByETC::
+  ValuesByETC (const TaxExemptCode_type& TaxExemptCode,
+               const PropertyClassCode_type& PropertyClassCode,
+               const LandValue_type& LandValue,
+               const ImprovementValue_type& ImprovementValue)
   : ::xml_schema::type (),
     TaxExemptCode_ (TaxExemptCode, this),
     TaxExemptDescription_ (this),
@@ -16847,10 +17478,10 @@ namespace dataadvice
   {
   }
 
-  TaxExemptPropertyClassValues::
-  TaxExemptPropertyClassValues (const TaxExemptPropertyClassValues& x,
-                                ::xml_schema::flags f,
-                                ::xml_schema::container* c)
+  ValuesByETC::
+  ValuesByETC (const ValuesByETC& x,
+               ::xml_schema::flags f,
+               ::xml_schema::container* c)
   : ::xml_schema::type (x, f, c),
     TaxExemptCode_ (x.TaxExemptCode_, f, this),
     TaxExemptDescription_ (x.TaxExemptDescription_, f, this),
@@ -16861,10 +17492,10 @@ namespace dataadvice
   {
   }
 
-  TaxExemptPropertyClassValues::
-  TaxExemptPropertyClassValues (const ::xercesc::DOMElement& e,
-                                ::xml_schema::flags f,
-                                ::xml_schema::container* c)
+  ValuesByETC::
+  ValuesByETC (const ::xercesc::DOMElement& e,
+               ::xml_schema::flags f,
+               ::xml_schema::container* c)
   : ::xml_schema::type (e, f | ::xml_schema::flags::base, c),
     TaxExemptCode_ (this),
     TaxExemptDescription_ (this),
@@ -16880,7 +17511,7 @@ namespace dataadvice
     }
   }
 
-  void TaxExemptPropertyClassValues::
+  void ValuesByETC::
   parse (::xsd::cxx::xml::dom::parser< char >& p,
          ::xml_schema::flags f)
   {
@@ -17000,15 +17631,15 @@ namespace dataadvice
     }
   }
 
-  TaxExemptPropertyClassValues* TaxExemptPropertyClassValues::
+  ValuesByETC* ValuesByETC::
   _clone (::xml_schema::flags f,
           ::xml_schema::container* c) const
   {
-    return new class TaxExemptPropertyClassValues (*this, f, c);
+    return new class ValuesByETC (*this, f, c);
   }
 
-  TaxExemptPropertyClassValues& TaxExemptPropertyClassValues::
-  operator= (const TaxExemptPropertyClassValues& x)
+  ValuesByETC& ValuesByETC::
+  operator= (const ValuesByETC& x)
   {
     if (this != &x)
     {
@@ -17024,8 +17655,8 @@ namespace dataadvice
     return *this;
   }
 
-  TaxExemptPropertyClassValues::
-  ~TaxExemptPropertyClassValues ()
+  ValuesByETC::
+  ~ValuesByETC ()
   {
   }
 
@@ -18269,128 +18900,128 @@ namespace dataadvice
   {
   }
 
-  // Character
+  // String1
   //
 
-  Character::
-  Character ()
+  String1::
+  String1 ()
   : ::xml_schema::string ()
   {
   }
 
-  Character::
-  Character (const char* _xsd_string_base)
+  String1::
+  String1 (const char* _xsd_string_base)
   : ::xml_schema::string (_xsd_string_base)
   {
   }
 
-  Character::
-  Character (const ::std::string& _xsd_string_base)
+  String1::
+  String1 (const ::std::string& _xsd_string_base)
   : ::xml_schema::string (_xsd_string_base)
   {
   }
 
-  Character::
-  Character (const ::xml_schema::string& _xsd_string_base)
+  String1::
+  String1 (const ::xml_schema::string& _xsd_string_base)
   : ::xml_schema::string (_xsd_string_base)
   {
   }
 
-  Character::
-  Character (const Character& x,
-             ::xml_schema::flags f,
-             ::xml_schema::container* c)
+  String1::
+  String1 (const String1& x,
+           ::xml_schema::flags f,
+           ::xml_schema::container* c)
   : ::xml_schema::string (x, f, c)
   {
   }
 
-  Character::
-  Character (const ::xercesc::DOMElement& e,
-             ::xml_schema::flags f,
-             ::xml_schema::container* c)
+  String1::
+  String1 (const ::xercesc::DOMElement& e,
+           ::xml_schema::flags f,
+           ::xml_schema::container* c)
   : ::xml_schema::string (e, f, c)
   {
   }
 
-  Character::
-  Character (const ::xercesc::DOMAttr& a,
-             ::xml_schema::flags f,
-             ::xml_schema::container* c)
+  String1::
+  String1 (const ::xercesc::DOMAttr& a,
+           ::xml_schema::flags f,
+           ::xml_schema::container* c)
   : ::xml_schema::string (a, f, c)
   {
   }
 
-  Character::
-  Character (const ::std::string& s,
-             const ::xercesc::DOMElement* e,
-             ::xml_schema::flags f,
-             ::xml_schema::container* c)
+  String1::
+  String1 (const ::std::string& s,
+           const ::xercesc::DOMElement* e,
+           ::xml_schema::flags f,
+           ::xml_schema::container* c)
   : ::xml_schema::string (s, e, f, c)
   {
   }
 
-  Character* Character::
+  String1* String1::
   _clone (::xml_schema::flags f,
           ::xml_schema::container* c) const
   {
-    return new class Character (*this, f, c);
+    return new class String1 (*this, f, c);
   }
 
-  Character::
-  ~Character ()
+  String1::
+  ~String1 ()
   {
   }
 
-  // FolioCharacterItem
+  // FolioString1Item
   //
 
-  FolioCharacterItem::
-  FolioCharacterItem ()
-  : ::dataadvice::Character (),
+  FolioString1Item::
+  FolioString1Item ()
+  : ::dataadvice::String1 (),
     Action_ (this),
     OldValue_ (this)
   {
   }
 
-  FolioCharacterItem::
-  FolioCharacterItem (const char* _xsd_string_base)
-  : ::dataadvice::Character (_xsd_string_base),
+  FolioString1Item::
+  FolioString1Item (const char* _xsd_string_base)
+  : ::dataadvice::String1 (_xsd_string_base),
     Action_ (this),
     OldValue_ (this)
   {
   }
 
-  FolioCharacterItem::
-  FolioCharacterItem (const ::std::string& _xsd_string_base)
-  : ::dataadvice::Character (_xsd_string_base),
+  FolioString1Item::
+  FolioString1Item (const ::std::string& _xsd_string_base)
+  : ::dataadvice::String1 (_xsd_string_base),
     Action_ (this),
     OldValue_ (this)
   {
   }
 
-  FolioCharacterItem::
-  FolioCharacterItem (const ::xml_schema::string& _xsd_string_base)
-  : ::dataadvice::Character (_xsd_string_base),
+  FolioString1Item::
+  FolioString1Item (const ::xml_schema::string& _xsd_string_base)
+  : ::dataadvice::String1 (_xsd_string_base),
     Action_ (this),
     OldValue_ (this)
   {
   }
 
-  FolioCharacterItem::
-  FolioCharacterItem (const FolioCharacterItem& x,
-                      ::xml_schema::flags f,
-                      ::xml_schema::container* c)
-  : ::dataadvice::Character (x, f, c),
+  FolioString1Item::
+  FolioString1Item (const FolioString1Item& x,
+                    ::xml_schema::flags f,
+                    ::xml_schema::container* c)
+  : ::dataadvice::String1 (x, f, c),
     Action_ (x.Action_, f, this),
     OldValue_ (x.OldValue_, f, this)
   {
   }
 
-  FolioCharacterItem::
-  FolioCharacterItem (const ::xercesc::DOMElement& e,
-                      ::xml_schema::flags f,
-                      ::xml_schema::container* c)
-  : ::dataadvice::Character (e, f | ::xml_schema::flags::base, c),
+  FolioString1Item::
+  FolioString1Item (const ::xercesc::DOMElement& e,
+                    ::xml_schema::flags f,
+                    ::xml_schema::container* c)
+  : ::dataadvice::String1 (e, f | ::xml_schema::flags::base, c),
     Action_ (this),
     OldValue_ (this)
   {
@@ -18401,7 +19032,7 @@ namespace dataadvice
     }
   }
 
-  void FolioCharacterItem::
+  void FolioString1Item::
   parse (::xsd::cxx::xml::dom::parser< char >& p,
          ::xml_schema::flags f)
   {
@@ -18425,19 +19056,19 @@ namespace dataadvice
     }
   }
 
-  FolioCharacterItem* FolioCharacterItem::
+  FolioString1Item* FolioString1Item::
   _clone (::xml_schema::flags f,
           ::xml_schema::container* c) const
   {
-    return new class FolioCharacterItem (*this, f, c);
+    return new class FolioString1Item (*this, f, c);
   }
 
-  FolioCharacterItem& FolioCharacterItem::
-  operator= (const FolioCharacterItem& x)
+  FolioString1Item& FolioString1Item::
+  operator= (const FolioString1Item& x)
   {
     if (this != &x)
     {
-      static_cast< ::dataadvice::Character& > (*this) = x;
+      static_cast< ::dataadvice::String1& > (*this) = x;
       this->Action_ = x.Action_;
       this->OldValue_ = x.OldValue_;
     }
@@ -18445,8 +19076,8 @@ namespace dataadvice
     return *this;
   }
 
-  FolioCharacterItem::
-  ~FolioCharacterItem ()
+  FolioString1Item::
+  ~FolioString1Item ()
   {
   }
 

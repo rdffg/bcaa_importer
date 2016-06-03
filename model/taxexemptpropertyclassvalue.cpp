@@ -77,7 +77,7 @@ void TaxExemptPropertyClassValue::setFolio(Folio *folio)
     setForeignKey("folio", folio);
 }
 
-std::unique_ptr<TaxExemptPropertyClassValue> TaxExemptPropertyClassValue::fromXml(dataadvice::TaxExemptPropertyClassValues &values)
+std::unique_ptr<TaxExemptPropertyClassValue> TaxExemptPropertyClassValue::fromXml(dataadvice::ValuesByETC &values)
 {
     auto model = std::make_unique<TaxExemptPropertyClassValue>();
     model->setTaxExemptCode(QString::fromStdString(values.TaxExemptCode()));

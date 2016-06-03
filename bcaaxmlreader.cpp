@@ -246,13 +246,19 @@ void BcaaXmlReader::import() {
                                             if (folio.MinorTaxing().present()) {
                                                 // general service
                                                 if (folio.MinorTaxing().get().GeneralServices().present()) {
-                                                        auto gs = folio.MinorTaxing().get().GeneralServices().get();
+                                                    auto gs_seq = folio.MinorTaxing().get().GeneralServices().get().MinorTaxingJurisdiction();
+                                                    for (auto gs : gs_seq)
+                                                    {
                                                         processMinorTaxJurisdiction(gs, foliomodel, model::minortaxing::JurisdictionType::GeneralService);
+                                                    }
                                                 }
                                                 // island trusts
                                                 if (folio.MinorTaxing().get().IslandsTrusts().present()) {
-                                                        auto it = folio.MinorTaxing().get().IslandsTrusts().get();
+                                                    auto it_seq = folio.MinorTaxing().get().IslandsTrusts().get().MinorTaxingJurisdiction();
+                                                    for (auto it : it_seq)
+                                                    {
                                                         processMinorTaxJurisdiction(it, foliomodel, model::minortaxing::JurisdictionType::IslandTrust);
+                                                    }
                                                 }
 
                                                 // electoral areas
@@ -354,9 +360,9 @@ void BcaaXmlReader::import() {
                                             // Property valuation
                                             if (folio.Values().present())
                                             {
-                                                if (folio.Values().get().TaxExemptValues().present())
+                                                if (folio.Values().get().Valuation().present())
                                                 {
-                                                    auto te_seq = folio.Values().get().TaxExemptValues().get().TaxExemptPropertyClassValues();
+                                                    auto te_seq = folio.Values().get().Valuation().get().ValuesByETC();
                                                     for (auto &&tevalue: te_seq)
                                                     {
                                                         auto temodel = model::TaxExemptPropertyClassValue::fromXml(tevalue);

@@ -76,7 +76,9 @@ void Owner::setOwnershipGroup(OwnershipGroup *ownershipGroup) {
 
 model::Owner *Owner::fromXml(const dataadvice::Owner &xowner) {
     auto owner = new model::Owner();
-    owner->setCompanyOrLastName(QString::fromStdString(xowner.CompanyOrLastName()));
+    if (xowner.CompanyOrLastName().present())
+        owner->setCompanyOrLastName(
+                    QString::fromStdString(xowner.CompanyOrLastName().get()));
     if (xowner.FirstName().present())
         owner->setFirstname(QString::fromStdString(xowner.FirstName().get()));
     if (xowner.MiddleInitial().present())

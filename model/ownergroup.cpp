@@ -3,20 +3,6 @@
 using namespace model;
 OwnershipGroup::OwnershipGroup(QObject *parent) : QDjangoModel(parent) {}
 
-QString OwnershipGroup::tenureCode() const { return m_tenureCode; }
-
-void OwnershipGroup::setTenureCode(const QString &value) {
-  m_tenureCode = value;
-}
-
-QString OwnershipGroup::tenureDescription() const {
-  return m_tenureDescription;
-}
-
-void OwnershipGroup::setTenureDescription(const QString &value) {
-  m_tenureDescription = value;
-}
-
 bool OwnershipGroup::assessmentNoticeReturned() const {
   return m_assessmentNoticeReturned;
 }
@@ -92,10 +78,6 @@ model::OwnershipGroup *OwnershipGroup::fromXml(const dataadvice::OwnershipGroup 
         groupmodel->setChangeType(QString::fromStdString(group.ChangeType().get()));
     if (group.ChangeTypeDescription().present())
         groupmodel->setChangeTypeDescription(QString::fromStdString(group.ChangeTypeDescription().get()));
-    if (group.TenureCode().present())
-        groupmodel->setTenureCode(QString::fromStdString(group.TenureCode().get()));
-    if (group.TenureDescription().present())
-        groupmodel->setTenureDescription(QString::fromStdString(group.TenureDescription().get()));
 
     return groupmodel;
 }

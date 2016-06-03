@@ -31,8 +31,8 @@
 // in the accompanying FLOSSE file.
 //
 
-#ifndef E__WORKSPACE_PROJECTS_NEW_BCAAREADER_NATIVE_BCAA_IMPORTER2_DATA_ADVICE_HXX
-#define E__WORKSPACE_PROJECTS_NEW_BCAAREADER_NATIVE_BCAA_IMPORTER2_DATA_ADVICE_HXX
+#ifndef DATA_ADVICE_HXX
+#define DATA_ADVICE_HXX
 
 #ifndef XSD_CXX11
 #define XSD_CXX11
@@ -287,8 +287,8 @@ namespace dataadvice
   class MinorTaxingJurisdictionCollection;
   class MinorTaxingJurisdiction;
   class PropertyValues;
-  class TaxExemptValuesCollection;
-  class TaxExemptPropertyClassValues;
+  class ValuationCollection;
+  class ValuesByETC;
   class PropertyClassValuesCollection;
   class PropertyClassValues;
   class PropertyClassCode;
@@ -302,8 +302,8 @@ namespace dataadvice
   class FolioUniqueIDItem;
   class LookupCode;
   class FolioLookupCodeItem;
-  class Character;
-  class FolioCharacterItem;
+  class String1;
+  class FolioString1Item;
   class String255;
   class FolioString255Item;
   class String1024;
@@ -1674,24 +1674,6 @@ namespace dataadvice
     void
     ImprovementValue (const ImprovementValue_type& x);
 
-    // ParkingAreaValue
-    //
-    typedef ::xml_schema::decimal ParkingAreaValue_type;
-    typedef ::xsd::cxx::tree::optional< ParkingAreaValue_type > ParkingAreaValue_optional;
-    typedef ::xsd::cxx::tree::traits< ParkingAreaValue_type, char, ::xsd::cxx::tree::schema_type::decimal > ParkingAreaValue_traits;
-
-    const ParkingAreaValue_optional&
-    ParkingAreaValue () const;
-
-    ParkingAreaValue_optional&
-    ParkingAreaValue ();
-
-    void
-    ParkingAreaValue (const ParkingAreaValue_type& x);
-
-    void
-    ParkingAreaValue (const ParkingAreaValue_optional& x);
-
     // Constructors.
     //
     FolioGroupValues (const LandValue_type&,
@@ -1725,7 +1707,6 @@ namespace dataadvice
     protected:
     ::xsd::cxx::tree::one< LandValue_type > LandValue_;
     ::xsd::cxx::tree::one< ImprovementValue_type > ImprovementValue_;
-    ParkingAreaValue_optional ParkingAreaValue_;
   };
 
   class FolioRecordCollection: public ::xml_schema::type
@@ -2137,6 +2118,27 @@ namespace dataadvice
     void
     LandCharacteristics (::std::unique_ptr< LandCharacteristics_type > p);
 
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
+
     // Constructors.
     //
     FolioRecord (const RollNumber_type&);
@@ -2186,6 +2188,7 @@ namespace dataadvice
     ManagedForests_optional ManagedForests_;
     OilAndGas_optional OilAndGas_;
     LandCharacteristics_optional LandCharacteristics_;
+    ID_optional ID_;
   };
 
   class String32: public ::xml_schema::string
@@ -3027,6 +3030,27 @@ namespace dataadvice
     void
     MapReferenceNumber (::std::unique_ptr< MapReferenceNumber_type > p);
 
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
+
     // Constructors.
     //
     FolioAddress ();
@@ -3068,6 +3092,7 @@ namespace dataadvice
     ProvinceState_optional ProvinceState_;
     PostalZip_optional PostalZip_;
     MapReferenceNumber_optional MapReferenceNumber_;
+    ID_optional ID_;
   };
 
   class OwnershipGroupCollection: public ::dataadvice::FolioItemGroup
@@ -3146,48 +3171,6 @@ namespace dataadvice
 
     void
     OwnershipGroupID (::std::unique_ptr< OwnershipGroupID_type > p);
-
-    // TenureCode
-    //
-    typedef ::dataadvice::FolioLookupCodeItem TenureCode_type;
-    typedef ::xsd::cxx::tree::optional< TenureCode_type > TenureCode_optional;
-    typedef ::xsd::cxx::tree::traits< TenureCode_type, char > TenureCode_traits;
-
-    const TenureCode_optional&
-    TenureCode () const;
-
-    TenureCode_optional&
-    TenureCode ();
-
-    void
-    TenureCode (const TenureCode_type& x);
-
-    void
-    TenureCode (const TenureCode_optional& x);
-
-    void
-    TenureCode (::std::unique_ptr< TenureCode_type > p);
-
-    // TenureDescription
-    //
-    typedef ::dataadvice::FolioString255Item TenureDescription_type;
-    typedef ::xsd::cxx::tree::optional< TenureDescription_type > TenureDescription_optional;
-    typedef ::xsd::cxx::tree::traits< TenureDescription_type, char > TenureDescription_traits;
-
-    const TenureDescription_optional&
-    TenureDescription () const;
-
-    TenureDescription_optional&
-    TenureDescription ();
-
-    void
-    TenureDescription (const TenureDescription_type& x);
-
-    void
-    TenureDescription (const TenureDescription_optional& x);
-
-    void
-    TenureDescription (::std::unique_ptr< TenureDescription_type > p);
 
     // AssessmentNoticeReturned
     //
@@ -3430,8 +3413,6 @@ namespace dataadvice
 
     protected:
     OwnershipGroupID_optional OwnershipGroupID_;
-    TenureCode_optional TenureCode_;
-    TenureDescription_optional TenureDescription_;
     AssessmentNoticeReturned_optional AssessmentNoticeReturned_;
     AssessmentNoticeSuppressed_optional AssessmentNoticeSuppressed_;
     ChangeType_optional ChangeType_;
@@ -3544,7 +3525,7 @@ namespace dataadvice
 
     // MiddleInitial
     //
-    typedef ::dataadvice::FolioCharacterItem MiddleInitial_type;
+    typedef ::dataadvice::FolioString1Item MiddleInitial_type;
     typedef ::xsd::cxx::tree::optional< MiddleInitial_type > MiddleInitial_optional;
     typedef ::xsd::cxx::tree::traits< MiddleInitial_type, char > MiddleInitial_traits;
 
@@ -3566,16 +3547,20 @@ namespace dataadvice
     // CompanyOrLastName
     //
     typedef ::dataadvice::FolioString255Item CompanyOrLastName_type;
+    typedef ::xsd::cxx::tree::optional< CompanyOrLastName_type > CompanyOrLastName_optional;
     typedef ::xsd::cxx::tree::traits< CompanyOrLastName_type, char > CompanyOrLastName_traits;
 
-    const CompanyOrLastName_type&
+    const CompanyOrLastName_optional&
     CompanyOrLastName () const;
 
-    CompanyOrLastName_type&
+    CompanyOrLastName_optional&
     CompanyOrLastName ();
 
     void
     CompanyOrLastName (const CompanyOrLastName_type& x);
+
+    void
+    CompanyOrLastName (const CompanyOrLastName_optional& x);
 
     void
     CompanyOrLastName (::std::unique_ptr< CompanyOrLastName_type > p);
@@ -3643,11 +3628,30 @@ namespace dataadvice
     void
     EquityTypeDescription (::std::unique_ptr< EquityTypeDescription_type > p);
 
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
+
     // Constructors.
     //
-    Owner (const CompanyOrLastName_type&);
-
-    Owner (::std::unique_ptr< CompanyOrLastName_type >);
+    Owner ();
 
     Owner (const ::xercesc::DOMElement& e,
            ::xml_schema::flags f = 0,
@@ -3678,10 +3682,11 @@ namespace dataadvice
     FirstName_optional FirstName_;
     MiddleName_optional MiddleName_;
     MiddleInitial_optional MiddleInitial_;
-    ::xsd::cxx::tree::one< CompanyOrLastName_type > CompanyOrLastName_;
+    CompanyOrLastName_optional CompanyOrLastName_;
     OwnerSequenceID_optional OwnerSequenceID_;
     EquityType_optional EquityType_;
     EquityTypeDescription_optional EquityTypeDescription_;
+    ID_optional ID_;
   };
 
   class MailingAddress: public ::dataadvice::FolioItemGroup
@@ -4128,6 +4133,27 @@ namespace dataadvice
     void
     BulkMailCode (::std::unique_ptr< BulkMailCode_type > p);
 
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
+
     // Constructors.
     //
     MailingAddress ();
@@ -4179,6 +4205,7 @@ namespace dataadvice
     ModeOfDeliveryValue_optional ModeOfDeliveryValue_;
     Site_optional Site_;
     BulkMailCode_optional BulkMailCode_;
+    ID_optional ID_;
   };
 
   class FormattedMailingAddress: public ::dataadvice::FolioItemGroup
@@ -4310,6 +4337,27 @@ namespace dataadvice
     void
     Line6 (::std::unique_ptr< Line6_type > p);
 
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
+
     // Constructors.
     //
     FormattedMailingAddress ();
@@ -4346,6 +4394,7 @@ namespace dataadvice
     Line4_optional Line4_;
     Line5_optional Line5_;
     Line6_optional Line6_;
+    ID_optional ID_;
   };
 
   class String40: public ::xml_schema::string
@@ -5157,6 +5206,27 @@ namespace dataadvice
     void
     AirSpaceParcelNumber (::std::unique_ptr< AirSpaceParcelNumber_type > p);
 
+    // NtsLocation
+    //
+    typedef ::dataadvice::FolioString255Item NtsLocation_type;
+    typedef ::xsd::cxx::tree::optional< NtsLocation_type > NtsLocation_optional;
+    typedef ::xsd::cxx::tree::traits< NtsLocation_type, char > NtsLocation_traits;
+
+    const NtsLocation_optional&
+    NtsLocation () const;
+
+    NtsLocation_optional&
+    NtsLocation ();
+
+    void
+    NtsLocation (const NtsLocation_type& x);
+
+    void
+    NtsLocation (const NtsLocation_optional& x);
+
+    void
+    NtsLocation (::std::unique_ptr< NtsLocation_type > p);
+
     // LegalText
     //
     typedef ::dataadvice::FolioString1024Item LegalText_type;
@@ -5177,6 +5247,27 @@ namespace dataadvice
 
     void
     LegalText (::std::unique_ptr< LegalText_type > p);
+
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
 
     // Constructors.
     //
@@ -5238,7 +5329,9 @@ namespace dataadvice
     LeaseLicenceNumber_optional LeaseLicenceNumber_;
     LandBranchFileNumber_optional LandBranchFileNumber_;
     AirSpaceParcelNumber_optional AirSpaceParcelNumber_;
+    NtsLocation_optional NtsLocation_;
     LegalText_optional LegalText_;
+    ID_optional ID_;
   };
 
   class LandCharacteristic: public ::dataadvice::FolioItemGroup
@@ -5513,6 +5606,27 @@ namespace dataadvice
     void
     MHParkRollNumber (::std::unique_ptr< MHParkRollNumber_type > p);
 
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
+
     // Constructors.
     //
     ManufacturedHome ();
@@ -5547,6 +5661,7 @@ namespace dataadvice
     MHBayNumber_optional MHBayNumber_;
     MHPark_optional MHPark_;
     MHParkRollNumber_optional MHParkRollNumber_;
+    ID_optional ID_;
   };
 
   class FarmCollection: public ::dataadvice::FolioItemGroup
@@ -5622,6 +5737,27 @@ namespace dataadvice
     void
     FarmNumber (const FarmNumber_sequence& s);
 
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
+
     // Constructors.
     //
     Farm ();
@@ -5653,6 +5789,7 @@ namespace dataadvice
 
     protected:
     FarmNumber_sequence FarmNumber_;
+    ID_optional ID_;
   };
 
   class OilAndGasCollection: public ::dataadvice::FolioItemGroup
@@ -5732,6 +5869,27 @@ namespace dataadvice
     void
     PipelineProjectNumber (::std::unique_ptr< PipelineProjectNumber_type > p);
 
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
+
     // Constructors.
     //
     OilAndGas ();
@@ -5763,6 +5921,7 @@ namespace dataadvice
 
     protected:
     PipelineProjectNumber_optional PipelineProjectNumber_;
+    ID_optional ID_;
   };
 
   class ManagedForestCollection: public ::dataadvice::FolioItemGroup
@@ -5842,6 +6001,27 @@ namespace dataadvice
     void
     ManagedForestNumber (::std::unique_ptr< ManagedForestNumber_type > p);
 
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
+
     // Constructors.
     //
     ManagedForest ();
@@ -5873,6 +6053,7 @@ namespace dataadvice
 
     protected:
     ManagedForestNumber_optional ManagedForestNumber_;
+    ID_optional ID_;
   };
 
   class FolioAmendmentCollection: public ::dataadvice::FolioItemGroup
@@ -6038,7 +6219,7 @@ namespace dataadvice
 
     // SuppOccupancyCode
     //
-    typedef ::dataadvice::FolioCharacterItem SuppOccupancyCode_type;
+    typedef ::dataadvice::FolioString1Item SuppOccupancyCode_type;
     typedef ::xsd::cxx::tree::optional< SuppOccupancyCode_type > SuppOccupancyCode_optional;
     typedef ::xsd::cxx::tree::traits< SuppOccupancyCode_type, char > SuppOccupancyCode_traits;
 
@@ -6056,6 +6237,27 @@ namespace dataadvice
 
     void
     SuppOccupancyCode (::std::unique_ptr< SuppOccupancyCode_type > p);
+
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
 
     // Constructors.
     //
@@ -6093,6 +6295,7 @@ namespace dataadvice
     AmendmentReasonDescription_optional AmendmentReasonDescription_;
     SuppOccupancyDate_optional SuppOccupancyDate_;
     SuppOccupancyCode_optional SuppOccupancyCode_;
+    ID_optional ID_;
   };
 
   class SaleCollection: public ::dataadvice::FolioItemGroup
@@ -6298,6 +6501,27 @@ namespace dataadvice
     void
     RejectReasonDescription (::std::unique_ptr< RejectReasonDescription_type > p);
 
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
+
     // Constructors.
     //
     Sale ();
@@ -6335,6 +6559,7 @@ namespace dataadvice
     ConveyanceTypeDescription_optional ConveyanceTypeDescription_;
     RejectReasonCode_optional RejectReasonCode_;
     RejectReasonDescription_optional RejectReasonDescription_;
+    ID_optional ID_;
   };
 
   class FolioDescription: public ::dataadvice::FolioItemGroup
@@ -6508,6 +6733,48 @@ namespace dataadvice
     void
     ALRDescription (::std::unique_ptr< ALRDescription_type > p);
 
+    // TenureCode
+    //
+    typedef ::dataadvice::FolioLookupCodeItem TenureCode_type;
+    typedef ::xsd::cxx::tree::optional< TenureCode_type > TenureCode_optional;
+    typedef ::xsd::cxx::tree::traits< TenureCode_type, char > TenureCode_traits;
+
+    const TenureCode_optional&
+    TenureCode () const;
+
+    TenureCode_optional&
+    TenureCode ();
+
+    void
+    TenureCode (const TenureCode_type& x);
+
+    void
+    TenureCode (const TenureCode_optional& x);
+
+    void
+    TenureCode (::std::unique_ptr< TenureCode_type > p);
+
+    // TenureDescription
+    //
+    typedef ::dataadvice::FolioString255Item TenureDescription_type;
+    typedef ::xsd::cxx::tree::optional< TenureDescription_type > TenureDescription_optional;
+    typedef ::xsd::cxx::tree::traits< TenureDescription_type, char > TenureDescription_traits;
+
+    const TenureDescription_optional&
+    TenureDescription () const;
+
+    TenureDescription_optional&
+    TenureDescription ();
+
+    void
+    TenureDescription (const TenureDescription_type& x);
+
+    void
+    TenureDescription (const TenureDescription_optional& x);
+
+    void
+    TenureDescription (::std::unique_ptr< TenureDescription_type > p);
+
     // ParkingArea
     //
     typedef ::dataadvice::FolioString255Item ParkingArea_type;
@@ -6672,6 +6939,8 @@ namespace dataadvice
     PoliceTaxFlag_optional PoliceTaxFlag_;
     ALRCode_optional ALRCode_;
     ALRDescription_optional ALRDescription_;
+    TenureCode_optional TenureCode_;
+    TenureDescription_optional TenureDescription_;
     ParkingArea_optional ParkingArea_;
     LandMeasurement_optional LandMeasurement_;
     SchoolDistrict_optional SchoolDistrict_;
@@ -7215,7 +7484,7 @@ namespace dataadvice
 
     // GeneralServices
     //
-    typedef ::dataadvice::MinorTaxingJurisdiction GeneralServices_type;
+    typedef ::dataadvice::MinorTaxingJurisdictionCollection GeneralServices_type;
     typedef ::xsd::cxx::tree::optional< GeneralServices_type > GeneralServices_optional;
     typedef ::xsd::cxx::tree::traits< GeneralServices_type, char > GeneralServices_traits;
 
@@ -7257,7 +7526,7 @@ namespace dataadvice
 
     // IslandsTrusts
     //
-    typedef ::dataadvice::MinorTaxingJurisdiction IslandsTrusts_type;
+    typedef ::dataadvice::MinorTaxingJurisdictionCollection IslandsTrusts_type;
     typedef ::xsd::cxx::tree::optional< IslandsTrusts_type > IslandsTrusts_optional;
     typedef ::xsd::cxx::tree::traits< IslandsTrusts_type, char > IslandsTrusts_traits;
 
@@ -7396,7 +7665,7 @@ namespace dataadvice
 
     // MinorTaxingCodeShort
     //
-    typedef ::dataadvice::FolioCharacterItem MinorTaxingCodeShort_type;
+    typedef ::dataadvice::FolioString1Item MinorTaxingCodeShort_type;
     typedef ::xsd::cxx::tree::optional< MinorTaxingCodeShort_type > MinorTaxingCodeShort_optional;
     typedef ::xsd::cxx::tree::traits< MinorTaxingCodeShort_type, char > MinorTaxingCodeShort_traits;
 
@@ -7436,6 +7705,27 @@ namespace dataadvice
     void
     MinorTaxingDescription (::std::unique_ptr< MinorTaxingDescription_type > p);
 
+    // ID
+    //
+    typedef ::dataadvice::UniqueID ID_type;
+    typedef ::xsd::cxx::tree::optional< ID_type > ID_optional;
+    typedef ::xsd::cxx::tree::traits< ID_type, char > ID_traits;
+
+    const ID_optional&
+    ID () const;
+
+    ID_optional&
+    ID ();
+
+    void
+    ID (const ID_type& x);
+
+    void
+    ID (const ID_optional& x);
+
+    void
+    ID (::std::unique_ptr< ID_type > p);
+
     // Constructors.
     //
     MinorTaxingJurisdiction ();
@@ -7469,6 +7759,7 @@ namespace dataadvice
     MinorTaxingCode_optional MinorTaxingCode_;
     MinorTaxingCodeShort_optional MinorTaxingCodeShort_;
     MinorTaxingDescription_optional MinorTaxingDescription_;
+    ID_optional ID_;
   };
 
   class PropertyValues: public ::xml_schema::type
@@ -7537,26 +7828,26 @@ namespace dataadvice
     void
     SchoolValues (::std::unique_ptr< SchoolValues_type > p);
 
-    // TaxExemptValues
+    // Valuation
     //
-    typedef ::dataadvice::TaxExemptValuesCollection TaxExemptValues_type;
-    typedef ::xsd::cxx::tree::optional< TaxExemptValues_type > TaxExemptValues_optional;
-    typedef ::xsd::cxx::tree::traits< TaxExemptValues_type, char > TaxExemptValues_traits;
+    typedef ::dataadvice::ValuationCollection Valuation_type;
+    typedef ::xsd::cxx::tree::optional< Valuation_type > Valuation_optional;
+    typedef ::xsd::cxx::tree::traits< Valuation_type, char > Valuation_traits;
 
-    const TaxExemptValues_optional&
-    TaxExemptValues () const;
+    const Valuation_optional&
+    Valuation () const;
 
-    TaxExemptValues_optional&
-    TaxExemptValues ();
-
-    void
-    TaxExemptValues (const TaxExemptValues_type& x);
+    Valuation_optional&
+    Valuation ();
 
     void
-    TaxExemptValues (const TaxExemptValues_optional& x);
+    Valuation (const Valuation_type& x);
 
     void
-    TaxExemptValues (::std::unique_ptr< TaxExemptValues_type > p);
+    Valuation (const Valuation_optional& x);
+
+    void
+    Valuation (::std::unique_ptr< Valuation_type > p);
 
     // Constructors.
     //
@@ -7591,50 +7882,50 @@ namespace dataadvice
     GeneralValues_optional GeneralValues_;
     BCTransitValues_optional BCTransitValues_;
     SchoolValues_optional SchoolValues_;
-    TaxExemptValues_optional TaxExemptValues_;
+    Valuation_optional Valuation_;
   };
 
-  class TaxExemptValuesCollection: public ::xml_schema::type
+  class ValuationCollection: public ::xml_schema::type
   {
     public:
-    // TaxExemptPropertyClassValues
+    // ValuesByETC
     //
-    typedef ::dataadvice::TaxExemptPropertyClassValues TaxExemptPropertyClassValues_type;
-    typedef ::xsd::cxx::tree::sequence< TaxExemptPropertyClassValues_type > TaxExemptPropertyClassValues_sequence;
-    typedef TaxExemptPropertyClassValues_sequence::iterator TaxExemptPropertyClassValues_iterator;
-    typedef TaxExemptPropertyClassValues_sequence::const_iterator TaxExemptPropertyClassValues_const_iterator;
-    typedef ::xsd::cxx::tree::traits< TaxExemptPropertyClassValues_type, char > TaxExemptPropertyClassValues_traits;
+    typedef ::dataadvice::ValuesByETC ValuesByETC_type;
+    typedef ::xsd::cxx::tree::sequence< ValuesByETC_type > ValuesByETC_sequence;
+    typedef ValuesByETC_sequence::iterator ValuesByETC_iterator;
+    typedef ValuesByETC_sequence::const_iterator ValuesByETC_const_iterator;
+    typedef ::xsd::cxx::tree::traits< ValuesByETC_type, char > ValuesByETC_traits;
 
-    const TaxExemptPropertyClassValues_sequence&
-    TaxExemptPropertyClassValues () const;
+    const ValuesByETC_sequence&
+    ValuesByETC () const;
 
-    TaxExemptPropertyClassValues_sequence&
-    TaxExemptPropertyClassValues ();
+    ValuesByETC_sequence&
+    ValuesByETC ();
 
     void
-    TaxExemptPropertyClassValues (const TaxExemptPropertyClassValues_sequence& s);
+    ValuesByETC (const ValuesByETC_sequence& s);
 
     // Constructors.
     //
-    TaxExemptValuesCollection ();
+    ValuationCollection ();
 
-    TaxExemptValuesCollection (const ::xercesc::DOMElement& e,
-                               ::xml_schema::flags f = 0,
-                               ::xml_schema::container* c = 0);
+    ValuationCollection (const ::xercesc::DOMElement& e,
+                         ::xml_schema::flags f = 0,
+                         ::xml_schema::container* c = 0);
 
-    TaxExemptValuesCollection (const TaxExemptValuesCollection& x,
-                               ::xml_schema::flags f = 0,
-                               ::xml_schema::container* c = 0);
+    ValuationCollection (const ValuationCollection& x,
+                         ::xml_schema::flags f = 0,
+                         ::xml_schema::container* c = 0);
 
-    virtual TaxExemptValuesCollection*
+    virtual ValuationCollection*
     _clone (::xml_schema::flags f = 0,
             ::xml_schema::container* c = 0) const;
 
-    TaxExemptValuesCollection&
-    operator= (const TaxExemptValuesCollection& x);
+    ValuationCollection&
+    operator= (const ValuationCollection& x);
 
     virtual 
-    ~TaxExemptValuesCollection ();
+    ~ValuationCollection ();
 
     // Implementation.
     //
@@ -7644,10 +7935,10 @@ namespace dataadvice
            ::xml_schema::flags);
 
     protected:
-    TaxExemptPropertyClassValues_sequence TaxExemptPropertyClassValues_;
+    ValuesByETC_sequence ValuesByETC_;
   };
 
-  class TaxExemptPropertyClassValues: public ::xml_schema::type
+  class ValuesByETC: public ::xml_schema::type
   {
     public:
     // TaxExemptCode
@@ -7756,28 +8047,28 @@ namespace dataadvice
 
     // Constructors.
     //
-    TaxExemptPropertyClassValues (const TaxExemptCode_type&,
-                                  const PropertyClassCode_type&,
-                                  const LandValue_type&,
-                                  const ImprovementValue_type&);
+    ValuesByETC (const TaxExemptCode_type&,
+                 const PropertyClassCode_type&,
+                 const LandValue_type&,
+                 const ImprovementValue_type&);
 
-    TaxExemptPropertyClassValues (const ::xercesc::DOMElement& e,
-                                  ::xml_schema::flags f = 0,
-                                  ::xml_schema::container* c = 0);
+    ValuesByETC (const ::xercesc::DOMElement& e,
+                 ::xml_schema::flags f = 0,
+                 ::xml_schema::container* c = 0);
 
-    TaxExemptPropertyClassValues (const TaxExemptPropertyClassValues& x,
-                                  ::xml_schema::flags f = 0,
-                                  ::xml_schema::container* c = 0);
+    ValuesByETC (const ValuesByETC& x,
+                 ::xml_schema::flags f = 0,
+                 ::xml_schema::container* c = 0);
 
-    virtual TaxExemptPropertyClassValues*
+    virtual ValuesByETC*
     _clone (::xml_schema::flags f = 0,
             ::xml_schema::container* c = 0) const;
 
-    TaxExemptPropertyClassValues&
-    operator= (const TaxExemptPropertyClassValues& x);
+    ValuesByETC&
+    operator= (const ValuesByETC& x);
 
     virtual 
-    ~TaxExemptPropertyClassValues ();
+    ~ValuesByETC ();
 
     // Implementation.
     //
@@ -8728,45 +9019,45 @@ namespace dataadvice
     OldValue_optional OldValue_;
   };
 
-  class Character: public ::xml_schema::string
+  class String1: public ::xml_schema::string
   {
     public:
     // Constructors.
     //
-    Character ();
+    String1 ();
 
-    Character (const char*);
+    String1 (const char*);
 
-    Character (const ::std::string&);
+    String1 (const ::std::string&);
 
-    Character (const ::xml_schema::string&);
+    String1 (const ::xml_schema::string&);
 
-    Character (const ::xercesc::DOMElement& e,
-               ::xml_schema::flags f = 0,
-               ::xml_schema::container* c = 0);
+    String1 (const ::xercesc::DOMElement& e,
+             ::xml_schema::flags f = 0,
+             ::xml_schema::container* c = 0);
 
-    Character (const ::xercesc::DOMAttr& a,
-               ::xml_schema::flags f = 0,
-               ::xml_schema::container* c = 0);
+    String1 (const ::xercesc::DOMAttr& a,
+             ::xml_schema::flags f = 0,
+             ::xml_schema::container* c = 0);
 
-    Character (const ::std::string& s,
-               const ::xercesc::DOMElement* e,
-               ::xml_schema::flags f = 0,
-               ::xml_schema::container* c = 0);
+    String1 (const ::std::string& s,
+             const ::xercesc::DOMElement* e,
+             ::xml_schema::flags f = 0,
+             ::xml_schema::container* c = 0);
 
-    Character (const Character& x,
-               ::xml_schema::flags f = 0,
-               ::xml_schema::container* c = 0);
+    String1 (const String1& x,
+             ::xml_schema::flags f = 0,
+             ::xml_schema::container* c = 0);
 
-    virtual Character*
+    virtual String1*
     _clone (::xml_schema::flags f = 0,
             ::xml_schema::container* c = 0) const;
 
     virtual 
-    ~Character ();
+    ~String1 ();
   };
 
-  class FolioCharacterItem: public ::dataadvice::Character
+  class FolioString1Item: public ::dataadvice::String1
   {
     public:
     // Action
@@ -8792,7 +9083,7 @@ namespace dataadvice
 
     // OldValue
     //
-    typedef ::dataadvice::Character OldValue_type;
+    typedef ::dataadvice::String1 OldValue_type;
     typedef ::xsd::cxx::tree::optional< OldValue_type > OldValue_optional;
     typedef ::xsd::cxx::tree::traits< OldValue_type, char > OldValue_traits;
 
@@ -8813,31 +9104,31 @@ namespace dataadvice
 
     // Constructors.
     //
-    FolioCharacterItem ();
+    FolioString1Item ();
 
-    FolioCharacterItem (const char*);
+    FolioString1Item (const char*);
 
-    FolioCharacterItem (const ::std::string&);
+    FolioString1Item (const ::std::string&);
 
-    FolioCharacterItem (const ::xml_schema::string&);
+    FolioString1Item (const ::xml_schema::string&);
 
-    FolioCharacterItem (const ::xercesc::DOMElement& e,
-                        ::xml_schema::flags f = 0,
-                        ::xml_schema::container* c = 0);
+    FolioString1Item (const ::xercesc::DOMElement& e,
+                      ::xml_schema::flags f = 0,
+                      ::xml_schema::container* c = 0);
 
-    FolioCharacterItem (const FolioCharacterItem& x,
-                        ::xml_schema::flags f = 0,
-                        ::xml_schema::container* c = 0);
+    FolioString1Item (const FolioString1Item& x,
+                      ::xml_schema::flags f = 0,
+                      ::xml_schema::container* c = 0);
 
-    virtual FolioCharacterItem*
+    virtual FolioString1Item*
     _clone (::xml_schema::flags f = 0,
             ::xml_schema::container* c = 0) const;
 
-    FolioCharacterItem&
-    operator= (const FolioCharacterItem& x);
+    FolioString1Item&
+    operator= (const FolioString1Item& x);
 
     virtual 
-    ~FolioCharacterItem ();
+    ~FolioString1Item ();
 
     // Implementation.
     //
@@ -9264,4 +9555,4 @@ namespace dataadvice
 //
 // End epilogue.
 
-#endif // E__WORKSPACE_PROJECTS_NEW_BCAAREADER_NATIVE_BCAA_IMPORTER2_DATA_ADVICE_HXX
+#endif // DATA_ADVICE_HXX

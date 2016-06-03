@@ -95,8 +95,6 @@ ApplicationWindow {
         title: qsTr("Select Data Advice File")
         onAccepted: {
             importer.dataFilePath = fileDialog.fileUrl;
-            importer.verifyDataFile();
-            console.log("XML file " + importer.dataFilePath + " chosen.");
         }
     }
 

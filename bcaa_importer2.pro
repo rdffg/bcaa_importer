@@ -5,7 +5,7 @@ TEMPLATE = app
 
 QT += qml quick widgets sql xml
 
-CONFIG += qtquickcompiler
+CONFIG += qtquickcompiler console
 
 unix:QMAKE_CXXFLAGS += -std=c++14
 

@@ -22,10 +22,9 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_plugins(std::map<QString, std::unique_ptr<rdffg::IPostProcess> >())
 {
     QSettings settings("rdffg", "BCAA Importer");
-    QString dataFilePath = QUrl::fromLocalFile(
-                settings.value("history/lastFolder").toString()).toString();
-    if (QDir(dataFilePath).exists())
-        m_datafilepath = dataFilePath;
+    QUrl dataFilePath = settings.value("history/lastFolder").toUrl();
+    if (QDir(dataFilePath.toLocalFile()).exists())
+        m_datafilepath = dataFilePath.toString();
     registerModels();
     loadPlugins();
 }
@@ -114,6 +113,11 @@ void BCAADataImporter::onStatusChanged(const QString &message)
     emit statusChanged(message);
 }
 
+///
+/// \brief BCAADataImporter::verifyDataFile
+/// \todo signal error messages back to the UI
+/// \return
+///
 bool BCAADataImporter::verifyDataFile()
 {
     try {
@@ -121,6 +125,15 @@ bool BCAADataImporter::verifyDataFile()
         setRunType(QString::fromStdString(advice->RunType()));
         if (advice->ReportSummary()->TotalFolioCount().present())
                 m_totalRecords = advice->ReportSummary()->TotalFolioCount().get();
+    } catch (const xml_schema::parsing& e)
+    {
+        qDebug() << e.what();
+        foreach (auto d, e.diagnostics())
+        {
+            qDebug() << "error at " << d.line() << ", column " << d.column();
+            qDebug() << QString::fromStdString(d.message());
+        }
+        return false;
     } catch (const xml_schema::exception& e) {
         qDebug() << e.what();
         return false;
