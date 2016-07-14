@@ -30,7 +30,7 @@ public:
     void setFolio(Folio *folio);
     void setFolio(std::unique_ptr<Folio> folio);
 
-    static std::unique_ptr<Farm> fromXml(const dataadvice::FolioString255Item &farmNumber);
+//    static std::unique_ptr<Farm> fromXml(const dataadvice::FolioString255Item &farmNumber);
 
 private:
     QString m_farmNumber;

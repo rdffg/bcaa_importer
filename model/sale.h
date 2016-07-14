@@ -55,7 +55,7 @@ public:
     void setFolio(Folio *folio);
     void setFolio(std::unique_ptr<Folio> folio);
 
-    static std::unique_ptr<Sale> fromXml(const dataadvice::Sale &sale);
+//    static std::unique_ptr<Sale> fromXml(const dataadvice::Sale &sale);
 
 signals:
 

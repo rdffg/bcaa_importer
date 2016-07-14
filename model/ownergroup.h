@@ -4,10 +4,15 @@
 #include <QDate>
 #include "QDjangoModel.h"
 #include "model/folio.h"
+#include "model/owner.h"
+#include "model/formattedmailingaddress.h"
 
 #define FOLIO_PROPERTY "folio"
 
 namespace model {
+class Owner;
+class FormattedMailingAddress;
+
 class OwnershipGroup : public QDjangoModel
 {
     Q_OBJECT
@@ -48,8 +53,11 @@ public:
     void setChangeSourceDescription(QString descr);
     Folio *folio() const;
     void setFolio(Folio *folio);
+    std::vector<std::unique_ptr<model::Owner>>& owners();
+    void setOwners(std::vector<std::unique_ptr<model::Owner>> &owners);
+    std::vector<std::unique_ptr<model::FormattedMailingAddress>>& formattedMailingAddresses();
+    void setFormattedMailingAddresses(std::vector<std::unique_ptr<model::FormattedMailingAddress>> &addresses);
 
-    static OwnershipGroup *fromXml(dataadvice::OwnershipGroup const &ownershipgroup);
 signals:
 
 public slots:
@@ -62,6 +70,8 @@ private:
     QDate m_changeDate;
     QString m_changeSource;
     QString m_changeSourceDescription;
+    std::vector<std::unique_ptr<model::Owner> > m_owners;
+    std::vector<std::unique_ptr<model::FormattedMailingAddress> > m_addresses;
 };
 }
 

@@ -77,19 +77,19 @@ void TaxExemptPropertyClassValue::setFolio(Folio *folio)
     setForeignKey("folio", folio);
 }
 
-std::unique_ptr<TaxExemptPropertyClassValue> TaxExemptPropertyClassValue::fromXml(dataadvice::ValuesByETC &values)
-{
-    auto model = std::make_unique<TaxExemptPropertyClassValue>();
-    model->setTaxExemptCode(QString::fromStdString(values.TaxExemptCode()));
-    if (values.TaxExemptDescription().present())
-        model->setTaxExemptDescription(QString::fromStdString(values.TaxExemptDescription().get()));
-    model->setPropertyClassCode(QString::fromStdString(values.PropertyClassCode()));
-    if (values.PropertyClassDescription().present())
-        model->setPropertyClassDescription(QString::fromStdString(values.PropertyClassDescription().get()));
-    model->setLandValue(values.LandValue());
-    model->setImprovementValue(values.ImprovementValue());
-    return model;
-}
+//std::unique_ptr<TaxExemptPropertyClassValue> TaxExemptPropertyClassValue::fromXml(dataadvice::ValuesByETC &values)
+//{
+//    auto model = std::make_unique<TaxExemptPropertyClassValue>();
+//    model->setTaxExemptCode(QString::fromStdString(values.TaxExemptCode()));
+//    if (values.TaxExemptDescription().present())
+//        model->setTaxExemptDescription(QString::fromStdString(values.TaxExemptDescription().get()));
+//    model->setPropertyClassCode(QString::fromStdString(values.PropertyClassCode()));
+//    if (values.PropertyClassDescription().present())
+//        model->setPropertyClassDescription(QString::fromStdString(values.PropertyClassDescription().get()));
+//    model->setLandValue(values.LandValue());
+//    model->setImprovementValue(values.ImprovementValue());
+//    return model;
+//}
 
 
 } // namespace model

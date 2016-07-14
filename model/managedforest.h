@@ -23,7 +23,7 @@ public:
     Folio* folio() const;
     void setFolio(Folio* folio);
 
-    static std::unique_ptr<ManagedForest> fromXml(const dataadvice::ManagedForest &forest);
+//    static std::unique_ptr<ManagedForest> fromXml(const dataadvice::ManagedForest &forest);
 
 private:
     QString m_managedForestNumber;

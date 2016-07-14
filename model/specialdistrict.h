@@ -1,7 +1,7 @@
 #ifndef SPECIALDISTRICT_H
 #define SPECIALDISTRICT_H
 #include "QDjangoModel.h"
-#include "DataAdvice.hxx"
+//#include "DataAdvice.hxx"
 #include <memory>
 
 namespace model {
@@ -21,7 +21,7 @@ public:
     QString code() const;
     void setCode(const QString &code);
 
-    static std::unique_ptr<SpecialDistrict> fromXml(const dataadvice::SpecialDistrict &district);
+//    static std::unique_ptr<SpecialDistrict> fromXml(const dataadvice::SpecialDistrict &district);
 
 private:
     QString m_districtCode;

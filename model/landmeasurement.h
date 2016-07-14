@@ -44,7 +44,7 @@ public:
     model::FolioDescription* folioDescription() const;
     void setFolioDescription(model::FolioDescription* folioDescription);
 
-    std::unique_ptr<LandMeasurement> fromXml(const dataadvice::LandMeasurement &measurement);
+ //   std::unique_ptr<LandMeasurement> fromXml(const dataadvice::LandMeasurement &measurement);
 
 private:
     QString m_landDimensionType;

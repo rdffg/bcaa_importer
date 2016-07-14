@@ -39,7 +39,8 @@ class LegalDescription : public QDjangoModel {
     Q_PROPERTY(QString landBranchFileNumber READ landBranchFileNumber WRITE setLandBranchFileNumber)
     Q_PROPERTY(QString airSpaceParcelNumber READ airSpaceParcelNumber WRITE setAirSpaceParcelNumber)
     Q_PROPERTY(QString legalText READ legalText WRITE setLegalText)
-    Q_PROPERTY(model::Folio *folio READ folio WRITE setFolio)
+    Q_PROPERTY(QString ntsLocation READ ntsLocation WRITE setNtsLocation)
+    Q_PROPERTY(model::Folio * folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=legal_description")
     Q_CLASSINFO("formattedLegalDescription", "null=true")
@@ -73,6 +74,7 @@ class LegalDescription : public QDjangoModel {
     Q_CLASSINFO("landBranchFileNumber", "null=true")
     Q_CLASSINFO("airSpaceParcelNumber", "null=true")
     Q_CLASSINFO("legalText", "null=true")
+    Q_CLASSINFO("ntsLocation", "null=true")
     Q_CLASSINFO("folio", "on_delete=cascade")
 
 
@@ -175,6 +177,9 @@ public:
   model::Folio *folio() const;
   void setFolio(model::Folio *folio);
 
+  QString ntsLocation() const;
+  void setNtsLocation(const QString &ntsLocation);
+
 private:
   QString m_formattedLegalDescription;
   QString m_PID;
@@ -207,6 +212,7 @@ private:
   QString m_landBranchFileNumber;
   QString m_airSpaceParcelNumber;
   QString m_legalText;
+  QString m_ntsLocation;
 };
 }
 

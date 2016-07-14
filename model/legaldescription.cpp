@@ -317,9 +317,19 @@ void LegalDescription::setLegalText(const QString &legalText)
 }
 
 model::Folio *LegalDescription::folio() const {
-    return qobject_cast<model::Folio*>(foreignKey(LEGAL_DESCR_FOLIO_PROPERTY));
+    return qobject_cast<model::Folio*>(foreignKey(FOLIO_PROPERTY));
 }
 
 void LegalDescription::setFolio(model::Folio *folio) {
-    setForeignKey(LEGAL_DESCR_FOLIO_PROPERTY, folio);
+    setForeignKey(FOLIO_PROPERTY, folio);
+}
+
+QString LegalDescription::ntsLocation() const
+{
+    return m_ntsLocation;
+}
+
+void LegalDescription::setNtsLocation(const QString &ntsLocation)
+{
+    m_ntsLocation = ntsLocation;
 }

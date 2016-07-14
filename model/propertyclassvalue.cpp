@@ -117,17 +117,17 @@ void PropertyClassValue::setFolio(Folio *folio)
     setForeignKey("folio", folio);
 }
 
-std::unique_ptr<PropertyClassValue> PropertyClassValue::fromXml(const dataadvice::PropertyClassValues &values)
-{
-    auto pcvalue = std::make_unique<PropertyClassValue>();
-    pcvalue->setPropertyClassCode(QString::fromStdString(values.PropertyClassCode()));
-    if (values.PropertyClassDescription().present())
-        pcvalue->setPropertyClassDescription(QString::fromStdString(values.PropertyClassDescription().get()));
-    if (values.PropertySubClassCode().present())
-        pcvalue->setPropertySubClassCode(QString::fromStdString(values.PropertySubClassCode().get()));
-    if (values.PropertySubClassDescription().present())
-        pcvalue->setPropertySubClassDescription(QString::fromStdString(values.PropertySubClassDescription().get()));
-    return pcvalue;
-}
+//std::unique_ptr<PropertyClassValue> PropertyClassValue::fromXml(const dataadvice::PropertyClassValues &values)
+//{
+//    auto pcvalue = std::make_unique<PropertyClassValue>();
+//    pcvalue->setPropertyClassCode(QString::fromStdString(values.PropertyClassCode()));
+//    if (values.PropertyClassDescription().present())
+//        pcvalue->setPropertyClassDescription(QString::fromStdString(values.PropertyClassDescription().get()));
+//    if (values.PropertySubClassCode().present())
+//        pcvalue->setPropertySubClassCode(QString::fromStdString(values.PropertySubClassCode().get()));
+//    if (values.PropertySubClassDescription().present())
+//        pcvalue->setPropertySubClassDescription(QString::fromStdString(values.PropertySubClassDescription().get()));
+//    return pcvalue;
+//}
 
 } // namespace model

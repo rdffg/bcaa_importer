@@ -4,7 +4,7 @@
 #include <QDjangoModel.h>
 #include "ivaluation.h"
 #include <memory>
-#include "DataAdvice.hxx"
+//#include "DataAdvice.hxx"
 
 namespace model {
 
@@ -29,7 +29,7 @@ public:
     double improvementValue() const override;
     void setImprovementValue(const double &value) override;
 
-    static std::unique_ptr<Valuation> fromXml(const dataadvice::Valuation &val);
+//    static std::unique_ptr<Valuation> fromXml(const dataadvice::Valuation &val);
 private:
     double m_landValue;
     double m_improvementValue;

@@ -3,14 +3,15 @@
 
 #include <memory>
 #include <QObject>
-#include "DataAdvice.hxx"
+//#include "DataAdvice.hxx"
 #include "model/folio.h"
 #include "model/minortaxing/jurisdictiontype.h"
 #include "model/minortaxing/minortaxingjurisdiction.h"
 #include "model/propertyclassvalue.h"
 #include "model/propertyclassvaluetype.h"
+#include "ixmlfilereader.h"
 
-class BcaaXmlReader : public QObject
+class BcaaXmlReader : public QObject, IXmlFileReader
 {
     Q_OBJECT
 public:
@@ -20,12 +21,12 @@ public:
     bool continueJob;
 
 signals:
-    void message(QString msg);
-    void finished();
-    void folioSaved();
+    void message(QString msg) override;
+    void finished() override;
+    void folioSaved() override;
 
 public slots:
-    void import();
+    void import() override;
 
 private:
     void processAssessmentArea(const dataadvice::AssessmentArea &area);

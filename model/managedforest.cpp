@@ -27,12 +27,12 @@ void ManagedForest::setFolio(Folio *folio)
     setForeignKey("folio", folio);
 }
 
-std::unique_ptr<ManagedForest> ManagedForest::fromXml(const dataadvice::ManagedForest &forest)
-{
-    auto model = std::make_unique<ManagedForest>();
-    if (forest.ManagedForestNumber().present())
-        model->setManagedForestNumber(QString::fromStdString(forest.ManagedForestNumber().get()));
-    return model;
-}
+//std::unique_ptr<ManagedForest> ManagedForest::fromXml(const dataadvice::ManagedForest &forest)
+//{
+//    auto model = std::make_unique<ManagedForest>();
+//    if (forest.ManagedForestNumber().present())
+//        model->setManagedForestNumber(QString::fromStdString(forest.ManagedForestNumber().get()));
+//    return model;
+//}
 
 } // namespace model

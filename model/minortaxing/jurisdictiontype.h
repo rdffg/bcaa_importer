@@ -1,6 +1,7 @@
 #ifndef JURISDICTIONNAME_H
 #define JURISDICTIONNAME_H
 #include "QDjangoModel.h"
+#include <memory>
 
 namespace model {
 namespace minortaxing {
@@ -32,6 +33,10 @@ public:
 
   QString description() const;
   void setDescription(const QString &description);
+
+  static void populate();
+
+  static std::unique_ptr<JurisdictionType> getModel(TaxingJurisdictionType type);
 
 private:
   TaxingJurisdictionType m_type;

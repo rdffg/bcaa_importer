@@ -40,11 +40,11 @@ void ImportMeta::setRunType(const QString &runType)
     m_runType = runType;
 }
 
-ImportMeta *ImportMeta::fromXml(const dataadvice::DataAdvice &da)
-{
-    auto meta = new ImportMeta();
-    meta->setImportDate(QDate::currentDate());
-    meta->setRunDate(QDate(da.RunDate().year(), da.RunDate().month(), da.RunDate().day()));
-    meta->setRunType(QString::fromStdString(da.RunType()));
-    return meta;
-}
+//ImportMeta *ImportMeta::fromXml(const dataadvice::DataAdvice &da)
+//{
+//    auto meta = new ImportMeta();
+//    meta->setImportDate(QDate::currentDate());
+//    meta->setRunDate(QDate(da.RunDate().year(), da.RunDate().month(), da.RunDate().day()));
+//    meta->setRunType(QString::fromStdString(da.RunType()));
+//    return meta;
+//}

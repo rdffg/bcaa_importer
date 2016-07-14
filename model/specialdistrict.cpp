@@ -26,12 +26,12 @@ void SpecialDistrict::setCode(const QString &districtCode)
     m_districtCode = districtCode;
 }
 
-std::unique_ptr<SpecialDistrict> SpecialDistrict::fromXml(const dataadvice::SpecialDistrict &district)
-{
-    auto model = std::make_unique<SpecialDistrict>();
-    if (district.DistrictCode().present())
-        model->setCode(QString::fromStdString(district.DistrictCode().get()));
-    if (district.DistrictDescription().present())
-        model->setDescription(QString::fromStdString(district.DistrictDescription().get()));
-    return model;
-}
+//std::unique_ptr<SpecialDistrict> SpecialDistrict::fromXml(const dataadvice::SpecialDistrict &district)
+//{
+//    auto model = std::make_unique<SpecialDistrict>();
+//    if (district.DistrictCode().present())
+//        model->setCode(QString::fromStdString(district.DistrictCode().get()));
+//    if (district.DistrictDescription().present())
+//        model->setDescription(QString::fromStdString(district.DistrictDescription().get()));
+//    return model;
+//}

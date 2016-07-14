@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QDjangoModel.h>
 #include "folio.h"
-#include "DataAdvice.hxx"
+//#include "DataAdvice.hxx"
 
 #define FOLIO_PROPERTY "folio"
 namespace model {
@@ -23,6 +23,7 @@ class FolioAddress : public QDjangoModel
     Q_PROPERTY(QString streetName READ streetName WRITE setStreetName )
     Q_PROPERTY(QString streetDirectionSuffix READ streetDirectionSuffix WRITE setStreetDirectionSuffix )
     Q_PROPERTY(QString city READ city WRITE setCity )
+    Q_PROPERTY(QString provinceState READ provinceState WRITE setProvinceState)
     Q_PROPERTY(QString postalCode READ postalCode WRITE setPostalCode )
     Q_PROPERTY(QString mapReferenceNumber READ mapReferenceNumber WRITE setMapReferenceNumber )
     Q_PROPERTY(QString streetType READ streetType WRITE setStreetType)
@@ -39,6 +40,7 @@ class FolioAddress : public QDjangoModel
     Q_CLASSINFO("city", "null=true")
     Q_CLASSINFO("postalCode", "null=true")
     Q_CLASSINFO("mapReferenceNumber", "null=true")
+    Q_CLASSINFO("provinceState", "null=true")
     Q_CLASSINFO(FOLIO_PROPERTY, "on_delete=cascade")
 
 public:
@@ -76,7 +78,12 @@ public:
     Folio *folio();
     void setFolio(Folio *folio);
 
-    static FolioAddress *fromXml(dataadvice::FolioAddress const &address);
+//    FolioAddress(FolioAddress &&);
+
+//    static FolioAddress *fromXml(dataadvice::FolioAddress const &address);
+
+    QString provinceState() const;
+    void setProvinceState(const QString &provinceState);
 
 signals:
 
@@ -92,6 +99,7 @@ private:
     QString m_postalcode;
     QString m_mapref;
     QString m_streettype;
+    QString m_provinceState;
 };
 }
 #endif // FOLIOADDRESS_H

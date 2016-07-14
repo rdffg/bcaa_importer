@@ -22,6 +22,8 @@ class FolioDescription : public QDjangoModel
     Q_PROPERTY(QString alrCode READ alrCode WRITE setAlrCode)
     Q_PROPERTY(QString alrDescription READ alrDescription WRITE setAlrDescription)
     Q_PROPERTY(QString parkingArea READ parkingArea WRITE setParkingArea)
+    Q_PROPERTY(QString tenureCode READ tenureCode WRITE setTenureCode)
+    Q_PROPERTY(QString tenureDescription READ tenureDescription WRITE setTenureDescription)
     Q_PROPERTY(model::SpecialDistrict *schoolDistrict READ schoolDistrict WRITE setSchoolDistrict)
     Q_PROPERTY(model::SpecialDistrict *regionalDistrict READ regionalDistrict WRITE setRegionalDistrict)
     Q_PROPERTY(model::SpecialDistrict *regionalHospitalDistrict READ regionalHospitalDistrict WRITE setRegionalHospitalDistrict)
@@ -37,6 +39,8 @@ class FolioDescription : public QDjangoModel
     Q_CLASSINFO("alrCode", "null=true")
     Q_CLASSINFO("alrDescription", "null=true")
     Q_CLASSINFO("parkingArea", "null=true")
+    Q_CLASSINFO("tenureCode", "null=true")
+    Q_CLASSINFO("tenureDescription", "null=true")
     Q_CLASSINFO(FOLIODESCRIPTION_SCHOOLDISTRICT_PROPERTY, "null=true on_delete=setnull")
     Q_CLASSINFO(FOLIODESCRIPTION_REGIONALDISTRICT_PROPERTY, "on_delete=setnull null=true")
     Q_CLASSINFO(FOLIODESCRIPTION_HOSPITALDISTRICT_PROPERTY, "null=true on_delete=setnull")
@@ -90,7 +94,13 @@ public:
     void setRegionalHospitalDistrict(SpecialDistrict* district);
     void setRegionalHospitalDistrict(std::unique_ptr<SpecialDistrict> district);
 
-    static std::unique_ptr<FolioDescription> fromXml(const dataadvice::FolioDescription &descr);
+//    static std::unique_ptr<FolioDescription> fromXml(const dataadvice::FolioDescription &descr);
+
+    QString tenureCode() const;
+    void setTenureCode(const QString &tenureCode);
+
+    QString tenureDescription() const;
+    void setTenureDescription(const QString &tenureDescription);
 
 private:
     QString m_actualUseCode;
@@ -102,6 +112,8 @@ private:
     QString m_alrDescription;
     QString m_parkingArea;
     QString m_predominantManualClass;
+    QString m_tenureCode;
+    QString m_tenureDescription;
 };
 }
 

@@ -32,12 +32,12 @@ void OilAndGas::setFolio(std::unique_ptr<Folio> folio)
     setForeignKey("folio", folio.get());
 }
 
-std::unique_ptr<OilAndGas> OilAndGas::fromXml(const dataadvice::OilAndGas &oil)
-{
-    auto model = std::make_unique<OilAndGas>();
-    if (oil.PipelineProjectNumber().present())
-        model->setPipelineProjectNumber(QString::fromStdString(oil.PipelineProjectNumber().get()));
-    return model;
-}
+//std::unique_ptr<OilAndGas> OilAndGas::fromXml(const dataadvice::OilAndGas &oil)
+//{
+//    auto model = std::make_unique<OilAndGas>();
+//    if (oil.PipelineProjectNumber().present())
+//        model->setPipelineProjectNumber(QString::fromStdString(oil.PipelineProjectNumber().get()));
+//    return model;
+//}
 
 } // namespace model

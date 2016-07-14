@@ -10,14 +10,18 @@
 #include <QtCore>
 #include "QDjango.h"
 #include "bcaadataimporter.h"
-#include "bcaaxmlreader.h"
+//#include "bcaaxmlreader.h"
+#include "parser/parser.h"
 #include "model/model.h"
-#include "bcaafilereader.h"
-#include "DataAdvice.hxx"
+//#include "bcaafilereader.h"
+//#include "DataAdvice.hxx"
+#include "parser/DataAdvice-pimpl.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
   , m_isrunning(false)
+  , m_totalRecords(0)
+  , m_progress(0)
   , m_canRun(false)
   , m_plugins(std::map<QString, std::unique_ptr<rdffg::IPostProcess> >())
 {
@@ -81,26 +85,37 @@ void BCAADataImporter::beginImport()
 
     QThread *t = new QThread;
     QUrl u(m_datafilepath);
-    BcaaXmlReader *r = new  BcaaXmlReader(u.toLocalFile());
-    QObject::connect(r, &BcaaXmlReader::message, [=](QString msg){
+    Parser *r = new  Parser(u.toLocalFile());
+    QObject::connect(r, &Parser::message, [=](QString msg){
         emit this->statusChanged(msg);
     });
     r->moveToThread(t);
-    QObject::connect(t, &QThread::started, r, &BcaaXmlReader::import);
-    QObject::connect(r, &BcaaXmlReader::finished, t, &QThread::quit);
+    QObject::connect(t, &QThread::started, r, &Parser::import);
+    QObject::connect(r, &Parser::finished, t, &QThread::quit);
     QObject::connect(t, &QThread::finished, t, &QThread::deleteLater);
-    QObject::connect(r, &BcaaXmlReader::finished, [=]()
-    {
-        // if we have a post-processing plugin for this database type, run it
-        //TODO: don't run if the import didn't complete successfully.
-        if (m_plugins.count(m_dbconnection->driver()) > 0)
-            m_plugins[m_dbconnection->driver()]->processDatabase(new QSqlDatabase(m_dbconnection->makeDbConnection()), this->runType());
-        m_isrunning = false; emit runningChanged();
-    });
-    QObject::connect(r, &BcaaXmlReader::finished, r, &BcaaXmlReader::deleteLater);
-    QObject::connect(r, &BcaaXmlReader::folioSaved, [=]() { m_progress += 1; emit progressChanged(); QApplication::processEvents(); });
-    QObject::connect(this, &BCAADataImporter::cancelJob, [=]() { r->continueJob = false; });
+    QObject::connect(r, &Parser::finished, this, &BCAADataImporter::onImportFinished);
+    QObject::connect(r, &Parser::finished, r, &Parser::deleteLater);
+    QObject::connect(r, &Parser::folioSaved, this, &BCAADataImporter::onProgressChanged);
+    QObject::connect(this, &BCAADataImporter::cancelJob, [=]() { r->cancel(); });
+    QObject::connect(t, &QThread::finished, t, &QThread::deleteLater);
     t->start();
+}
+
+void BCAADataImporter::onProgressChanged()
+{
+    ++m_progress;
+    emit progressChanged();
+}
+
+void BCAADataImporter::onImportFinished()
+{
+    // if we have a post-processing plugin for this database type, run it
+    //TODO: don't run if the import didn't complete successfully.
+    if (m_plugins.count(m_dbconnection->driver()) > 0)
+        m_plugins[m_dbconnection->driver()]->processDatabase(
+                    new QSqlDatabase(m_dbconnection->makeDbConnection()), this->runType());
+    m_isrunning = false;
+    emit runningChanged();
 }
 
 void BCAADataImporter::cancel()
@@ -121,12 +136,21 @@ void BCAADataImporter::onStatusChanged(const QString &message)
 bool BCAADataImporter::verifyDataFile()
 {
     try {
-        auto advice = BCAAFileReader::openFile(m_datafilepath);
-        setRunType(QString::fromStdString(advice->RunType()));
-        if (advice->ReportSummary()->TotalFolioCount().present())
-                m_totalRecords = advice->ReportSummary()->TotalFolioCount().get();
+        auto parser = new Parser(m_datafilepath, this);
+        connect(parser, &Parser::fileInfo, [=](model::DataAdvice* summary)
+            {
+            m_totalRecords = summary->reportSummary()->totalFolioCount();
+            m_runType = summary->runType();
+            delete summary;
+            emit dataChanged();
+            emit progressChanged();
+            });
+        auto advice = std::move(parser->getFileInfo());
+        //m_totalRecords = advice->reportSummary()->totalFolioCount();
+        m_runType = advice->runType();
     } catch (const xml_schema::parsing& e)
     {
+        // will never be caught here...
         qDebug() << e.what();
         foreach (auto d, e.diagnostics())
         {
@@ -138,6 +162,7 @@ bool BCAADataImporter::verifyDataFile()
         qDebug() << e.what();
         return false;
     }
+    this->m_canRun = true;
     emit dataChanged();
     emit progressChanged();
     return true;
@@ -150,6 +175,9 @@ void BCAADataImporter::registerModels()
     QDjango::registerModel<model::Folio>();
     QDjango::registerModel<model::FolioAddress>();
     QDjango::registerModel<model::ImportMeta>();
+    QDjango::registerModel<model::LandMeasurement>();
+    QDjango::registerModel<model::LandCharacteristic>();
+    QDjango::registerModel<model::LegalDescription>();
     QDjango::registerModel<model::ManagedForest>();
     QDjango::registerModel<model::ManualClass>();
     QDjango::registerModel<model::ManufacturedHome>();

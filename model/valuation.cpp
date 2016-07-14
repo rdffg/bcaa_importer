@@ -27,12 +27,12 @@ void Valuation::setImprovementValue(const double &value)
     m_improvementValue = value;
 }
 
-std::unique_ptr<Valuation> Valuation::fromXml(const dataadvice::Valuation &val)
-{
-    auto valuation = std::make_unique<Valuation>();
-    valuation->setImprovementValue(val.ImprovementValue());
-    valuation->setLandValue(val.LandValue());
-    return valuation;
-}
+//std::unique_ptr<Valuation> Valuation::fromXml(const dataadvice::Valuation &val)
+//{
+//    auto valuation = std::make_unique<Valuation>();
+//    valuation->setImprovementValue(val.ImprovementValue());
+//    valuation->setLandValue(val.LandValue());
+//    return valuation;
+//}
 
 } // namespace model

@@ -25,7 +25,7 @@ public:
     void setFolio(Folio *folio);
     void setFolio(std::unique_ptr<Folio> folio);
 
-    static std::unique_ptr<OilAndGas> fromXml(const dataadvice::OilAndGas &oil);
+//    static std::unique_ptr<OilAndGas> fromXml(const dataadvice::OilAndGas &oil);
 
 private:
     QString m_pipelineProjectNumber;

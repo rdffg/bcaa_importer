@@ -3,7 +3,7 @@
 
 #include <QDate>
 #include "QDjangoModel.h"
-#include "DataAdvice.hxx"
+//#include "DataAdvice.hxx"
 
 namespace model {
 class ImportMeta : public QDjangoModel
@@ -29,7 +29,7 @@ public:
     QString runType() const;
     void setRunType(const QString &runType);
 
-    static ImportMeta *fromXml(dataadvice::DataAdvice const &da);
+//   static ImportMeta *fromXml(dataadvice::DataAdvice const &da);
 
 private:
     QDate m_importDate;

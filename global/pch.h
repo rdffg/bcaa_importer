@@ -3,7 +3,7 @@
 
 #include <QtCore>
 #include <QApplication>
-#include "DataAdvice.hxx"
+//#include "DataAdvice.hxx"
 #include "QDjangoModel.h"
 #include "QDjango.h"
 #include <memory>

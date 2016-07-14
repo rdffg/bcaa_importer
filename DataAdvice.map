@@ -1,0 +1,85 @@
+namespace http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd
+{
+    include "../model/model.h";
+    include "../model/deliverysummary.h";
+    include "../model/dataadvice.h";
+    include "../model/action.h";
+    include "../parser/folioitem.h";
+    include <memory>;
+    # collections
+    # AssessmentAreaCollection std::vector<model::AssessmentArea*>;
+    FarmCollection std::vector<std::unique_ptr<model::Farm>> std::vector<std::unique_ptr<model::Farm>>&;
+    FolioAddressCollection std::vector<std::unique_ptr<model::FolioAddress>> std::vector<std::unique_ptr<model::FolioAddress>>&;
+    FolioRecordCollection std::vector<std::unique_ptr<model::Folio>> std::vector<std::unique_ptr<model::Folio>>&;
+    #JurisdictionCollection std::vector<std::unique_ptr<model::Jurisdiction>> std::vector<std::unique_ptr<model::Jurisdiction>>&;
+    LandCharacteristicCollection std::vector<std::unique_ptr<model::LandCharacteristic>> std::vector<std::unique_ptr<model::LandCharacteristic>>&;
+    LegalDescriptionCollection std::vector<std::unique_ptr<model::LegalDescription>> std::vector<std::unique_ptr<model::LegalDescription>>&;
+    ManagedForestCollection std::vector<std::unique_ptr<model::ManagedForest>> std::vector<std::unique_ptr<model::ManagedForest>>&;
+    ManufacturedHomeCollection std::vector<std::unique_ptr<model::ManufacturedHome>> std::vector<std::unique_ptr<model::ManufacturedHome>>&;
+    MinorTaxingJurisdictionCollection std::vector<std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>> std::vector<std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>>&;
+    OilAndGasCollection std::vector<std::unique_ptr<model::OilAndGas>> std::vector<std::unique_ptr<model::OilAndGas>>&;
+    OwnerCollection std::vector<std::unique_ptr<model::Owner>> std::vector<std::unique_ptr<model::Owner>>&;
+    OwnershipGroupCollection std::vector<std::unique_ptr<model::OwnershipGroup>> std::vector<std::unique_ptr<model::OwnershipGroup>>&;
+    PropertyClassValuesCollection std::vector<std::unique_ptr<model::PropertyClassValue>> std::vector<std::unique_ptr<model::PropertyClassValue>>&;
+    SaleCollection std::vector<std::unique_ptr<model::Sale>> std::vector<std::unique_ptr<model::Sale>>&;
+    ValuationCollection std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue>> std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue>>&;
+
+    # models
+    # AssessmentArea std::unique_ptr<model::AssessmentArea> std::unique_ptr<model::AssessmentArea>&;
+    Farm std::unique_ptr<model::Farm> std::unique_ptr<model::Farm>&;
+    FolioAddress std::unique_ptr<model::FolioAddress> std::unique_ptr<model::FolioAddress>&;
+    FolioDescription std::unique_ptr<model::FolioDescription> std::unique_ptr<model::FolioDescription>&;
+    FolioRecord std::unique_ptr<model::Folio> std::unique_ptr<model::Folio>&;
+    FormattedMailingAddress std::unique_ptr<model::FormattedMailingAddress> std::unique_ptr<model::FormattedMailingAddress>&;
+    FormattedMailingAddressLine model::StringItem;
+    #Jurisdiction std::unique_ptr<model::Jurisdiction> std::unique_ptr<model::Jurisdiction>&;
+    LandCharacteristic std::unique_ptr<model::LandCharacteristic> std::unique_ptr<model::LandCharacteristic>&;
+    LandMeasurement std::unique_ptr<model::LandMeasurement> std::unique_ptr<model::LandMeasurement>&;
+    LegalDescription std::unique_ptr<model::LegalDescription> std::unique_ptr<model::LegalDescription>&;
+    MailingAddress std::unique_ptr<model::MailingAddress> std::unique_ptr<model::MailingAddress>&;
+    ManagedForest std::unique_ptr<model::ManagedForest> std::unique_ptr<model::ManagedForest>&;
+    ManualClass std::unique_ptr<model::ManualClass> std::unique_ptr<model::ManualClass>&;
+    ManufacturedHome std::unique_ptr<model::ManufacturedHome> std::unique_ptr<model::ManufacturedHome>&;
+    MinorTaxing std::vector<std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>> std::vector<std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>>&;
+    MinorTaxingJurisdiction std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction> std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>&;
+    Neighbourhood std::unique_ptr<model::Neighbourhood> std::unique_ptr<model::Neighbourhood>&;
+    OilAndGas std::unique_ptr<model::OilAndGas> std::unique_ptr<model::OilAndGas>&;
+    Owner std::unique_ptr<model::Owner> std::unique_ptr<model::Owner>&;
+    OwnershipGroup std::unique_ptr<model::OwnershipGroup> std::unique_ptr<model::OwnershipGroup>&;
+    PropertyClassCode QString;
+    #PropertyValues std::vector<std::unique_ptr<model::PropertyClassValue>> std::vector<std::unique_ptr<model::PropertyClassValue>>&;
+    SpecialDistrict std::unique_ptr<model::SpecialDistrict> std::unique_ptr<model::SpecialDistrict>&;
+    TaxExemptPropertyClassValue std::unique_ptr<model::TaxExemptPropertyClassValue> std::unique_ptr<model::TaxExemptPropertyClassValue>&;
+    Valuation std::unique_ptr<model::Valuation> std::unique_ptr<model::Valuation>&;
+    DeliverySummary std::unique_ptr<model::DeliverySummary> std::unique_ptr<model::DeliverySummary>&;
+    DataAdvice std::unique_ptr<model::DataAdvice> std::unique_ptr<model::DataAdvice>&;
+    AssessmentAreaCode QString;
+    Sale std::unique_ptr<model::Sale> std::unique_ptr<model::Sale>&;
+    ValuesByETC std::unique_ptr<model::TaxExemptPropertyClassValue> std::unique_ptr<model::TaxExemptPropertyClassValue>&;
+    FolioBooleanItem model::BooleanItem;
+    FolioString255Item model::StringItem;
+    FolioLookupCodeItem model::StringItem;
+    FolioString1024Item model::StringItem;
+    FolioIntegerItem model::IntegerItem;
+    FolioDecimalItem model::DecimalItem;
+    FolioDateItem model::DateItem;
+    FolioString1Item model::StringItem;
+    FolioUniqueIDItem model::StringItem;
+    FolioRollNumber model::StringItem;
+    FolioItemGroup model::ActionCode::Code;
+    ActionCode model::ActionCode::Code;
+    PropertyValues std::unique_ptr<model::PropertyValues> std::unique_ptr<model::PropertyValues>&;
+
+    # value types
+    JurisdictionCode QString;
+    UniqueID QString;
+    LookupCode QString;
+    String1 QString;
+    String32 QString;
+    String40 QString;
+    String255 QString;
+    String1024 QString;
+    JurisdictionCode QString;
+    RunType QString;
+    Version QString;
+}

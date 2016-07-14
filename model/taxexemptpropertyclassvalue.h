@@ -44,7 +44,7 @@ public:
     Folio *folio()  const;
     void setFolio(Folio *folio);
 
-    static std::unique_ptr<TaxExemptPropertyClassValue> fromXml(dataadvice::ValuesByETC &values);
+//    static std::unique_ptr<TaxExemptPropertyClassValue> fromXml(dataadvice::ValuesByETC &values);
 signals:
 
 public slots:

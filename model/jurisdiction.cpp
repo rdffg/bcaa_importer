@@ -38,12 +38,12 @@ void Jurisdiction::setAssessmentArea(std::shared_ptr<AssessmentArea> area) {
     setForeignKey(ASSESSMENT_AREA_PROPERTY, area.get());
 }
 
-model::Jurisdiction *Jurisdiction::fromXml(dataadvice::Jurisdiction const &jurisdiction)
-{
-    auto jurisdictionmodel = new model::Jurisdiction();
-    jurisdictionmodel->setCode(QString::fromStdString(jurisdiction.JurisdictionCode()));
-    if (jurisdiction.JurisdictionDescription().present())
-        jurisdictionmodel->setDescription(
-                    QString::fromStdString(jurisdiction.JurisdictionDescription().get()));
-    return jurisdictionmodel;
-}
+//model::Jurisdiction *Jurisdiction::fromXml(dataadvice::Jurisdiction const &jurisdiction)
+//{
+//    auto jurisdictionmodel = new model::Jurisdiction();
+//    jurisdictionmodel->setCode(QString::fromStdString(jurisdiction.JurisdictionCode()));
+//    if (jurisdiction.JurisdictionDescription().present())
+//        jurisdictionmodel->setDescription(
+//                    QString::fromStdString(jurisdiction.JurisdictionDescription().get()));
+//    return jurisdictionmodel;
+//}

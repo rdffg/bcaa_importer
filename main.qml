@@ -150,7 +150,8 @@ ApplicationWindow {
             Text {
                 id: text1
                 y: 4
-                text: Math.round(100 * importer.progress / importer.totalRecords) + "%"
+                //text: Math.round(100 * importer.progress / importer.totalRecords) + "%"
+                text: Math.round(importer.progress / 10) * 10;
                 anchors.horizontalCenter: parent.horizontalCenter
                 //hackety hack, why doesn't the progress bar notice on its own?
                 onTextChanged: {

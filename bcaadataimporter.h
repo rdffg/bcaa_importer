@@ -43,6 +43,8 @@ public slots:
 
 private slots:
     void onStatusChanged(QString const &message);
+    void onProgressChanged();
+    void onImportFinished();
 
 private:
     void registerModels();

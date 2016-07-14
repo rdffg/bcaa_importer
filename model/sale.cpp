@@ -93,24 +93,24 @@ void Sale::setFolio(std::unique_ptr<Folio> folio)
     setForeignKey("folio", folio.get());
 }
 
-std::unique_ptr<Sale> Sale::fromXml(const dataadvice::Sale &sale)
-{
-    auto model = std::make_unique<Sale>();
-    if (sale.ConveyanceType().present())
-        model->setConveyanceType(QString::fromStdString(sale.ConveyanceType().get()));
-    if (sale.ConveyancePrice().present())
-        model->setConveyancePrice(sale.ConveyancePrice().get());
-    if (sale.ConveyanceDate().present())
-        model->setConveyanceDate(QDate(sale.ConveyanceDate().get().year()
-                                       , sale.ConveyanceDate().get().month()
-                                       , sale.ConveyanceDate().get().day()));
-    if (sale.DocumentNumber().present())
-        model->setDocumentNumber(QString::fromStdString(sale.DocumentNumber().get()));
-    if (sale.RejectReasonCode().present())
-        model->setRejectReasonCode(QString::fromStdString(sale.RejectReasonCode().get()));
-    if (sale.RejectReasonDescription().present())
-        model->setRejectReasonDescription(QString::fromStdString(sale.RejectReasonDescription().get()));
-    return model;
-}
+//std::unique_ptr<Sale> Sale::fromXml(const dataadvice::Sale &sale)
+//{
+//    auto model = std::make_unique<Sale>();
+//    if (sale.ConveyanceType().present())
+//        model->setConveyanceType(QString::fromStdString(sale.ConveyanceType().get()));
+//    if (sale.ConveyancePrice().present())
+//        model->setConveyancePrice(sale.ConveyancePrice().get());
+//    if (sale.ConveyanceDate().present())
+//        model->setConveyanceDate(QDate(sale.ConveyanceDate().get().year()
+//                                       , sale.ConveyanceDate().get().month()
+//                                       , sale.ConveyanceDate().get().day()));
+//    if (sale.DocumentNumber().present())
+//        model->setDocumentNumber(QString::fromStdString(sale.DocumentNumber().get()));
+//    if (sale.RejectReasonCode().present())
+//        model->setRejectReasonCode(QString::fromStdString(sale.RejectReasonCode().get()));
+//    if (sale.RejectReasonDescription().present())
+//        model->setRejectReasonDescription(QString::fromStdString(sale.RejectReasonDescription().get()));
+//    return model;
+//}
 } // namespace model
 

@@ -4,7 +4,7 @@
 #include <QDjangoModel.h>
 #include "valuation.h"
 #include <memory>
-#include "DataAdvice.hxx"
+//#include "DataAdvice.hxx"
 #include "propertyclassvaluetype.h"
 #include "folio.h"
 
@@ -68,7 +68,7 @@ public:
     Folio* folio() const;
     void setFolio(Folio *folio);
 
-    static std::unique_ptr<PropertyClassValue> fromXml(const dataadvice::PropertyClassValues &values);
+//    static std::unique_ptr<PropertyClassValue> fromXml(const dataadvice::PropertyClassValues &values);
 
 signals:
 

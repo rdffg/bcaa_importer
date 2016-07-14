@@ -47,7 +47,7 @@ public:
     OwnershipGroup* ownershipGroup() const;
     void setOwnershipGroup(OwnershipGroup* group);
 
-    static FormattedMailingAddress *fromXml(dataadvice::FormattedMailingAddress const &address);
+//    static FormattedMailingAddress *fromXml(dataadvice::FormattedMailingAddress const &address);
 
 private:
     QString m_line1;

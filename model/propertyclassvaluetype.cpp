@@ -1,5 +1,7 @@
 #include "propertyclassvaluetype.h"
+#include "saveerror.h"
 #include <QMetaEnum>
+#include "QDjangoQuerySet.h"
 
 using namespace model;
 PropertyClassValueType::PropertyClassValueType(QObject *parent) : QDjangoModel(parent)
@@ -26,11 +28,21 @@ void PropertyClassValueType::setDescription(const QString &description)
     m_description = description;
 }
 
-std::unique_ptr<PropertyClassValueType> PropertyClassValueType::fromValueType(const PropertyClassValueType::ValueType &type)
+void PropertyClassValueType::populate()
 {
-    auto meta = QMetaEnum::fromType<model::PropertyClassValueType::ValueType>();
-    auto model = std::make_unique<model::PropertyClassValueType>();
-    model->setType(type);
-    model->setDescription(QString::fromStdString((meta.valueToKey(type))));
-    return model;
+    const QMetaObject &mo = PropertyClassValueType::staticMetaObject;
+    int index = mo.indexOfEnumerator("ValueType");
+    QMetaEnum metaEnum = mo.enumerator(index);
+    QDjangoQuerySet<PropertyClassValueType> query;
+    if (query.count() < metaEnum.keyCount())
+    {
+        for (int i = 0; i < metaEnum.keyCount(); i++)
+        {
+            PropertyClassValueType prop;
+            prop.setType(static_cast<ValueType>(i));
+            prop.setDescription(metaEnum.valueToKey(i));
+            if (!prop.save())
+                throw SaveError(prop.lastError().text());
+        }
+    }
 }

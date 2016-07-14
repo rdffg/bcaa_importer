@@ -3,11 +3,11 @@
 
 #include <memory>
 #include "QDjangoModel.h"
-#include "ownergroup.h"
 
 #define OWNERSHIPGROUP_PROPERTY "ownershipGroup"
 
 namespace model {
+class OwnershipGroup;
 class Owner : public QDjangoModel
 {
     Q_OBJECT
@@ -51,7 +51,7 @@ public:
     OwnershipGroup *ownershipGroup() const;
     void setOwnershipGroup(OwnershipGroup *ownershipGroup);
 
-    static Owner *fromXml(dataadvice::Owner const &owner);
+//    static Owner *fromXml(dataadvice::Owner const &owner);
 private:
     QString m_firstname;
     QString m_middleName;

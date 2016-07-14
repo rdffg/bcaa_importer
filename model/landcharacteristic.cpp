@@ -42,14 +42,14 @@ void LandCharacteristic::setFolio(std::unique_ptr<Folio> folio)
     setForeignKey("folio", folio.get());
 }
 
-std::unique_ptr<LandCharacteristic> LandCharacteristic::fromXml(const dataadvice::LandCharacteristic &characteristic)
-{
-    auto model = std::make_unique<LandCharacteristic>();
-    if (characteristic.LandCharacteristicCode().present())
-        model->setCode(QString::fromStdString(characteristic.LandCharacteristicCode().get()));
-    if (characteristic.LandCharacteristicDescription().present())
-        model->setDescription(QString::fromStdString(characteristic.LandCharacteristicDescription().get()));
-    return model;
-}
+//std::unique_ptr<LandCharacteristic> LandCharacteristic::fromXml(const dataadvice::LandCharacteristic &characteristic)
+//{
+//    auto model = std::make_unique<LandCharacteristic>();
+//    if (characteristic.LandCharacteristicCode().present())
+//        model->setCode(QString::fromStdString(characteristic.LandCharacteristicCode().get()));
+//    if (characteristic.LandCharacteristicDescription().present())
+//        model->setDescription(QString::fromStdString(characteristic.LandCharacteristicDescription().get()));
+//    return model;
+//}
 
 } // namespace model

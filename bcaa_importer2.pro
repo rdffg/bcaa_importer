@@ -3,9 +3,9 @@ include(qdjango.pri)
 
 TEMPLATE = app
 
-QT += qml quick widgets sql xml
+QT += qml quick widgets sql
 
-CONFIG += qtquickcompiler console
+CONFIG += qtquickcompiler
 
 unix:QMAKE_CXXFLAGS += -std=c++14
 
@@ -13,8 +13,6 @@ SOURCES += main.cpp \
     bcaadataimporter.cpp \
     dbconnectionsettings.cpp \
     logsource.cpp \
-    bcaaxmlreader.cpp \
-    DataAdvice.cxx \
     model/jurisdiction.cpp \
     model/folio.cpp \
     model/assessmentarea.cpp \
@@ -32,7 +30,6 @@ SOURCES += main.cpp \
     model/manualclass.cpp \
     model/minortaxing/minortaxing.cpp \
     model/minortaxing/minortaxingjurisdiction.cpp \
-    bcaafilereader.cpp \
     model/importmeta.cpp \
     model/minortaxing/jurisdictiontype.cpp \
     model/manufacturedhome.cpp \
@@ -45,7 +42,16 @@ SOURCES += main.cpp \
     model/oilandgas.cpp \
     model/landcharacteristic.cpp \
     model/propertyclassvaluetype.cpp \
-    model/managedforest.cpp
+    model/managedforest.cpp \
+    parser/DataAdvice-pimpl.cpp \
+    parser/DataAdvice-pskel.cpp \
+    parser/parser.cpp \
+    model/deliverysummary.cpp \
+    model/dataadvice.cpp \
+    parser/ixmlfilereader.cpp \
+    parser/folioitem.cpp \
+    parser/runtypeparser.cpp \
+    model/bcaamodel.cpp
 
 RESOURCES += qml.qrc
 
@@ -53,7 +59,7 @@ RESOURCES += qml.qrc
 QML_IMPORT_PATH =
 
 
-PRECOMPILED_HEADER = global/pch.h
+#PRECOMPILED_HEADER = global/pch.h
 
 # Default rules for deployment.
 include(deployment.pri)
@@ -62,8 +68,6 @@ HEADERS += \
     bcaadataimporter.h \
     dbconnectionsettings.h \
     logsource.h \
-    bcaaxmlreader.h \
-    DataAdvice.hxx \
     model/jurisdiction.h \
     model/folio.h \
     model/assessmentarea.h \
@@ -81,7 +85,6 @@ HEADERS += \
     model/manualclass.h \
     model/minortaxing/minortaxing.h \
     model/minortaxing/minortaxingjurisdiction.h \
-    bcaafilereader.h \
     model/importmeta.h \
     model/minortaxing/jurisdictiontype.h \
     model/manufacturedhome.h \
@@ -96,7 +99,19 @@ HEADERS += \
     model/propertyclassvaluetype.h \
     model/model.h \
     model/managedforest.h \
-    post_process_interface.h
+    post_process_interface.h \
+    parser/DataAdvice-pimpl.h \
+    parser/DataAdvice-pskel.h \
+    parser/parser.h \
+    ixmlfilereader.h \
+    model/deliverysummary.h \
+    model/dataadvice.h \
+    model/action.h \
+    parser/exception.h \
+    parser/folioitem.h \
+    parser/runtypeparser.h \
+    model/bcaamodel.h \
+    parser/stopparsing.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d
@@ -107,11 +122,15 @@ win32:DEPENDPATH += $$PWD/../libs/CodeSynthesis/include
 
 DISTFILES += \
     DataAdvice.xsd \
-    qdjango.pri
+    qdjango.pri \
+    DataAdvice.map
 
-mytarget.target = DataAdvice.hxx
-mytarget.commands = xsd cxx-tree --namespace-map http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd=dataadvice --std c++11 --output-dir $$PWD $$PWD/DataAdvice.xsd
-mytarget.depends = DataAdvice.xsd
+#mytarget.target = DataAdvice.hxx
+#mytarget.commands = xsd cxx-tree --namespace-map http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd=dataadvice --std c++11 --output-dir $$PWD $$PWD/DataAdvice.xsd
+#mytarget.depends = DataAdvice.xsd
+
+# command to generate parser files...
+# xsd  cxx-parser  --namespace-map http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd=dataadvice --std c++11 --force-overwrite --type-map ..\DataAdvice.map --generate-test-driver --impl-type-suffix Impl --hxx-suffix .h --ixx-suffix .i --cxx-suffix .cpp  --hxx-prologue "#pragma warning(disable: 4239)" ..\DataAdvice.xsd
 
 schema.target = DataAdvice.xsd
 
@@ -126,3 +145,7 @@ else:unix: LIBS += -L/home/dmahoney/src/qdjango/src/db -lqdjango-db
 unix: INCLUDEPATH += /home/dmahoney/src/qdjango/src/db
 win32:INCLUDEPATH += $$PWD/../libs/qdjango/include
 win32:DEPENDPATH += $$PWD/../libs/qdjango/include
+
+EXTRA_BINFILES += $$PWD/DataAdvice.xsd
+#QMAKE_POST_LINK += xcopy $$EXTRA_BINFILES $$OUT_DIR
+QMAKE_POST_LINK += $$quote(copy /Y $$shell_path($$PWD/DataAdvice.xsd) $$shell_path($$OUT_PWD)\debug\\$$escape_expand(\\n))

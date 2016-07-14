@@ -29,7 +29,9 @@ public:
     QString description() const;
     void setDescription(const QString &description);
 
-    static std::unique_ptr<PropertyClassValueType> fromValueType(const ValueType &type);
+    static void populate();
+
+//    static std::unique_ptr<PropertyClassValueType> fromValueType(const ValueType &type);
 
 private:
     ValueType m_type;

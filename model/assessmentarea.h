@@ -1,11 +1,10 @@
 #ifndef ASSESSMENTAREA_H
 #define ASSESSMENTAREA_H
 #include "QDjangoModel.h"
-#include "DataAdvice.hxx"
-
+#include "model/bcaamodel.h"
 
 namespace model {
-class AssessmentArea : public QDjangoModel
+class AssessmentArea : public BcaaModel
 {
     Q_OBJECT
     Q_PROPERTY(QString assessmentAreaCode READ assessmentAreaCode WRITE setAssessmentAreaCode)
@@ -20,7 +19,7 @@ public:
     void setAssessmentAreaCode(QString area);
     QString assessmentAreaDescription();
     void setAssessmentAreaDescription(QString descr);
-    static AssessmentArea *fromXml(dataadvice::AssessmentArea const &area);
+    //static AssessmentArea *fromXml(dataadvice::AssessmentArea const &area);
 
 signals:
 
