@@ -12,6 +12,7 @@
 namespace model {
 class Owner;
 class FormattedMailingAddress;
+class MailingAddress;
 
 class OwnershipGroup : public QDjangoModel
 {
@@ -55,8 +56,10 @@ public:
     void setFolio(Folio *folio);
     std::vector<std::unique_ptr<model::Owner>>& owners();
     void setOwners(std::vector<std::unique_ptr<model::Owner>> &owners);
-    std::vector<std::unique_ptr<model::FormattedMailingAddress>>& formattedMailingAddresses();
-    void setFormattedMailingAddresses(std::vector<std::unique_ptr<model::FormattedMailingAddress>> &addresses);
+    std::unique_ptr<model::FormattedMailingAddress>& formattedMailingAddress();
+    void setFormattedMailingAddress(std::unique_ptr<model::FormattedMailingAddress> &addresses);
+    std::unique_ptr<model::MailingAddress>& mailingAddress();
+    void setMailingAddress(std::unique_ptr<model::MailingAddress>&);
 
 signals:
 
@@ -71,7 +74,8 @@ private:
     QString m_changeSource;
     QString m_changeSourceDescription;
     std::vector<std::unique_ptr<model::Owner> > m_owners;
-    std::vector<std::unique_ptr<model::FormattedMailingAddress> > m_addresses;
+    std::unique_ptr<model::FormattedMailingAddress> m_address;
+    std::unique_ptr<model::MailingAddress> m_mailingAddress;
 };
 }
 

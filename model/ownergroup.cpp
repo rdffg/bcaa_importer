@@ -1,9 +1,9 @@
 #include "ownergroup.h"
+#include "mailingaddress.h"
 
 using namespace model;
 OwnershipGroup::OwnershipGroup(QObject *parent) : QDjangoModel(parent)
     , m_owners(std::vector<std::unique_ptr<model::Owner>>())
-    , m_addresses(std::vector<std::unique_ptr<model::FormattedMailingAddress>>())
 {}
 
 bool OwnershipGroup::assessmentNoticeReturned() const {
@@ -72,14 +72,24 @@ void OwnershipGroup::setOwners(std::vector<std::unique_ptr<model::Owner>> &owner
     m_owners = std::move(owners);
 }
 
-std::vector<std::unique_ptr<model::FormattedMailingAddress> >& OwnershipGroup::formattedMailingAddresses()
+std::unique_ptr<model::FormattedMailingAddress>& OwnershipGroup::formattedMailingAddress()
 {
-    return m_addresses;
+    return m_address;
 }
 
-void OwnershipGroup::setFormattedMailingAddresses(std::vector<std::unique_ptr<model::FormattedMailingAddress> > &addresses)
+void OwnershipGroup::setFormattedMailingAddress(std::unique_ptr<model::FormattedMailingAddress> &addresses)
 {
-    m_addresses = std::move(addresses);
+    m_address = std::move(addresses);
+}
+
+void OwnershipGroup::setMailingAddress(std::unique_ptr<model::MailingAddress> &addr)
+{
+    m_mailingAddress = std::move(addr);
+}
+
+std::unique_ptr<model::MailingAddress>& OwnershipGroup::mailingAddress()
+{
+    return m_mailingAddress;
 }
 
 //model::OwnershipGroup *OwnershipGroup::fromXml(const dataadvice::OwnershipGroup &group) {

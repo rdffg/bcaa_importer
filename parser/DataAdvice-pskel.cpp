@@ -11142,7 +11142,7 @@ namespace dataadvice
   //
 
   void PropertyClassValuesCollection_pskel::
-  PropertyClassValues ()
+  PropertyClassValues (std::unique_ptr<model::PropertyClassValue>&)
   {
   }
 
@@ -11179,10 +11179,7 @@ namespace dataadvice
     if (n == "PropertyClassValues" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->PropertyClassValues_parser_)
-      {
-        this->PropertyClassValues_parser_->post_PropertyClassValues ();
-        this->PropertyClassValues ();
-      }
+        this->PropertyClassValues (this->PropertyClassValues_parser_->post_PropertyClassValues ());
 
       return true;
     }
@@ -11204,7 +11201,7 @@ namespace dataadvice
   }
 
   void PropertyClassValues_pskel::
-  PropertySubClassCode ()
+  PropertySubClassCode (const QString&)
   {
   }
 
@@ -11225,11 +11222,6 @@ namespace dataadvice
 
   void PropertyClassValues_pskel::
   NetValues (std::unique_ptr<model::Valuation>&)
-  {
-  }
-
-  void PropertyClassValues_pskel::
-  post_PropertyClassValues ()
   {
   }
 
@@ -11342,10 +11334,7 @@ namespace dataadvice
     if (n == "PropertySubClassCode" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->PropertySubClassCode_parser_)
-      {
-        this->PropertySubClassCode_parser_->post_PropertySubClassCode ();
-        this->PropertySubClassCode ();
-      }
+        this->PropertySubClassCode (this->PropertySubClassCode_parser_->post_PropertySubClassCode ());
 
       return true;
     }
@@ -11383,14 +11372,6 @@ namespace dataadvice
     }
 
     return false;
-  }
-
-  // PropertySubClassCode_pskel
-  //
-
-  void PropertySubClassCode_pskel::
-  post_PropertySubClassCode ()
-  {
   }
 
   // Valuation_pskel

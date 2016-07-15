@@ -47,9 +47,9 @@ namespace http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd
     Owner std::unique_ptr<model::Owner> std::unique_ptr<model::Owner>&;
     OwnershipGroup std::unique_ptr<model::OwnershipGroup> std::unique_ptr<model::OwnershipGroup>&;
     PropertyClassCode QString;
-    #PropertyValues std::vector<std::unique_ptr<model::PropertyClassValue>> std::vector<std::unique_ptr<model::PropertyClassValue>>&;
+    PropertyClassValues std::unique_ptr<model::PropertyClassValue> std::unique_ptr<model::PropertyClassValue>&;
+    PropertySubClassCode QString;
     SpecialDistrict std::unique_ptr<model::SpecialDistrict> std::unique_ptr<model::SpecialDistrict>&;
-    #TaxExemptPropertyClassValue std::unique_ptr<model::TaxExemptPropertyClassValue> std::unique_ptr<model::TaxExemptPropertyClassValue>&;
     Valuation std::unique_ptr<model::Valuation> std::unique_ptr<model::Valuation>&;
     DeliverySummary std::unique_ptr<model::DeliverySummary> std::unique_ptr<model::DeliverySummary>&;
     DataAdvice std::unique_ptr<model::DataAdvice> std::unique_ptr<model::DataAdvice>&;

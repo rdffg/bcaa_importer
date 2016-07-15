@@ -745,6 +745,23 @@ namespace dataadvice
             throw SaveError(QString("Neighbourhood: ")
                             + m_folioDescription->neighbourhood()->lastError().text());
 
+        // property values
+        for (auto &&value: m_propertyValues->first)
+        {
+            value->setFolio(m_folio.get());
+            if (!value->save())
+                throw SaveError(QString("Values By ETC: ")
+                                + value->lastError().text());
+        }
+
+        for (auto &&value: m_propertyValues->second)
+        {
+            value->setFolio(m_folio.get());
+            if (!value->save())
+                throw SaveError(QString("Property Values: ")
+                                + value->lastError().text());
+        }
+
         // sales
         for (auto &&sale: m_sales)
         {
@@ -814,10 +831,6 @@ namespace dataadvice
   {
     const ::std::string& v (post_string ());
     return QString::fromStdString(v);
-
-    // TODO
-    //
-    // return ... ;
   }
 
   // FolioRollNumberImpl
@@ -1183,16 +1196,13 @@ namespace dataadvice
   void OwnershipGroupImpl::
   FormattedMailingAddress (std::unique_ptr<model::FormattedMailingAddress> &FormattedMailingAddress)
   {
-
-    // TODO
-    // Do the same as owners here
+    m_owners->setFormattedMailingAddress(std::move(FormattedMailingAddress));
   }
 
   void OwnershipGroupImpl::
   MailingAddress (std::unique_ptr<model::MailingAddress> &MailingAddress)
   {
-    // TODO
-    //
+      m_owners->setMailingAddress(std::move(MailingAddress));
   }
 
   std::unique_ptr<model::OwnershipGroup> OwnershipGroupImpl::post_OwnershipGroup()
@@ -1534,8 +1544,6 @@ namespace dataadvice
   {
     const QString& v (post_String40 ());
     return model::StringItem(v, m_oldValue, m_action);
-    // TODO
-    //
   }
 
   // LegalDescriptionCollectionImpl
@@ -2784,9 +2792,9 @@ namespace dataadvice
   }
 
   void PropertyClassValuesCollectionImpl::
-  PropertyClassValues ()
+  PropertyClassValues (std::unique_ptr<model::PropertyClassValue> &PropertyClassValues)
   {
-      //propertyClassValues.push_back(std::move(PropertyClassValues));
+      propertyClassValues.push_back(std::move(PropertyClassValues));
   }
 
   std::vector<std::unique_ptr<model::PropertyClassValue>> PropertyClassValuesCollectionImpl::
@@ -2817,8 +2825,9 @@ namespace dataadvice
   }
 
   void PropertyClassValuesImpl::
-  PropertySubClassCode ()
+  PropertySubClassCode (const QString& PropertySubClassCode)
   {
+      m_value->setPropertySubClassCode(PropertySubClassCode);
   }
 
   void PropertyClassValuesImpl::
@@ -2845,9 +2854,9 @@ namespace dataadvice
       m_value->setNetValues(std::move(NetValues));
   }
 
-  void PropertyClassValuesImpl::post_PropertyClassValues()
+  std::unique_ptr<model::PropertyClassValue> PropertyClassValuesImpl::post_PropertyClassValues()
   {
-      //return std::move(m_value);
+      return std::move(m_value);
   }
 
   // PropertyClassCodeImpl
@@ -2873,13 +2882,11 @@ namespace dataadvice
   {
   }
 
-  void PropertySubClassCodeImpl::
+  QString PropertySubClassCodeImpl::
   post_PropertySubClassCode ()
   {
     const ::std::string& v (post_string ());
-
-    // TODO
-    //
+    return QString::fromStdString(v);
   }
 
   // ValuationImpl
@@ -2964,8 +2971,6 @@ namespace dataadvice
   {
     bool v (post_boolean ());
     return model::BooleanItem(v, oldValue, action);
-    // TODO
-    //
   }
 
   // FolioDecimalItemImpl
@@ -2993,8 +2998,6 @@ namespace dataadvice
   {
     double v (post_decimal ());
     return model::DecimalItem(v, oldValue, action);
-    // TODO
-    //
   }
 
   // FolioDateItemImpl
@@ -3039,9 +3042,6 @@ namespace dataadvice
   {
     const ::std::string& v (post_string ());
     return QString::fromStdString(v);
-    // TODO
-    //
-    // return ... ;
   }
 
   // FolioUniqueIDItemImpl
@@ -3127,9 +3127,6 @@ namespace dataadvice
   {
     const ::std::string& v (post_string ());
     return QString::fromStdString(v);
-    // TODO
-    //
-    // return ... ;
   }
 
   // FolioString1ItemImpl
@@ -3196,8 +3193,6 @@ namespace dataadvice
   OldValue (const QString& OldValue)
   {
       m_oldValue = OldValue;
-    // TODO
-    //
   }
 
   model::StringItem FolioString255ItemImpl::post_FolioString255Item()
@@ -3261,8 +3256,5 @@ namespace dataadvice
   {
     const ::std::string& v (post_string ());
     return model::ActionCode::fromString(QString::fromStdString(v));
-
-    // TODO
-    //
   }
 }

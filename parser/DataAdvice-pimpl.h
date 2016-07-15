@@ -1617,7 +1617,7 @@ namespace dataadvice
     pre () override;
 
     virtual void
-    PropertyClassValues () override;
+    PropertyClassValues (std::unique_ptr<model::PropertyClassValue> &) override;
 
     virtual std::vector<std::unique_ptr<model::PropertyClassValue>>
     post_PropertyClassValuesCollection () override;
@@ -1638,7 +1638,7 @@ namespace dataadvice
     PropertyClassDescription (const QString&) override;
 
     virtual void
-    PropertySubClassCode () override;
+    PropertySubClassCode (const QString&) override;
 
     virtual void
     PropertySubClassDescription (const QString&) override;
@@ -1652,7 +1652,7 @@ namespace dataadvice
     virtual void
     NetValues (std::unique_ptr<model::Valuation>&) override;
 
-    virtual void
+    virtual std::unique_ptr<model::PropertyClassValue>
     post_PropertyClassValues () override;
   private:
       std::unique_ptr<model::PropertyClassValue> m_value;
@@ -1676,7 +1676,7 @@ namespace dataadvice
     virtual void
     pre ();
 
-    virtual void
+    virtual QString
     post_PropertySubClassCode ();
   };
 

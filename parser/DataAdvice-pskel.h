@@ -4497,7 +4497,7 @@ namespace dataadvice
     // pre ();
 
     virtual void
-    PropertyClassValues ();
+    PropertyClassValues (std::unique_ptr<model::PropertyClassValue>&);
 
     virtual std::vector<std::unique_ptr<model::PropertyClassValue>>
     post_PropertyClassValuesCollection () = 0;
@@ -4545,7 +4545,7 @@ namespace dataadvice
     PropertyClassDescription (const QString&);
 
     virtual void
-    PropertySubClassCode ();
+    PropertySubClassCode (const QString&);
 
     virtual void
     PropertySubClassDescription (const QString&);
@@ -4559,8 +4559,8 @@ namespace dataadvice
     virtual void
     NetValues (std::unique_ptr<model::Valuation>&);
 
-    virtual void
-    post_PropertyClassValues ();
+    virtual std::unique_ptr<model::PropertyClassValue>
+    post_PropertyClassValues () = 0;
 
     // Parser construction API.
     //
@@ -4640,8 +4640,8 @@ namespace dataadvice
     // virtual void
     // pre ();
 
-    virtual void
-    post_PropertySubClassCode ();
+    virtual QString
+    post_PropertySubClassCode () = 0;
   };
 
   class Valuation_pskel: public ::xml_schema::complex_content
