@@ -1,78 +1,78 @@
-#include "taxexemptpropertyclassvalue.h"
+#include "valuesbyetc.h"
 
 namespace model {
 
-TaxExemptPropertyClassValue::TaxExemptPropertyClassValue(QObject *parent) : QDjangoModel(parent)
+ValuesByETC::ValuesByETC(QObject *parent) : QDjangoModel(parent)
 {
 
 }
 
-QString TaxExemptPropertyClassValue::taxExemptCode() const
+QString ValuesByETC::taxExemptCode() const
 {
     return m_taxExemptCode;
 }
 
-void TaxExemptPropertyClassValue::setTaxExemptCode(const QString &taxExemptCode)
+void ValuesByETC::setTaxExemptCode(const QString &taxExemptCode)
 {
     m_taxExemptCode = taxExemptCode;
 }
 
-QString TaxExemptPropertyClassValue::taxExemptDescription() const
+QString ValuesByETC::taxExemptDescription() const
 {
     return m_taxExemptDescription;
 }
 
-void TaxExemptPropertyClassValue::setTaxExemptDescription(const QString &taxExemptDescription)
+void ValuesByETC::setTaxExemptDescription(const QString &taxExemptDescription)
 {
     m_taxExemptDescription = taxExemptDescription;
 }
 
-QString TaxExemptPropertyClassValue::propertyClassCode() const
+QString ValuesByETC::propertyClassCode() const
 {
     return m_propertyClassCode;
 }
 
-void TaxExemptPropertyClassValue::setPropertyClassCode(const QString &propertyClassCode)
+void ValuesByETC::setPropertyClassCode(const QString &propertyClassCode)
 {
     m_propertyClassCode = propertyClassCode;
 }
 
-QString TaxExemptPropertyClassValue::propertyClassDescription() const
+QString ValuesByETC::propertyClassDescription() const
 {
     return m_propertyClassDescription;
 }
 
-void TaxExemptPropertyClassValue::setPropertyClassDescription(const QString &propertyClassDescription)
+void ValuesByETC::setPropertyClassDescription(const QString &propertyClassDescription)
 {
     m_propertyClassDescription = propertyClassDescription;
 }
 
-double TaxExemptPropertyClassValue::landValue() const
+double ValuesByETC::landValue() const
 {
     return m_landValue;
 }
 
-void TaxExemptPropertyClassValue::setLandValue(const double &value)
+void ValuesByETC::setLandValue(const double &value)
 {
     m_landValue = value;
 }
 
-double TaxExemptPropertyClassValue::improvementValue() const
+double ValuesByETC::improvementValue() const
 {
     return m_improvementValue;
 }
 
-void TaxExemptPropertyClassValue::setImprovementValue(const double &value)
+void ValuesByETC::setImprovementValue(const double &value)
 {
     m_improvementValue = value;
 }
 
-Folio *TaxExemptPropertyClassValue::folio() const
+Folio *ValuesByETC::folio() const
 {
     return qobject_cast<Folio*>(foreignKey("folio"));
 }
 
-void TaxExemptPropertyClassValue::setFolio(Folio *folio)
+void ValuesByETC::setFolio(Folio *folio)
 {
     setForeignKey("folio", folio);
 }

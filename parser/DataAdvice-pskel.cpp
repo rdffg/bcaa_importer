@@ -10826,7 +10826,7 @@ namespace dataadvice
   }
 
   void PropertyValues_pskel::
-  Valuation (std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue>>&)
+  Valuation (std::vector<std::unique_ptr<model::ValuesByETC>>&)
   {
   }
 
@@ -10929,7 +10929,7 @@ namespace dataadvice
   //
 
   void ValuationCollection_pskel::
-  ValuesByETC (std::unique_ptr<model::TaxExemptPropertyClassValue>&)
+  ValuesByETC (std::unique_ptr<model::ValuesByETC>&)
   {
   }
 

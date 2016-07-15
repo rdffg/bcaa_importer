@@ -645,7 +645,7 @@ namespace dataadvice
   void FolioRecordImpl::
   Values (std::unique_ptr<model::PropertyValues> &values)
   {
-      // TODO
+      m_propertyValues = std::move(values);
   }
 
   void FolioRecordImpl::
@@ -732,9 +732,20 @@ namespace dataadvice
             if (!legal->save())
                 throw SaveError(legal->lastError().text());
         }
+        // folio description
         m_folioDescription->setFolio(m_folio.get());
         if (!m_folioDescription->save())
             throw SaveError(QString("Folio Description: ")+ m_folioDescription->lastError().text());
+        m_folioDescription->landMeasurement()->setFolioDescription(m_folioDescription.get());
+        if (!m_folioDescription->landMeasurement()->save())
+            throw SaveError(QString("Land Measurement: ")
+                            + m_folioDescription->landMeasurement()->lastError().text());
+        m_folioDescription->neighbourhood()->setFolioDescription(m_folioDescription.get());
+        if (!m_folioDescription->neighbourhood()->save())
+            throw SaveError(QString("Neighbourhood: ")
+                            + m_folioDescription->neighbourhood()->lastError().text());
+
+        // sales
         for (auto &&sale: m_sales)
         {
             sale->setFolio(m_folio.get());
@@ -763,6 +774,19 @@ namespace dataadvice
             land->setFolio(m_folio.get());
             if (!land->save())
                 throw SaveError(land->lastError().text());
+        }
+        // property values
+        for (auto &&vByETC: m_propertyValues->first)
+        {
+            vByETC->setFolio(m_folio.get());
+            if (!vByETC->save())
+                throw SaveError(vByETC->lastError().text());
+        }
+        for (auto &&valuation: m_propertyValues->second)
+        {
+            valuation->setFolio(m_folio.get());
+            if (!valuation->save())
+                throw SaveError(valuation->lastError().text());
         }
     }
     else
@@ -2185,7 +2209,7 @@ namespace dataadvice
   void FolioDescriptionImpl::
   Neighbourhood (std::unique_ptr<model::Neighbourhood> &Neighbourhood)
   {
-      // TODO
+      m_descr->setNeighbourhood(Neighbourhood);
   }
 
   void FolioDescriptionImpl::
@@ -2251,41 +2275,46 @@ namespace dataadvice
   void FolioDescriptionImpl::
   LandMeasurement (std::unique_ptr<model::LandMeasurement> &land)
   {
-
+      m_descr->setLandMeasurement(land);
   }
 
   void FolioDescriptionImpl::
   SchoolDistrict (std::unique_ptr<model::SpecialDistrict> &SchoolDistrict)
   {
-    // TODO
-    //
+      if (!SchoolDistrict->save())
+          throw SaveError(QString("School district: ")
+                          + SchoolDistrict->lastError().text());
+      m_descr->setSchoolDistrict(std::move(SchoolDistrict));
   }
 
   void FolioDescriptionImpl::
   RegionalDistrict (std::unique_ptr<model::SpecialDistrict> &RegionalDistrict)
   {
-    // TODO
-    //
+      if (!RegionalDistrict->save())
+          throw SaveError(QString("Regional District: ")
+                          + RegionalDistrict->lastError().text());
+      m_descr->setRegionalDistrict(std::move(RegionalDistrict));
   }
 
   void FolioDescriptionImpl::
   RegionalHospitalDistrict (std::unique_ptr<model::SpecialDistrict> &RegionalHospitalDistrict)
   {
-    // TODO
-    //
+      if (!RegionalHospitalDistrict->save())
+          throw SaveError(QString("Regional hospital district: ")
+                          + RegionalHospitalDistrict->lastError().text());
+      m_descr->setRegionalHospitalDistrict(std::move(RegionalHospitalDistrict));
   }
 
   void FolioDescriptionImpl::
   PredominantManualClass (std::unique_ptr<model::ManualClass> &PredominantManualClass)
   {
-    // TODO
-    //
+      m_descr->setPredominantManualClass(std::move(PredominantManualClass));
   }
 
   std::unique_ptr<model::FolioDescription> FolioDescriptionImpl::
   post_FolioDescription ()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_descr);
   }
 
@@ -2663,7 +2692,7 @@ namespace dataadvice
   }
 
   void PropertyValuesImpl::
-  Valuation (std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue> > &Valuation)
+  Valuation (std::vector<std::unique_ptr<model::ValuesByETC> > &Valuation)
   {
       m_values->first = std::move(Valuation);
   }
@@ -2679,16 +2708,16 @@ namespace dataadvice
   void ValuationCollectionImpl::
   pre ()
   {
-      valuations = std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue>>();
+      valuations = std::vector<std::unique_ptr<model::ValuesByETC>>();
   }
 
   void ValuationCollectionImpl::
-  ValuesByETC (std::unique_ptr<model::TaxExemptPropertyClassValue> &values)
+  ValuesByETC (std::unique_ptr<model::ValuesByETC> &values)
   {
       valuations.push_back(std::move(values));
   }
 
-  std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue> >
+  std::vector<std::unique_ptr<model::ValuesByETC> >
   ValuationCollectionImpl::post_ValuationCollection()
   {
       return std::move(valuations);
@@ -2700,7 +2729,7 @@ namespace dataadvice
   void ValuesByETCImpl::
   pre ()
   {
-      m_values = std::make_unique<model::TaxExemptPropertyClassValue>();
+      m_values = std::make_unique<model::ValuesByETC>();
   }
 
   void ValuesByETCImpl::
@@ -2739,7 +2768,7 @@ namespace dataadvice
       m_values->setImprovementValue(ImprovementValue);
   }
 
-  std::unique_ptr<model::TaxExemptPropertyClassValue>
+  std::unique_ptr<model::ValuesByETC>
   ValuesByETCImpl::post_ValuesByETC()
   {
       return std::move(m_values);

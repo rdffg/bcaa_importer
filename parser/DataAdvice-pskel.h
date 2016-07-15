@@ -4316,7 +4316,7 @@ namespace dataadvice
     SchoolValues (std::vector<std::unique_ptr<model::PropertyClassValue>>&);
 
     virtual void
-    Valuation (std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue>>&);
+    Valuation (std::vector<std::unique_ptr<model::ValuesByETC>>&);
 
     virtual std::unique_ptr<model::PropertyValues>
     post_PropertyValues () = 0;
@@ -4373,9 +4373,9 @@ namespace dataadvice
     // pre ();
 
     virtual void
-    ValuesByETC (std::unique_ptr<model::TaxExemptPropertyClassValue>&);
+    ValuesByETC (std::unique_ptr<model::ValuesByETC>&);
 
-    virtual std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue>>
+    virtual std::vector<std::unique_ptr<model::ValuesByETC>>
     post_ValuationCollection () = 0;
 
     // Parser construction API.
@@ -4432,7 +4432,7 @@ namespace dataadvice
     virtual void
     ImprovementValue (double);
 
-    virtual std::unique_ptr<model::TaxExemptPropertyClassValue>
+    virtual std::unique_ptr<model::ValuesByETC>
     post_ValuesByETC () = 0;
 
     // Parser construction API.

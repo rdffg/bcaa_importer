@@ -190,7 +190,7 @@ void BCAADataImporter::registerModels()
     QDjango::registerModel<model::PropertyClassValueType>();
     QDjango::registerModel<model::Sale>();
     QDjango::registerModel<model::SpecialDistrict>();
-    QDjango::registerModel<model::TaxExemptPropertyClassValue>();
+    QDjango::registerModel<model::ValuesByETC>();
     QDjango::registerModel<model::Valuation>();
     QDjango::registerModel<model::PropertyClassValue>();
     QDjango::registerModel<model::Farm>();

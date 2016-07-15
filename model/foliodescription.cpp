@@ -1,7 +1,10 @@
 #include "foliodescription.h"
+#include "model/landmeasurement.h"
+#include "model/neighbourhood.h"
 
 using namespace model;
-FolioDescription::FolioDescription(QObject *parent): QDjangoModel (parent)
+FolioDescription::FolioDescription(QObject *parent):
+    QDjangoModel (parent)
 {
 
 }
@@ -151,28 +154,6 @@ void FolioDescription::setTenureDescription(const QString &tenureDescription)
     m_tenureDescription = tenureDescription;
 }
 
-//std::unique_ptr<FolioDescription> FolioDescription::fromXml(const dataadvice::FolioDescription &descr)
-//{
-//    auto model = std::make_unique<FolioDescription>();
-//    if (descr.ActualUseCode().present())
-//        model->setActualUseCode(QString::fromStdString(descr.ActualUseCode().get()));
-//    if (descr.ActualUseDescription().present())
-//        model->setActualUseDescription(QString::fromStdString(descr.ActualUseDescription().get()));
-//    if (descr.ALRCode().present())
-//        model->setAlrCode(QString::fromStdString(descr.ALRCode().get()));
-//    if (descr.ALRDescription().present())
-//        model->setAlrDescription(QString::fromStdString(descr.ALRDescription().get()));
-//    if (descr.BCTransitFlag().present())
-//        model->setBcTransitFlag(descr.BCTransitFlag().get());
-//    if (descr.ParkingArea().present())
-//        model->setParkingArea(QString::fromStdString(descr.ParkingArea().get()));
-//    if (descr.PoliceTaxFlag().present())
-//        model->setPoliceTaxFlag(descr.PoliceTaxFlag().get());
-//    if (descr.VacantFlag().present())
-//        model->setVacantFlag(descr.VacantFlag().get());
-//    return model;
-//}
-
 ManualClass* FolioDescription::predominantManualClass() const
 {
     return qobject_cast<ManualClass *>(foreignKey(FOLIODESCRIPTION_PREDOMINANT_MANUALCLASS));
@@ -196,4 +177,24 @@ model::Folio* FolioDescription::folio() const
 void FolioDescription::setFolio(model::Folio* folio)
 {
     setForeignKey(FOLIODESCRIPTION_FOLIO_PROPERTY, folio);
+}
+
+void FolioDescription::setLandMeasurement(std::unique_ptr<model::LandMeasurement> &measurement)
+{
+    m_measurement = std::move(measurement);
+}
+
+std::unique_ptr<model::LandMeasurement>& FolioDescription::landMeasurement()
+{
+    return m_measurement;
+}
+
+void FolioDescription::setNeighbourhood(std::unique_ptr<model::Neighbourhood> &neighbourhood)
+{
+    m_neighbourhood = std::move(neighbourhood);
+}
+
+std::unique_ptr<model::Neighbourhood>& FolioDescription::neighbourhood()
+{
+    return m_neighbourhood;
 }

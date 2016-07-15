@@ -22,7 +22,7 @@ namespace http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd
     OwnershipGroupCollection std::vector<std::unique_ptr<model::OwnershipGroup>> std::vector<std::unique_ptr<model::OwnershipGroup>>&;
     PropertyClassValuesCollection std::vector<std::unique_ptr<model::PropertyClassValue>> std::vector<std::unique_ptr<model::PropertyClassValue>>&;
     SaleCollection std::vector<std::unique_ptr<model::Sale>> std::vector<std::unique_ptr<model::Sale>>&;
-    ValuationCollection std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue>> std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue>>&;
+    ValuationCollection std::vector<std::unique_ptr<model::ValuesByETC>> std::vector<std::unique_ptr<model::ValuesByETC>>&;
 
     # models
     # AssessmentArea std::unique_ptr<model::AssessmentArea> std::unique_ptr<model::AssessmentArea>&;
@@ -49,13 +49,13 @@ namespace http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd
     PropertyClassCode QString;
     #PropertyValues std::vector<std::unique_ptr<model::PropertyClassValue>> std::vector<std::unique_ptr<model::PropertyClassValue>>&;
     SpecialDistrict std::unique_ptr<model::SpecialDistrict> std::unique_ptr<model::SpecialDistrict>&;
-    TaxExemptPropertyClassValue std::unique_ptr<model::TaxExemptPropertyClassValue> std::unique_ptr<model::TaxExemptPropertyClassValue>&;
+    #TaxExemptPropertyClassValue std::unique_ptr<model::TaxExemptPropertyClassValue> std::unique_ptr<model::TaxExemptPropertyClassValue>&;
     Valuation std::unique_ptr<model::Valuation> std::unique_ptr<model::Valuation>&;
     DeliverySummary std::unique_ptr<model::DeliverySummary> std::unique_ptr<model::DeliverySummary>&;
     DataAdvice std::unique_ptr<model::DataAdvice> std::unique_ptr<model::DataAdvice>&;
     AssessmentAreaCode QString;
     Sale std::unique_ptr<model::Sale> std::unique_ptr<model::Sale>&;
-    ValuesByETC std::unique_ptr<model::TaxExemptPropertyClassValue> std::unique_ptr<model::TaxExemptPropertyClassValue>&;
+    ValuesByETC std::unique_ptr<model::ValuesByETC> std::unique_ptr<model::ValuesByETC>&;
     FolioBooleanItem model::BooleanItem;
     FolioString255Item model::StringItem;
     FolioLookupCodeItem model::StringItem;

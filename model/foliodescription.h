@@ -11,6 +11,10 @@
 #define FOLIODESCRIPTION_HOSPITALDISTRICT_PROPERTY "regionalHospitalDistrict"
 #define FOLIODESCRIPTION_PREDOMINANT_MANUALCLASS "predominantManualClass"
 namespace model {
+
+class LandMeasurement;
+class Neighbourhood;
+
 class FolioDescription : public QDjangoModel
 {
     Q_OBJECT
@@ -94,13 +98,17 @@ public:
     void setRegionalHospitalDistrict(SpecialDistrict* district);
     void setRegionalHospitalDistrict(std::unique_ptr<SpecialDistrict> district);
 
-//    static std::unique_ptr<FolioDescription> fromXml(const dataadvice::FolioDescription &descr);
-
     QString tenureCode() const;
     void setTenureCode(const QString &tenureCode);
 
     QString tenureDescription() const;
     void setTenureDescription(const QString &tenureDescription);
+
+    // storage for child objects
+    void setLandMeasurement(std::unique_ptr<model::LandMeasurement> &measurement);
+    std::unique_ptr<model::LandMeasurement>& landMeasurement();
+    void setNeighbourhood(std::unique_ptr<model::Neighbourhood> &neighbourhood);
+    std::unique_ptr<model::Neighbourhood>& neighbourhood();
 
 private:
     QString m_actualUseCode;
@@ -111,9 +119,10 @@ private:
     QString m_alrCode;
     QString m_alrDescription;
     QString m_parkingArea;
-    QString m_predominantManualClass;
     QString m_tenureCode;
     QString m_tenureDescription;
+    std::unique_ptr<model::LandMeasurement> m_measurement;
+    std::unique_ptr<model::Neighbourhood> m_neighbourhood;
 };
 }
 

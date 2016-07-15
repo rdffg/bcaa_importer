@@ -69,7 +69,7 @@ typedef FolioItem<long long> IntegerItem;
 typedef FolioItem<QDate> DateItem;
 
 // PropertyValues
-typedef std::pair<std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue> >,
+typedef std::pair<std::vector<std::unique_ptr<model::ValuesByETC> >,
     std::vector<std::unique_ptr<model::PropertyClassValue> > > PropertyValues;
 }
 #endif // BOOLEANITEM_H

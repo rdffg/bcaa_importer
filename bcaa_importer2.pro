@@ -34,7 +34,6 @@ SOURCES += main.cpp \
     model/minortaxing/jurisdictiontype.cpp \
     model/manufacturedhome.cpp \
     model/sale.cpp \
-    model/taxexemptpropertyclassvalue.cpp \
     model/ivaluation.cpp \
     model/valuation.cpp \
     model/propertyclassvalue.cpp \
@@ -51,7 +50,8 @@ SOURCES += main.cpp \
     parser/ixmlfilereader.cpp \
     parser/folioitem.cpp \
     parser/runtypeparser.cpp \
-    model/bcaamodel.cpp
+    model/bcaamodel.cpp \
+    model/valuesbyetc.cpp
 
 RESOURCES += qml.qrc
 
@@ -89,7 +89,7 @@ HEADERS += \
     model/minortaxing/jurisdictiontype.h \
     model/manufacturedhome.h \
     model/sale.h \
-    model/taxexemptpropertyclassvalue.h \
+    model/valuesbyetc.h \
     model/ivaluation.h \
     model/valuation.h \
     model/propertyclassvalue.h \

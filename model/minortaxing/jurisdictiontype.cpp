@@ -28,8 +28,6 @@ void JurisdictionType::populate()
     int index = mo.indexOfEnumerator("TaxingJurisdictionType");
     QMetaEnum metaEnum = mo.enumerator(index);
     QDjangoQuerySet<JurisdictionType> query;
-    int count = query.count();
-    int keyCount = metaEnum.keyCount();
     if (query.count() < metaEnum.keyCount())
     {
         for (int i = 0; i < metaEnum.keyCount(); i++)

@@ -24,7 +24,7 @@
 #include "model/propertyclassvaluetype.h"
 #include "model/sale.h"
 #include "model/specialdistrict.h"
-#include "model/taxexemptpropertyclassvalue.h"
+#include "model/valuesbyetc.h"
 #include "model/valuation.h"
 #include "model/managedforest.h"
 

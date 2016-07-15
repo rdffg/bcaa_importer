@@ -453,6 +453,7 @@ namespace dataadvice
       std::vector<std::unique_ptr<model::OilAndGas>> m_oilAndGas;
       std::vector<std::unique_ptr<model::LandCharacteristic>> m_landCharacteristics;
       std::weak_ptr<model::Jurisdiction> m_jurisdiction;
+      std::unique_ptr<model::PropertyValues> m_propertyValues;
       bool* m_shouldCancel;
   };
 
@@ -1556,7 +1557,7 @@ namespace dataadvice
     SchoolValues (std::vector<std::unique_ptr<model::PropertyClassValue>>&) override;
 
     virtual void
-    Valuation (std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue>>&) override;
+    Valuation (std::vector<std::unique_ptr<model::ValuesByETC>>&) override;
 
     virtual std::unique_ptr<model::PropertyValues>
     post_PropertyValues () override;
@@ -1571,12 +1572,12 @@ namespace dataadvice
     pre () override;
 
     virtual void
-    ValuesByETC (std::unique_ptr<model::TaxExemptPropertyClassValue>&) override;
+    ValuesByETC (std::unique_ptr<model::ValuesByETC>&) override;
 
-    virtual std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue>>
+    virtual std::vector<std::unique_ptr<model::ValuesByETC>>
     post_ValuationCollection () override;
   private:
-      std::vector<std::unique_ptr<model::TaxExemptPropertyClassValue>> valuations;
+      std::vector<std::unique_ptr<model::ValuesByETC>> valuations;
   };
 
   class ValuesByETCImpl: public virtual ValuesByETC_pskel
@@ -1603,10 +1604,10 @@ namespace dataadvice
     virtual void
     ImprovementValue (double) override;
 
-    virtual std::unique_ptr<model::TaxExemptPropertyClassValue>
+    virtual std::unique_ptr<model::ValuesByETC>
     post_ValuesByETC () override;
   private:
-      std::unique_ptr<model::TaxExemptPropertyClassValue> m_values;
+      std::unique_ptr<model::ValuesByETC> m_values;
   };
 
   class PropertyClassValuesCollectionImpl: public virtual PropertyClassValuesCollection_pskel
