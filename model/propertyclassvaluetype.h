@@ -31,6 +31,8 @@ public:
 
     static void populate();
 
+    static std::unique_ptr<PropertyClassValueType> getModel(ValueType type);
+
 //    static std::unique_ptr<PropertyClassValueType> fromValueType(const ValueType &type);
 
 private:

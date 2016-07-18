@@ -17,6 +17,7 @@ class Owner : public QDjangoModel
     Q_PROPERTY(QString companyOrLastName READ companyOrLastName WRITE setCompanyOrLastName)
     Q_PROPERTY(QString equityType READ equityType WRITE setEquityType)
     Q_PROPERTY(QString equityTypeDescription READ equityTypeDescription WRITE setEquityTypeDescription)
+    Q_PROPERTY(QString ownerSequenceID READ ownerSequenceID WRITE setOwnerSequenceID)
     Q_PROPERTY(model::OwnershipGroup* ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
 
     Q_CLASSINFO("__meta__", "db_table=owner")
@@ -26,6 +27,7 @@ class Owner : public QDjangoModel
     Q_CLASSINFO("companyOrLastName","null=true")
     Q_CLASSINFO("equityType", "null=true")
     Q_CLASSINFO("equityTypeDescription", "null=true")
+    Q_CLASSINFO("ownerSequenceID", "null=true length=32")
     Q_CLASSINFO(OWNERSHIPGROUP_PROPERTY, "on_delete=cascade")
 
 public:
@@ -51,7 +53,9 @@ public:
     OwnershipGroup *ownershipGroup() const;
     void setOwnershipGroup(OwnershipGroup *ownershipGroup);
 
-//    static Owner *fromXml(dataadvice::Owner const &owner);
+    QString ownerSequenceID() const;
+    void setOwnerSequenceID(const QString &ownerSequenceID);
+
 private:
     QString m_firstname;
     QString m_middleName;
@@ -59,6 +63,7 @@ private:
     QString m_companyOrLastName;
     QString m_equityType;
     QString m_equityTypeDescription;
+    QString m_ownerSequenceID;
 };
 }
 #endif // OWNER_H

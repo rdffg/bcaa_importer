@@ -244,21 +244,21 @@ namespace dataadvice
   void AmendmentReasonCountImpl::
   AmendmentReasonCode (const QString& AmendmentReasonCode)
   {
-    // TODO
+    // TODO AmendmentReasonCount
     //
   }
 
   void AmendmentReasonCountImpl::
   AmendmentReasonDescription (const QString& AmendmentReasonDescription)
   {
-    // TODO
+    // TODO AmendmentReasonCount
     //
   }
 
   void AmendmentReasonCountImpl::
   FolioCount (long long FolioCount)
   {
-    // TODO
+    // TODO AmendmentReasonCount
     //
   }
 
@@ -296,21 +296,21 @@ namespace dataadvice
   void DeleteReasonCountImpl::
   DeleteReasonCode (const QString& DeleteReasonCode)
   {
-    // TODO
+    // TODO DeleteReasonCount
     //
   }
 
   void DeleteReasonCountImpl::
   DeleteReasonDescription (const QString& DeleteReasonDescription)
   {
-    // TODO
+    // TODO DeleteReasonCount
     //
   }
 
   void DeleteReasonCountImpl::
   FolioCount (long long FolioCount)
   {
-    // TODO
+    // TODO DeleteReasonCount
     //
   }
 
@@ -338,7 +338,6 @@ namespace dataadvice
   pre ()
   {
       m_assessmentArea = std::make_shared<model::AssessmentArea>();
-      //jurisdictions = std::vector<std::unique_ptr<model::Jurisdiction>>();
       auto collection_parser = dynamic_cast<JurisdictionCollectionImpl*>(Jurisdictions_parser_);
       if (collection_parser != nullptr)
       {
@@ -373,7 +372,7 @@ namespace dataadvice
   void AssessmentAreaImpl::
   AreaSummary (std::unique_ptr<model::DeliverySummary> &AreaSummary)
   {
-    // TODO
+    // TODO AssessmentAreaImpl::AreaSummary
     //
   }
 
@@ -476,7 +475,7 @@ namespace dataadvice
   void JurisdictionImpl::
   JurisdictionSummary (std::unique_ptr<model::DeliverySummary> &JurisdictionSummary)
   {
-    // TODO
+    // TODO JurisdictionSummary
     //
   }
 
@@ -505,6 +504,7 @@ namespace dataadvice
   }
 
   // FolioGroupValuesImpl
+  // Only used for DeliverySummary
   //
 
   void FolioGroupValuesImpl::
@@ -515,14 +515,14 @@ namespace dataadvice
   void FolioGroupValuesImpl::
   LandValue (double LandValue)
   {
-    // TODO
+    // TODO FolioGroupValues
     //
   }
 
   void FolioGroupValuesImpl::
   ImprovementValue (double ImprovementValue)
   {
-    // TODO
+    // TODO FolioGroupValues
     //
   }
 
@@ -692,7 +692,7 @@ namespace dataadvice
   void FolioRecordImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO FolioRecord ID
     //
   }
 
@@ -736,15 +736,21 @@ namespace dataadvice
         m_folioDescription->setFolio(m_folio.get());
         if (!m_folioDescription->save())
             throw SaveError(QString("Folio Description: ")+ m_folioDescription->lastError().text());
-        m_folioDescription->landMeasurement()->setFolioDescription(m_folioDescription.get());
-        if (!m_folioDescription->landMeasurement()->save())
-            throw SaveError(QString("Land Measurement: ")
-                            + m_folioDescription->landMeasurement()->lastError().text());
-        m_folioDescription->neighbourhood()->setFolioDescription(m_folioDescription.get());
-        if (!m_folioDescription->neighbourhood()->save())
-            throw SaveError(QString("Neighbourhood: ")
-                            + m_folioDescription->neighbourhood()->lastError().text());
-
+        if (m_folioDescription->landMeasurement())
+        {
+            m_folioDescription->landMeasurement()->setFolioDescription(m_folioDescription.get());
+            if (!m_folioDescription->landMeasurement()->save())
+                throw SaveError(QString("Land Measurement: ")
+                        + m_folioDescription->landMeasurement()->lastError().text());
+            m_folioDescription->neighbourhood()->setFolioDescription(m_folioDescription.get());
+        }
+        if (m_folioDescription->neighbourhood())
+        {
+            m_folioDescription->neighbourhood()->setFolioDescription(m_folioDescription.get());
+            if (!m_folioDescription->neighbourhood()->save())
+                throw SaveError(QString("Neighbourhood: ")
+                    + m_folioDescription->neighbourhood()->lastError().text());
+        }
         // property values
         for (auto &&value: m_propertyValues->first)
         {
@@ -916,14 +922,14 @@ namespace dataadvice
   void FolioDeleteImpl::
   DeleteReasonCode (const QString& DeleteReasonCode)
   {
-    // TODO
+    // TODO FolioDelete
     //
   }
 
   void FolioDeleteImpl::
   DeleteReasonDescription (const QString& DeleteReasonDescription)
   {
-    // TODO
+    // TODO FolioDelete
     //
   }
 
@@ -948,28 +954,28 @@ namespace dataadvice
   void FolioRenumberImpl::
   AssessmentAreaDescription (const QString& AssessmentAreaDescription)
   {
-    // TODO
+    // TODO FolioRenumber
     //
   }
 
   void FolioRenumberImpl::
   JurisdictionCode (const QString& JurisdictionCode)
   {
-    // TODO
+    // TODO FolioRenumber
     //
   }
 
   void FolioRenumberImpl::
   JurisdictionDescription (const QString& JurisdictionDescription)
   {
-    // TODO
+    // TODO FolioRenumber
     //
   }
 
   void FolioRenumberImpl::
   RollNumber (const QString& RollNumber)
   {
-    // TODO
+    // TODO FolioRenumber
     //
   }
 
@@ -1098,7 +1104,7 @@ namespace dataadvice
   void FolioAddressImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO FolioAddressImpl::ID
     //
   }
 
@@ -1286,7 +1292,7 @@ namespace dataadvice
   void OwnerImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO OwnerImpl::ID
     //
   }
 
@@ -1416,8 +1422,7 @@ namespace dataadvice
   void MailingAddressImpl::
   ModeOfDeliveryValue (const model::StringItem &item)
   {
-      // TODO
-      //
+      m_addr->setModeOfDeliveryValue(item.value());
   }
 
   void MailingAddressImpl::
@@ -1435,7 +1440,7 @@ namespace dataadvice
   void MailingAddressImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO MailingAddressImpl::ID
     //
   }
 
@@ -1494,7 +1499,7 @@ namespace dataadvice
   void FormattedMailingAddressImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO FormattedMailingAddressImpl::ID
     //
   }
 
@@ -1772,7 +1777,7 @@ namespace dataadvice
   void LegalDescriptionImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO LegalDescriptionImpl::ID
     //
   }
 
@@ -1891,7 +1896,7 @@ namespace dataadvice
   void ManufacturedHomeImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO ManufacturedHomeImpl::ID
     //
   }
 
@@ -1940,7 +1945,7 @@ namespace dataadvice
   void FarmImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO FarmImpl::ID
     //
   }
 
@@ -1990,7 +1995,7 @@ namespace dataadvice
   void OilAndGasImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO OilAndGasImpl::ID
     //
   }
 
@@ -2039,7 +2044,7 @@ namespace dataadvice
   void ManagedForestImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO ManagedForestImpl::ID
     //
   }
 
@@ -2109,7 +2114,7 @@ namespace dataadvice
   void FolioAmendmentImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO FolioAmendmentImpl::ID
     //
   }
 
@@ -2195,7 +2200,7 @@ namespace dataadvice
   void SaleImpl::
   ID (const QString& ID)
   {
-    // TODO
+    // TODO SaleImpl::ID
     //
   }
 
@@ -2678,25 +2683,34 @@ namespace dataadvice
   void PropertyValuesImpl::
   GeneralValues (std::vector<std::unique_ptr<model::PropertyClassValue>>& GeneralValues)
   {
-      m_values->second.insert(m_values->second.end(),
-                              std::make_move_iterator(GeneralValues.begin()),
-                              std::make_move_iterator(GeneralValues.end()));
+      for (auto &&val: GeneralValues)
+      {
+          val->setValueType(model::PropertyClassValueType::getModel(
+                                model::PropertyClassValueType::General));
+          m_values->second.push_back(std::move(val));
+      }
   }
 
   void PropertyValuesImpl::
   BCTransitValues (std::vector<std::unique_ptr<model::PropertyClassValue>>& BCTransitValues)
   {
-      m_values->second.insert(m_values->second.end(),
-                              std::make_move_iterator(BCTransitValues.begin()),
-                              std::make_move_iterator(BCTransitValues.end()));
+      for (auto &&val: BCTransitValues)
+      {
+          val->setValueType(model::PropertyClassValueType::getModel(
+                                model::PropertyClassValueType::BCTransit));
+          m_values->second.push_back(std::move(val));
+      }
   }
 
   void PropertyValuesImpl::
   SchoolValues (std::vector<std::unique_ptr<model::PropertyClassValue>>& SchoolValues)
   {
-      m_values->second.insert(m_values->second.end(),
-                              std::make_move_iterator(SchoolValues.begin()),
-                              std::make_move_iterator(SchoolValues.end()));
+      for (auto &&val: SchoolValues)
+      {
+          val->setValueType(model::PropertyClassValueType::getModel(
+                                model::PropertyClassValueType::School));
+          m_values->second.push_back(std::move(val));
+      }
   }
 
   void PropertyValuesImpl::

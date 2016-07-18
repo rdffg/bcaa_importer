@@ -33,7 +33,7 @@ void JurisdictionType::populate()
         for (int i = 0; i < metaEnum.keyCount(); i++)
         {
             JurisdictionType prop;
-            prop.setType(static_cast<TaxingJurisdictionType>(i));
+            prop.setType(static_cast<TaxingJurisdictionType>(metaEnum.value(i)));
             prop.setDescription(metaEnum.valueToKey(i));
             if (!prop.save())
                 throw SaveError(prop.lastError().text());

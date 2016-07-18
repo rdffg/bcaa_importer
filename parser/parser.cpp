@@ -538,11 +538,15 @@ void Parser::import()
     }
     try
     {
+        if (!QDjango::database().transaction())
+            throw SaveError("Failed to create transaction.");
         message("Populating lookup tables...");
         model::PropertyClassValueType::populate();
         model::minortaxing::JurisdictionType::populate();
         message("Done.");
-        readFile(filePath.toStdString(), findXsdPath(), false);
+        auto dataAdvice = readFile(filePath.toStdString(), findXsdPath(), false);
+        if (!QDjango::database().commit())
+            throw SaveError("Failed to commit transaction.");
         emit finished();
     }
     catch (SaveError &err)
@@ -559,6 +563,7 @@ void Parser::cancel()
 
 std::unique_ptr<model::DataAdvice> Parser::getFileInfo()
 {
+    auto xsdPath = findXsdPath();
     auto advice = std::move(readFile(filePath.toStdString(), findXsdPath(), true));
     return std::move(advice);
 }

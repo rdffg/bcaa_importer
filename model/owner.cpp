@@ -75,6 +75,16 @@ void Owner::setOwnershipGroup(OwnershipGroup *ownershipGroup) {
     setForeignKey(OWNERSHIPGROUP_PROPERTY, ownershipGroup);
 }
 
+QString Owner::ownerSequenceID() const
+{
+    return m_ownerSequenceID;
+}
+
+void Owner::setOwnerSequenceID(const QString &ownerSequenceID)
+{
+    m_ownerSequenceID = ownerSequenceID;
+}
+
 //model::Owner *Owner::fromXml(const dataadvice::Owner &xowner) {
 //    auto owner = new model::Owner();
 //    if (xowner.CompanyOrLastName().present())

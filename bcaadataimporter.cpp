@@ -65,7 +65,10 @@ bool BCAADataImporter::isRunning() {
 
 void BCAADataImporter::beginImport()
 {
-    QDjango::setDebugEnabled(true);
+#ifdef QT_DEBUG
+        QDjango::setDebugEnabled(true);
+#endif
+
     m_progress = 0;
     emit progressChanged();
 
@@ -74,6 +77,11 @@ void BCAADataImporter::beginImport()
     if (m_dbconnection != NULL) {
         auto db = m_dbconnection->makeDbConnection();
         if(db.open()) {
+            if (this->dbConnection()->driver() == "QSQLITE")
+            {
+                auto q = db.exec(QString("PRAGMA journal_mode=WAL"));
+                q = db.exec("PRAGMA synchronous=OFF");
+            }
             QDjango::setDatabase(db);
         } else {
             qDebug() << "Failed to open database:" << db.lastError();
@@ -137,20 +145,10 @@ bool BCAADataImporter::verifyDataFile()
 {
     try {
         auto parser = new Parser(m_datafilepath, this);
-        connect(parser, &Parser::fileInfo, [=](model::DataAdvice* summary)
-            {
-            m_totalRecords = summary->reportSummary()->totalFolioCount();
-            m_runType = summary->runType();
-            delete summary;
-            emit dataChanged();
-            emit progressChanged();
-            });
         auto advice = std::move(parser->getFileInfo());
-        //m_totalRecords = advice->reportSummary()->totalFolioCount();
         m_runType = advice->runType();
     } catch (const xml_schema::parsing& e)
     {
-        // will never be caught here...
         qDebug() << e.what();
         foreach (auto d, e.diagnostics())
         {
@@ -161,7 +159,11 @@ bool BCAADataImporter::verifyDataFile()
     } catch (const xml_schema::exception& e) {
         qDebug() << e.what();
         return false;
+    } catch (QString &err) {
+        statusChanged(err);
+        return false;
     }
+
     this->m_canRun = true;
     emit dataChanged();
     emit progressChanged();

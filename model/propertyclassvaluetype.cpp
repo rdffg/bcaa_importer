@@ -36,13 +36,24 @@ void PropertyClassValueType::populate()
     QDjangoQuerySet<PropertyClassValueType> query;
     if (query.count() < metaEnum.keyCount())
     {
-        for (int i = 0; i < metaEnum.keyCount(); i++)
+        for (int i = 1; i < metaEnum.keyCount(); i++)
         {
             PropertyClassValueType prop;
-            prop.setType(static_cast<ValueType>(i));
+            prop.setType(static_cast<ValueType>(metaEnum.value(i)));
             prop.setDescription(metaEnum.valueToKey(i));
             if (!prop.save())
                 throw SaveError(prop.lastError().text());
         }
     }
+}
+
+std::unique_ptr<model::PropertyClassValueType> PropertyClassValueType::getModel(ValueType type)
+{
+    auto model = std::make_unique<model::PropertyClassValueType>();
+    const QMetaObject &mo = PropertyClassValueType::staticMetaObject;
+    int index = mo.indexOfEnumerator("ValueType");
+    QMetaEnum metaEnum = mo.enumerator(index);
+    model->setType(type);
+    model->setDescription(metaEnum.valueToKey(type));
+    return model;
 }

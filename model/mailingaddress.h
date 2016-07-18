@@ -26,6 +26,7 @@ class MailingAddress : public QDjangoModel
     Q_PROPERTY(QString compartment READ compartment WRITE setCompartment)
     Q_PROPERTY(QString deliveryInstallationType READ deliveryInstallationType WRITE setDeliveryInstallationType)
     Q_PROPERTY(QString modeOfDelivery READ modeOfDelivery WRITE setModeOfDelivery)
+    Q_PROPERTY(QString modeOfDeliveryValue READ modeOfDeliveryValue WRITE setModeOfDeliveryValue)
     Q_PROPERTY(QString site READ site WRITE setSite)
     Q_PROPERTY(QString bulkMailCode READ bulkMailCode WRITE setBulkMailCode)
     Q_PROPERTY(model::OwnershipGroup* ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
@@ -48,6 +49,7 @@ class MailingAddress : public QDjangoModel
     Q_CLASSINFO("compartment", "null=true")
     Q_CLASSINFO("deliveryInstallationType", "null=true")
     Q_CLASSINFO("modeOfDelivery", "null=true")
+    Q_CLASSINFO("modeOfDeliveryValue", "null=true length=255")
     Q_CLASSINFO("site", "null=true")
     Q_CLASSINFO("bulkMailCode", "null=true")
     Q_CLASSINFO(OWNERSHIPGROUP_PROPERTY, "on_delete=cascade")
@@ -114,7 +116,8 @@ public:
     OwnershipGroup* ownershipGroup() const;
     void setOwnershipGroup(OwnershipGroup *group);
 
-//    static MailingAddress *fromXml(dataadvice::MailingAddress const &address);
+    QString modeOfDeliveryValue() const;
+    void setModeOfDeliveryValue(const QString &modeOfDeliveryValue);
 
 private:
     QString m_attention;
@@ -134,6 +137,7 @@ private:
     QString m_compartment;
     QString m_deliveryInstallationType;
     QString m_modeOfDelivery;
+    QString m_modeOfDeliveryValue;
     QString m_site;
     QString m_bulkMailCode;
 };
