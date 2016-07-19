@@ -84,12 +84,14 @@ QSqlDatabase DbConnectionSettings::makeDbConnection()
     //TODO: added username/password to database connection
 
     QSqlDatabase db;
+    // driver
     if (this->driver() == "MSSQL") {
         db = QSqlDatabase::addDatabase("QODBC");
     }
     else {
         db = QSqlDatabase::addDatabase(this->driver());
     }
+    // database
     if (this->driver() == "QSQLITE" && this->database() == "") {
         db.setDatabaseName(":memory:");
         return db;
@@ -98,6 +100,12 @@ QSqlDatabase DbConnectionSettings::makeDbConnection()
     } else {
         db.setDatabaseName(this->database());
     }
+    // server (not Sql Server)
+    if (this->driver() != "MSSQL")
+    {
+        db.setHostName(this->server());
+    }
+    // credentials
     if (!m_username.isEmpty())
         db.setUserName(m_username);
     if (!m_password.isEmpty())
