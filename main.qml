@@ -129,8 +129,8 @@ ApplicationWindow {
             id: progressBar1
             y: 426
             height: 23
-            value: importer.progress
-            maximumValue: importer.totalRecords
+            value: importer.percentDone
+            maximumValue: 1
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 23
             anchors.left: parent.left
@@ -150,14 +150,13 @@ ApplicationWindow {
             Text {
                 id: text1
                 y: 4
-                //text: Math.round(100 * importer.progress / importer.totalRecords) + "%"
                 text: Math.round(importer.progress / 10) * 10;
                 anchors.horizontalCenter: parent.horizontalCenter
                 //hackety hack, why doesn't the progress bar notice on its own?
-                onTextChanged: {
-                    progressBar1.maximumValue = importer.totalRecords;
-                    progressBar1.value = importer.progress;
-                }
+                /* onTextChanged: {
+                    progressBar1.maximumValue = 100;
+                    progressBar1.value = importer.percentDone;
+                } */
             }
         }
 
@@ -166,7 +165,7 @@ ApplicationWindow {
     MessageDialog {
         id: verifyImportDialog
         title: qsTr("Continue Import?")
-        text: "Run Type is " + importer.runType + ". There are " + importer.totalRecords + " records to process. Proceed?"
+        text: "Run Type is " + importer.runType + ". Proceed?"
         onAccepted: {
             importer.beginImport();
         }

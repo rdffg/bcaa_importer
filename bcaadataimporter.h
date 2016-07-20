@@ -12,6 +12,7 @@ class BCAADataImporter : public QObject
     Q_PROPERTY(bool isRunning READ isRunning NOTIFY runningChanged)
     Q_PROPERTY(long long totalRecords READ totalRecords NOTIFY progressChanged)
     Q_PROPERTY(long long progress READ progress NOTIFY progressChanged)
+    Q_PROPERTY(float percentDone READ percentDone NOTIFY progressChanged)
     Q_PROPERTY(QString runType READ runType WRITE setRunType NOTIFY dataChanged)
     Q_PROPERTY(bool canRun READ canRun NOTIFY dataChanged)
 
@@ -25,6 +26,7 @@ public:
     Q_INVOKABLE bool verifyDataFile();
     long long totalRecords() const;
     long long progress()  const;
+    float percentDone() const;
 
     QString runType() const;
     void setRunType(const QString &runType);
@@ -43,7 +45,7 @@ public slots:
 
 private slots:
     void onStatusChanged(QString const &message);
-    void onProgressChanged();
+    void onProgressChanged(float percent);
     void onImportFinished();
 
 private:
@@ -54,6 +56,7 @@ private:
     bool m_isrunning;
     long long m_totalRecords;
     long long m_progress;
+    float m_percentDone;
     QString m_runType;
     bool m_canRun;
     std::map<QString, std::unique_ptr<rdffg::IPostProcess> > m_plugins;

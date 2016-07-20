@@ -22,6 +22,7 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_isrunning(false)
   , m_totalRecords(0)
   , m_progress(0)
+  , m_percentDone(0)
   , m_canRun(false)
   , m_plugins(std::map<QString, std::unique_ptr<rdffg::IPostProcess> >())
 {
@@ -77,6 +78,7 @@ void BCAADataImporter::beginImport()
     if (m_dbconnection != NULL) {
         auto db = m_dbconnection->makeDbConnection();
         if(db.open()) {
+            // make sqlite fast
             if (this->dbConnection()->driver() == "QSQLITE")
             {
                 auto q = db.exec(QString("PRAGMA journal_mode=WAL"));
@@ -109,10 +111,16 @@ void BCAADataImporter::beginImport()
     t->start();
 }
 
-void BCAADataImporter::onProgressChanged()
+void BCAADataImporter::onProgressChanged(float percent)
 {
     ++m_progress;
+    m_percentDone = percent;
     emit progressChanged();
+}
+
+float BCAADataImporter::percentDone()  const
+{
+    return m_percentDone;
 }
 
 void BCAADataImporter::onImportFinished()
@@ -144,7 +152,7 @@ void BCAADataImporter::onStatusChanged(const QString &message)
 bool BCAADataImporter::verifyDataFile()
 {
     try {
-        auto parser = new Parser(m_datafilepath, this);
+        auto parser = new Parser(QUrl(m_datafilepath).toLocalFile(), this);
         auto advice = std::move(parser->getFileInfo());
         m_runType = advice->runType();
     } catch (const xml_schema::parsing& e)

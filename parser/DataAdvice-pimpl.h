@@ -369,7 +369,7 @@ namespace dataadvice
       Q_OBJECT
     public:
 
-      FolioRecordImpl();
+      FolioRecordImpl(std::ifstream& is, size_t size);
     virtual void
     pre () override;
 
@@ -436,7 +436,7 @@ namespace dataadvice
 
     virtual ~FolioRecordImpl();
   signals:
-      void folioSaved();
+      void folioSaved(float progress);
       void message(const QString& message);
 
   private:
@@ -455,6 +455,8 @@ namespace dataadvice
       std::weak_ptr<model::Jurisdiction> m_jurisdiction;
       std::unique_ptr<model::PropertyValues> m_propertyValues;
       bool* m_shouldCancel;
+      std::ifstream& m_inputStream;
+      size_t m_inputSize;
   };
 
   class String32Impl: public virtual String32_pskel,

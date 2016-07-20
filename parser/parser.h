@@ -21,11 +21,10 @@ public slots:
 signals:
     void message(QString msg);
     void finished();
-    void folioSaved();
+    void folioSaved(float percent);
     void fileInfo(model::DataAdvice*);
 
 private:
-    static std::unique_ptr<::dataadvice::DataAdviceImpl> registerParser(bool forSummary);
     QString filePath;
     std::string findXsdPath();
     bool* m_cancel;

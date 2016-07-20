@@ -8,6 +8,7 @@
 #include "DataAdvice-pimpl.h"
 #include "saveerror.h"
 #include "stopparsing.h"
+#include <fstream>
 
 namespace dataadvice
 {
@@ -564,7 +565,13 @@ namespace dataadvice
   // FolioRecordImpl
   //
 
-  FolioRecordImpl::FolioRecordImpl(): FolioRecord_pskel(), QObject(0) {}
+  FolioRecordImpl::FolioRecordImpl(std::ifstream &is, size_t size) :
+      FolioRecord_pskel()
+    , QObject(0)
+    , m_inputStream(is)
+    , m_inputSize(size)
+  {
+  }
 
   void FolioRecordImpl::setCancelFlag(bool& shouldCancel)
   {
@@ -817,7 +824,9 @@ namespace dataadvice
         // something went terribly wrong...
     }
 
-    emit folioSaved();
+    size_t prog = m_inputStream.tellg();
+    float pct = static_cast<float>(prog) / static_cast<float>(m_inputSize);
+    emit folioSaved(pct);
     return std::move(m_folio);
 
   }
