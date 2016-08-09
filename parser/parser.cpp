@@ -57,6 +57,7 @@ void Parser::import()
         model::minortaxing::JurisdictionType::populate();
         message("Done.");
         auto dataAdvice = readFile(filePath.toStdString(), findXsdPath(), false);
+        writeMetadata(dataAdvice);
         if (!QDjango::database().commit())
             throw SaveError("Failed to commit transaction.");
         emit finished();
@@ -66,6 +67,16 @@ void Parser::import()
         this->message(err.text());
         this->finished();
     }
+}
+
+void Parser::writeMetadata(const std::unique_ptr<model::DataAdvice> &summary)
+{
+    model::ImportMeta meta;
+    meta.setImportDate(QDate::currentDate());
+    meta.setRunDate(summary->runDate());
+    meta.setRunType(summary->runType());
+    if (!meta.save())
+        throw SaveError(meta.lastError().text());
 }
 
 void Parser::cancel()
@@ -82,6 +93,8 @@ std::unique_ptr<model::DataAdvice> Parser::getFileInfo()
 
 std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, const std::string& xsdPath, bool forSummary)
 {
+    // use a stream so we can calculate progress based on
+    // position in the file stream
     std::ifstream file;
     size_t size;
     file.open(path, std::ios::in | std::ios::ate); // open input stream at end of file
@@ -587,10 +600,12 @@ std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, con
                                      String255_p,
                                      integer_p);
     }
-    //::dataadvice::DataAdviceImpl* parser = DataAdvice_p.get();
 
+    // connect signals
     connect(&FolioRecord_p, &dataadvice::FolioRecordImpl::folioSaved, this, &Parser::folioSaved);
     connect(&FolioRecord_p, &dataadvice::FolioRecordImpl::message, this, &Parser::message);
+
+    // configure XSD location
     ::xml_schema::document doc_p (*DataAdvice_p,
                                   "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd",
                                   "DataAdvice");

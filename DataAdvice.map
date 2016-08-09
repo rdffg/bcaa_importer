@@ -4,6 +4,7 @@ namespace http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd
     include "../model/deliverysummary.h";
     include "../model/dataadvice.h";
     include "../model/action.h";
+    include "../model/folioaction.h";
     include "../parser/folioitem.h";
     include <memory>;
     # collections
@@ -27,6 +28,10 @@ namespace http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd
     # models
     # AssessmentArea std::unique_ptr<model::AssessmentArea> std::unique_ptr<model::AssessmentArea>&;
     Farm std::unique_ptr<model::Farm> std::unique_ptr<model::Farm>&;
+    FolioAdd model::FolioAction model::FolioAction&;
+    FolioDelete model::FolioAction model::FolioAction&;
+    FolioRenumber model::FolioRenumber;
+    FolioAction std::unique_ptr<model::FolioAction> std::unique_ptr<model::FolioAction>&;
     FolioAddress std::unique_ptr<model::FolioAddress> std::unique_ptr<model::FolioAddress>&;
     FolioDescription std::unique_ptr<model::FolioDescription> std::unique_ptr<model::FolioDescription>&;
     FolioRecord std::unique_ptr<model::Folio> std::unique_ptr<model::Folio>&;
@@ -79,7 +84,6 @@ namespace http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd
     String40 QString;
     String255 QString;
     String1024 QString;
-    JurisdictionCode QString;
     RunType QString;
     Version QString;
 }

@@ -383,7 +383,7 @@ namespace dataadvice
     FolioStatusDescription (const model::StringItem&) override;
 
     virtual void
-    FolioAction () override;
+    FolioAction (std::unique_ptr<model::FolioAction>&) override;
 
     virtual void
     FolioAddresses (std::vector<std::unique_ptr<model::FolioAddress>>&) override;
@@ -440,6 +440,7 @@ namespace dataadvice
       void message(const QString& message);
 
   private:
+      std::unique_ptr<model::FolioAction> m_action;
       std::unique_ptr<model::Folio> m_folio;
       std::vector<std::unique_ptr<model::FolioAddress>> m_folioAddresses;
       std::vector<std::unique_ptr<model::OwnershipGroup>> m_ownershipGroups;
@@ -494,73 +495,82 @@ namespace dataadvice
   {
     public:
     virtual void
-    pre ();
+    pre () override;
 
     virtual void
-    FolioAdd ();
+    FolioAdd (const model::FolioAction&) override;
 
     virtual void
-    FolioDelete ();
+    FolioDelete (const model::FolioAction&) override;
 
-    virtual void
-    post_FolioAction ();
+    std::unique_ptr<model::FolioAction>
+    post_FolioAction () override;
+  private:
+    std::unique_ptr<model::FolioAction> m_action;
   };
 
   class FolioAddImpl: public virtual FolioAdd_pskel
   {
     public:
     virtual void
-    pre ();
+    pre () override;
 
     virtual void
-    FolioRenumber ();
+    FolioRenumber (const model::FolioRenumber&) override;
 
-    virtual void
-    post_FolioAdd ();
+    virtual model::FolioAction post_FolioAdd() override;
+  private:
+      std::unique_ptr<model::FolioRenumber> m_renumber;
   };
 
   class FolioDeleteImpl: public virtual FolioDelete_pskel
   {
     public:
     virtual void
-    pre ();
+    pre () override;
 
     virtual void
-    FolioRenumber ();
+    FolioRenumber (const model::FolioRenumber&) override;
 
     virtual void
-    DeleteReasonCode (const QString&);
+    DeleteReasonCode (const QString&) override;
 
     virtual void
-    DeleteReasonDescription (const QString&);
+    DeleteReasonDescription (const QString&) override;
 
-    virtual void
-    post_FolioDelete ();
+    virtual model::FolioAction
+    post_FolioDelete () override;
+  private:
+      model::FolioRenumber m_renumber;
+      QString m_deleteReason;
+      QString m_reasonDescr;
   };
 
   class FolioRenumberImpl: public virtual FolioRenumber_pskel
   {
     public:
     virtual void
-    pre ();
+    pre () override;
 
     virtual void
-    AssessmentAreaCode ();
+    AssessmentAreaCode (const QString&) override;
 
     virtual void
-    AssessmentAreaDescription (const QString&);
+    AssessmentAreaDescription (const QString&) override;
 
     virtual void
-    JurisdictionCode (const QString&);
+    JurisdictionCode (const QString&) override;
 
     virtual void
-    JurisdictionDescription (const QString&);
+    JurisdictionDescription (const QString&) override;
 
     virtual void
-    RollNumber (const QString&);
+    RollNumber (const QString&) override;
 
-    virtual void
-    post_FolioRenumber ();
+    virtual model::FolioRenumber
+    post_FolioRenumber () override;
+  private:
+      model::FolioRenumber m_renumber;
   };
 
   class FolioItemGroupImpl: public virtual FolioItemGroup_pskel

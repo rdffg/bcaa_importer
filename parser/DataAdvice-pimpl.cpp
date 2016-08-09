@@ -8,6 +8,7 @@
 #include "DataAdvice-pimpl.h"
 #include "saveerror.h"
 #include "stopparsing.h"
+#include "preflight.h"
 #include <fstream>
 
 namespace dataadvice
@@ -42,6 +43,7 @@ namespace dataadvice
   RunType (const QString& RunType)
   {
       runType = RunType;
+      PreFlight::prepareDatabase(runType);
   }
 
   void DataAdviceImpl::
@@ -614,9 +616,9 @@ namespace dataadvice
   }
 
   void FolioRecordImpl::
-  FolioAction ()
+  FolioAction (std::unique_ptr<model::FolioAction> &action)
   {
-      // TODO: Implement folio actions
+      m_action = std::move(action);
   }
 
   void FolioRecordImpl::
@@ -824,9 +826,11 @@ namespace dataadvice
         // something went terribly wrong...
     }
 
+    // calculate progress
     size_t prog = m_inputStream.tellg();
     float pct = static_cast<float>(prog) / static_cast<float>(m_inputSize);
     emit folioSaved(pct);
+
     return std::move(m_folio);
 
   }
@@ -880,21 +884,24 @@ namespace dataadvice
   void FolioActionImpl::
   pre ()
   {
+      m_action = std::make_unique<model::FolioAction>();
   }
 
   void FolioActionImpl::
-  FolioAdd ()
+  FolioAdd (const model::FolioAction &add)
   {
+      *m_action = add;
   }
 
   void FolioActionImpl::
-  FolioDelete ()
+  FolioDelete (const model::FolioAction &del)
   {
+      *m_action = del;
   }
 
-  void FolioActionImpl::
-  post_FolioAction ()
+  std::unique_ptr<model::FolioAction> FolioActionImpl::post_FolioAction()
   {
+      return std::move(m_action);
   }
 
   // FolioAddImpl
@@ -903,16 +910,21 @@ namespace dataadvice
   void FolioAddImpl::
   pre ()
   {
+      m_renumber = std::unique_ptr<model::FolioRenumber>();
   }
 
   void FolioAddImpl::
-  FolioRenumber ()
+  FolioRenumber (const model::FolioRenumber& add)
   {
+      *m_renumber = add;
   }
 
-  void FolioAddImpl::
-  post_FolioAdd ()
+  model::FolioAction FolioAddImpl::post_FolioAdd()
   {
+      if (m_renumber)
+          return model::FolioAction(model::FolioAction::ADD, *m_renumber);
+      else
+          return model::FolioAction(model::FolioAction::ADD);
   }
 
   // FolioDeleteImpl
@@ -924,27 +936,27 @@ namespace dataadvice
   }
 
   void FolioDeleteImpl::
-  FolioRenumber ()
+  FolioRenumber (const model::FolioRenumber &renumber)
   {
+      m_renumber = renumber;
   }
 
   void FolioDeleteImpl::
   DeleteReasonCode (const QString& DeleteReasonCode)
   {
-    // TODO FolioDelete
-    //
+      m_deleteReason = DeleteReasonCode;
   }
 
   void FolioDeleteImpl::
   DeleteReasonDescription (const QString& DeleteReasonDescription)
   {
-    // TODO FolioDelete
-    //
+      m_reasonDescr = DeleteReasonDescription;
   }
 
-  void FolioDeleteImpl::
+  model::FolioAction FolioDeleteImpl::
   post_FolioDelete ()
   {
+      return model::FolioAction(model::FolioAction::DELETE, m_renumber, m_deleteReason, m_reasonDescr);
   }
 
   // FolioRenumberImpl
@@ -953,44 +965,43 @@ namespace dataadvice
   void FolioRenumberImpl::
   pre ()
   {
+      m_renumber = model::FolioRenumber();
   }
 
   void FolioRenumberImpl::
-  AssessmentAreaCode ()
+  AssessmentAreaCode (const QString &code)
   {
+      m_renumber.setAssessmentAreaCode(code);
   }
 
   void FolioRenumberImpl::
   AssessmentAreaDescription (const QString& AssessmentAreaDescription)
   {
-    // TODO FolioRenumber
-    //
+      m_renumber.setAssessmentAreaDescription(AssessmentAreaDescription);
   }
 
   void FolioRenumberImpl::
   JurisdictionCode (const QString& JurisdictionCode)
   {
-    // TODO FolioRenumber
-    //
+      m_renumber.setJurisdictionCode(JurisdictionCode);
   }
 
   void FolioRenumberImpl::
   JurisdictionDescription (const QString& JurisdictionDescription)
   {
-    // TODO FolioRenumber
-    //
+      m_renumber.setJurisdictionDescription(JurisdictionDescription);
   }
 
   void FolioRenumberImpl::
   RollNumber (const QString& RollNumber)
   {
-    // TODO FolioRenumber
-    //
+      m_renumber.setRollNumber(RollNumber);
   }
 
-  void FolioRenumberImpl::
+  model::FolioRenumber FolioRenumberImpl::
   post_FolioRenumber ()
   {
+      return m_renumber;
   }
 
   // FolioItemGroupImpl
@@ -1031,7 +1042,7 @@ namespace dataadvice
 
   std::vector<std::unique_ptr<model::FolioAddress> > FolioAddressCollectionImpl::post_FolioAddressCollection()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(addresses);
   }
 
@@ -1142,7 +1153,7 @@ namespace dataadvice
 
   std::vector<std::unique_ptr<model::OwnershipGroup> > OwnershipGroupCollectionImpl::post_OwnershipGroupCollection()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_owners);
   }
 
@@ -1222,7 +1233,7 @@ namespace dataadvice
 
   std::unique_ptr<model::OwnershipGroup> OwnershipGroupImpl::post_OwnershipGroup()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_owners);
   }
 
@@ -1243,7 +1254,7 @@ namespace dataadvice
 
   std::vector<std::unique_ptr<model::Owner> > OwnerCollectionImpl::post_OwnerCollection()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_owners);
   }
 
@@ -1307,7 +1318,7 @@ namespace dataadvice
 
   std::unique_ptr<model::Owner> OwnerImpl::post_Owner()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_owner);
   }
 
@@ -1456,7 +1467,7 @@ namespace dataadvice
   std::unique_ptr<model::MailingAddress> MailingAddressImpl::
   post_MailingAddress ()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_addr);
   }
 
@@ -1578,7 +1589,7 @@ namespace dataadvice
   std::vector<std::unique_ptr<model::LegalDescription> >
   LegalDescriptionCollectionImpl::post_LegalDescriptionCollection()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_descr);
   }
 
@@ -1793,7 +1804,7 @@ namespace dataadvice
   std::unique_ptr<model::LegalDescription>
   LegalDescriptionImpl::post_LegalDescription()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_descr);
   }
 
@@ -1821,7 +1832,7 @@ namespace dataadvice
   std::unique_ptr<model::LandCharacteristic>
   LandCharacteristicImpl::post_LandCharacteristic()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_characteristic);
   }
 
@@ -1843,7 +1854,7 @@ namespace dataadvice
   std::vector<std::unique_ptr<model::LandCharacteristic> >
   LandCharacteristicCollectionImpl::post_LandCharacteristicCollection()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_landcharacteristics);
   }
 
@@ -1865,7 +1876,7 @@ namespace dataadvice
   std::vector<std::unique_ptr<model::ManufacturedHome>> ManufacturedHomeCollectionImpl::
   post_ManufacturedHomeCollection ()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_homes);
   }
 
@@ -1911,7 +1922,7 @@ namespace dataadvice
 
   std::unique_ptr<model::ManufacturedHome> ManufacturedHomeImpl::post_ManufacturedHome()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_home);
   }
 
@@ -1932,7 +1943,7 @@ namespace dataadvice
 
   std::vector<std::unique_ptr<model::Farm> > FarmCollectionImpl::post_FarmCollection()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(farms);
   }
 
@@ -1960,7 +1971,7 @@ namespace dataadvice
 
   std::unique_ptr<model::Farm> FarmImpl::post_Farm()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_farm);
   }
 
@@ -1982,7 +1993,7 @@ namespace dataadvice
   std::vector<std::unique_ptr<model::OilAndGas> >
   OilAndGasCollectionImpl::post_OilAndGasCollection()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_oil);
   }
 
@@ -2010,7 +2021,7 @@ namespace dataadvice
 
   std::unique_ptr<model::OilAndGas> OilAndGasImpl::post_OilAndGas()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_oil);
   }
 
@@ -2031,7 +2042,7 @@ namespace dataadvice
 
   std::vector<std::unique_ptr<model::ManagedForest> > ManagedForestCollectionImpl::post_ManagedForestCollection()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_forest);
   }
 
@@ -2079,7 +2090,7 @@ namespace dataadvice
   void FolioAmendmentCollectionImpl::
   post_FolioAmendmentCollection ()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
   }
 
   // FolioAmendmentImpl
@@ -2130,7 +2141,7 @@ namespace dataadvice
   void FolioAmendmentImpl::
   post_FolioAmendment ()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
   }
 
   // SaleCollectionImpl
@@ -2151,7 +2162,7 @@ namespace dataadvice
   std::vector<std::unique_ptr<model::Sale>> SaleCollectionImpl::
   post_SaleCollection ()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(sales);
   }
 
@@ -2215,7 +2226,7 @@ namespace dataadvice
 
   std::unique_ptr<model::Sale> SaleImpl::post_Sale()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_sale);
   }
 
@@ -2382,7 +2393,7 @@ namespace dataadvice
   std::unique_ptr<model::LandMeasurement> LandMeasurementImpl::
   post_LandMeasurement ()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_measurement);
   }
 
@@ -2410,7 +2421,7 @@ namespace dataadvice
   std::unique_ptr<model::Neighbourhood> NeighbourhoodImpl::
   post_Neighbourhood ()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_neighbourhood);
   }
 
@@ -2438,7 +2449,7 @@ namespace dataadvice
   std::unique_ptr<model::SpecialDistrict> SpecialDistrictImpl::
   post_SpecialDistrict ()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_district);
   }
 
@@ -2472,7 +2483,7 @@ namespace dataadvice
   std::unique_ptr<model::ManualClass> ManualClassImpl::
   post_ManualClass ()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_class);
   }
 
@@ -2636,7 +2647,7 @@ namespace dataadvice
   std::vector<std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction> >
   MinorTaxingJurisdictionCollectionImpl::post_MinorTaxingJurisdictionCollection()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_jurisdictions);
   }
 
@@ -2676,7 +2687,7 @@ namespace dataadvice
  std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>
   MinorTaxingJurisdictionImpl::post_MinorTaxingJurisdiction()
   {
-    post_FolioItemGroup ();
+    auto action = post_FolioItemGroup ();
     return std::move(m_jurisdiction);
   }
 

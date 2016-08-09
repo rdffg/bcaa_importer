@@ -67,7 +67,7 @@ void DataAdvice::setEndDate(const QDate &endDate)
     m_endDate = endDate;
 }
 
-std::unique_ptr<DeliverySummary>& DataAdvice::reportSummary()
+const std::unique_ptr<DeliverySummary> &DataAdvice::reportSummary()
 {
     return m_reportSummary;
 }
@@ -115,11 +115,6 @@ QDate DataAdvice::runDate() const
 void DataAdvice::setRunDate(const QDate &runDate)
 {
     m_runDate = runDate;
-}
-
-DataAdvice::DataAdvice(DataAdvice &da) : m_reportSummary(std::move(da.reportSummary()))
-{
-
 }
 
 } // namespace model

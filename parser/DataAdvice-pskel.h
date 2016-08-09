@@ -161,6 +161,7 @@ namespace dataadvice
 #include <memory>
 #include "../parser/folioitem.h"
 #include "../model/model.h"
+#include "../model/folioaction.h"
 #include "../model/deliverysummary.h"
 #include "../model/dataadvice.h"
 #include "../model/action.h"
@@ -1183,7 +1184,7 @@ namespace dataadvice
     FolioStatusDescription (const model::StringItem&);
 
     virtual void
-    FolioAction ();
+    FolioAction (std::unique_ptr<model::FolioAction>&);
 
     virtual void
     FolioAddresses (std::vector<std::unique_ptr<model::FolioAddress>>&);
@@ -1415,13 +1416,13 @@ namespace dataadvice
     // pre ();
 
     virtual void
-    FolioAdd ();
+    FolioAdd (const model::FolioAction&);
 
     virtual void
-    FolioDelete ();
+    FolioDelete (const model::FolioAction&);
 
-    virtual void
-    post_FolioAction ();
+    virtual std::unique_ptr<model::FolioAction>
+    post_FolioAction () = 0;
 
     // Parser construction API.
     //
@@ -1465,10 +1466,10 @@ namespace dataadvice
     // pre ();
 
     virtual void
-    FolioRenumber ();
+    FolioRenumber (const model::FolioRenumber&);
 
-    virtual void
-    post_FolioAdd ();
+    virtual model::FolioAction
+    post_FolioAdd () = 0;
 
     // Parser construction API.
     //
@@ -1507,7 +1508,7 @@ namespace dataadvice
     // pre ();
 
     virtual void
-    FolioRenumber ();
+    FolioRenumber (const model::FolioRenumber&);
 
     virtual void
     DeleteReasonCode (const QString&);
@@ -1515,8 +1516,8 @@ namespace dataadvice
     virtual void
     DeleteReasonDescription (const QString&);
 
-    virtual void
-    post_FolioDelete ();
+    virtual model::FolioAction
+    post_FolioDelete () = 0;
 
     // Parser construction API.
     //
@@ -1579,8 +1580,8 @@ namespace dataadvice
     virtual void
     RollNumber (const QString&);
 
-    virtual void
-    post_FolioRenumber ();
+    virtual model::FolioRenumber
+    post_FolioRenumber () = 0;
 
     // Parser construction API.
     //

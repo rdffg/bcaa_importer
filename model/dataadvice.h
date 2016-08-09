@@ -25,7 +25,7 @@ public:
     QDate endDate() const;
     void setEndDate(const QDate &endDate);
 
-    std::unique_ptr<DeliverySummary>& reportSummary();
+    const std::unique_ptr<DeliverySummary>& reportSummary();
     void setReportSummary(std::unique_ptr<DeliverySummary> &reportSummary );
 
     QString version() const;
@@ -39,8 +39,6 @@ public:
 
     QDate runDate() const;
     void setRunDate(const QDate &runDate);
-
-    DataAdvice(DataAdvice&da);
 
 private:
     long long m_rollYear;

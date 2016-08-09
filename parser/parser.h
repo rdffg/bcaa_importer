@@ -25,6 +25,7 @@ signals:
     void fileInfo(model::DataAdvice*);
 
 private:
+    void writeMetadata(const std::unique_ptr<model::DataAdvice> &summary);
     QString filePath;
     std::string findXsdPath();
     bool* m_cancel;

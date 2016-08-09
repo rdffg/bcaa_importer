@@ -4916,7 +4916,7 @@ namespace dataadvice
   }
 
   void FolioRecord_pskel::
-  FolioAction ()
+  FolioAction (std::unique_ptr<model::FolioAction>&)
   {
   }
 
@@ -5207,10 +5207,7 @@ namespace dataadvice
     if (n == "FolioAction" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioAction_parser_)
-      {
-        this->FolioAction_parser_->post_FolioAction ();
-        this->FolioAction ();
-      }
+        this->FolioAction (this->FolioAction_parser_->post_FolioAction ());
 
       return true;
     }
@@ -5406,17 +5403,12 @@ namespace dataadvice
   //
 
   void FolioAction_pskel::
-  FolioAdd ()
+  FolioAdd (const model::FolioAction&)
   {
   }
 
   void FolioAction_pskel::
-  FolioDelete ()
-  {
-  }
-
-  void FolioAction_pskel::
-  post_FolioAction ()
+  FolioDelete (const model::FolioAction&)
   {
   }
 
@@ -5463,10 +5455,7 @@ namespace dataadvice
     if (n == "FolioAdd" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioAdd_parser_)
-      {
-        this->FolioAdd_parser_->post_FolioAdd ();
-        this->FolioAdd ();
-      }
+        this->FolioAdd (this->FolioAdd_parser_->post_FolioAdd ());
 
       return true;
     }
@@ -5474,10 +5463,7 @@ namespace dataadvice
     if (n == "FolioDelete" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioDelete_parser_)
-      {
-        this->FolioDelete_parser_->post_FolioDelete ();
-        this->FolioDelete ();
-      }
+        this->FolioDelete (this->FolioDelete_parser_->post_FolioDelete ());
 
       return true;
     }
@@ -5489,12 +5475,7 @@ namespace dataadvice
   //
 
   void FolioAdd_pskel::
-  FolioRenumber ()
-  {
-  }
-
-  void FolioAdd_pskel::
-  post_FolioAdd ()
+  FolioRenumber (const model::FolioRenumber&)
   {
   }
 
@@ -5531,10 +5512,7 @@ namespace dataadvice
     if (n == "FolioRenumber" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioRenumber_parser_)
-      {
-        this->FolioRenumber_parser_->post_FolioRenumber ();
-        this->FolioRenumber ();
-      }
+        this->FolioRenumber (this->FolioRenumber_parser_->post_FolioRenumber ());
 
       return true;
     }
@@ -5546,7 +5524,7 @@ namespace dataadvice
   //
 
   void FolioDelete_pskel::
-  FolioRenumber ()
+  FolioRenumber (const model::FolioRenumber&)
   {
   }
 
@@ -5557,11 +5535,6 @@ namespace dataadvice
 
   void FolioDelete_pskel::
   DeleteReasonDescription (const QString&)
-  {
-  }
-
-  void FolioDelete_pskel::
-  post_FolioDelete ()
   {
   }
 
@@ -5618,10 +5591,7 @@ namespace dataadvice
     if (n == "FolioRenumber" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioRenumber_parser_)
-      {
-        this->FolioRenumber_parser_->post_FolioRenumber ();
-        this->FolioRenumber ();
-      }
+        this->FolioRenumber (this->FolioRenumber_parser_->post_FolioRenumber ());
 
       return true;
     }
@@ -5670,11 +5640,6 @@ namespace dataadvice
 
   void FolioRenumber_pskel::
   RollNumber (const QString&)
-  {
-  }
-
-  void FolioRenumber_pskel::
-  post_FolioRenumber ()
   {
   }
 
