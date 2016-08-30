@@ -10,6 +10,7 @@ namespace model {
 class ManufacturedHome : public QDjangoModel
 {
     Q_OBJECT
+    Q_PROPERTY(QString id READ id WRITE setId)
     Q_PROPERTY(QString mhRegistryNumber READ mhRegistryNumber WRITE setMhRegistryNumber)
     Q_PROPERTY(QString mhBayNumber READ mhBayNumber WRITE setMhBayNumber)
     Q_PROPERTY(QString mhPark READ mhPark WRITE setMhPark)
@@ -17,6 +18,7 @@ class ManufacturedHome : public QDjangoModel
     Q_PROPERTY(model::Folio* folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=manufactured_home")
+    Q_CLASSINFO("id", "primary_key=true length=32")
     Q_CLASSINFO("mhRegistryNumber", "null=true")
     Q_CLASSINFO("mhBayNumber", "null=true")
     Q_CLASSINFO("mhPark", "null=true")
@@ -43,10 +45,14 @@ public:
     void setFolio(std::unique_ptr<Folio> folio);
 
 
+    QString id() const;
+    void setId(const QString &id);
+
 signals:
 
 public slots:
 private:
+    QString m_id;
     QString m_mhRegistryNumber;
     QString m_mhBayNumber;
     QString m_mhPark;

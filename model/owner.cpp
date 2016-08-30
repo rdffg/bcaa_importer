@@ -85,6 +85,16 @@ void Owner::setOwnerSequenceID(const QString &ownerSequenceID)
     m_ownerSequenceID = ownerSequenceID;
 }
 
+QString Owner::id() const
+{
+    return m_id;
+}
+
+void Owner::setId(const QString &id)
+{
+    m_id = id;
+}
+
 //model::Owner *Owner::fromXml(const dataadvice::Owner &xowner) {
 //    auto owner = new model::Owner();
 //    if (xowner.CompanyOrLastName().present())

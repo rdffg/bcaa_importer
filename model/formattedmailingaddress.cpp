@@ -75,6 +75,16 @@ void FormattedMailingAddress::setOwnershipGroup(OwnershipGroup *group) {
     setForeignKey(OWNERSHIPGROUP_PROPERTY, group);
 }
 
+QString FormattedMailingAddress::id() const
+{
+    return m_id;
+}
+
+void FormattedMailingAddress::setId(const QString &id)
+{
+    m_id = id;
+}
+
 //model::FormattedMailingAddress* FormattedMailingAddress::fromXml(dataadvice::FormattedMailingAddress const &addr)
 //{
 //    auto addrmodel = new model::FormattedMailingAddress();

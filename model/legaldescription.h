@@ -8,6 +8,7 @@
 namespace model {
 class LegalDescription : public QDjangoModel {
     Q_OBJECT
+    Q_PROPERTY(QString id READ id WRITE setId)
     Q_PROPERTY(QString formattedLegalDescription READ formattedLegalDescription WRITE setFormattedLegalDescription)
     Q_PROPERTY(QString PID READ PID WRITE setPID)
     Q_PROPERTY(QString lot READ lot WRITE setLot)
@@ -43,6 +44,7 @@ class LegalDescription : public QDjangoModel {
     Q_PROPERTY(model::Folio * folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=legal_description")
+    Q_CLASSINFO("id", "primary_key=true length=32")
     Q_CLASSINFO("formattedLegalDescription", "null=true")
     Q_CLASSINFO("PID", "null=true")
     Q_CLASSINFO("lot", "null=true")
@@ -180,7 +182,11 @@ public:
   QString ntsLocation() const;
   void setNtsLocation(const QString &ntsLocation);
 
+  QString id() const;
+  void setId(const QString &id);
+
 private:
+  QString m_id;
   QString m_formattedLegalDescription;
   QString m_PID;
   QString m_lot;

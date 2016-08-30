@@ -60,3 +60,13 @@ void ManufacturedHome::setFolio(std::unique_ptr<model::Folio> folio)
 {
     setForeignKey("folio", folio.get());
 }
+
+QString ManufacturedHome::id() const
+{
+    return m_id;
+}
+
+void ManufacturedHome::setId(const QString &id)
+{
+    m_id = id;
+}

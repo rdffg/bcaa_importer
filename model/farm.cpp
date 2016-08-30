@@ -32,6 +32,16 @@ void Farm::setFolio(std::unique_ptr<Folio> folio)
     setForeignKey("folio", folio.get());
 }
 
+QString Farm::id() const
+{
+    return m_id;
+}
+
+void Farm::setId(const QString &id)
+{
+    m_id = id;
+}
+
 //std::unique_ptr<Farm> Farm::fromXml(const dataadvice::FolioString255Item &farmNumber)
 //{
 //    auto model = std::make_unique<Farm>();

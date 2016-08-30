@@ -364,12 +364,6 @@ namespace dataadvice
       m_assessmentArea->setAssessmentAreaDescription(AssessmentAreaDescription);
   }
 
-//  void AssessmentAreaImpl::
-//  Jurisdictions (std::vector<std::unique_ptr<model::Jurisdiction> > &Jurisdictions)
-//  {
-//      jurisdictions = std::move(Jurisdictions);
-//  }
-
   void AssessmentAreaImpl::Jurisdictions() {}
 
   void AssessmentAreaImpl::
@@ -380,10 +374,6 @@ namespace dataadvice
   }
 
   void AssessmentAreaImpl::post_AssessmentArea() {}
-//  std::unique_ptr<model::AssessmentArea> AssessmentAreaImpl::post_AssessmentArea()
-//  {
-//      return std::move(m_assessmentArea);
-//  }
 
   AssessmentAreaImpl::~AssessmentAreaImpl() {}
 
@@ -410,18 +400,6 @@ namespace dataadvice
           jurisdictions = std::vector<std::unique_ptr<model::Jurisdiction>>();
   }
 
-//  void JurisdictionCollectionImpl::
-//  Jurisdiction (std::unique_ptr<model::Jurisdiction> &Jurisdiction)
-//  {
-//      jurisdictions.push_back(std::move(Jurisdiction));
-//  }
-
-//  std::vector<std::unique_ptr<model::Jurisdiction> >
-//  JurisdictionCollectionImpl::post_JurisdictionCollection()
-//  {
-//      return std::move(jurisdictions);
-//  }
-
   void JurisdictionCollectionImpl::Jurisdiction() {}
 
   void JurisdictionCollectionImpl::post_JurisdictionCollection() {}
@@ -439,7 +417,6 @@ namespace dataadvice
   void JurisdictionImpl::
   pre ()
   {
-      //folios = std::vector<std::unique_ptr<model::Folio>>();
       jurisdiction = std::make_shared<model::Jurisdiction>();
       auto folioCollection_parser = dynamic_cast<FolioRecordCollectionImpl*>(FolioRecords_parser_);
       if (folioCollection_parser != nullptr)
@@ -701,8 +678,7 @@ namespace dataadvice
   void FolioRecordImpl::
   ID (const QString& ID)
   {
-    // TODO FolioRecord ID
-    //
+      m_folio->setId(ID);
   }
 
   void FolioRecordImpl::setJurisdiction(std::weak_ptr<model::Jurisdiction> jurisdiction)
@@ -719,106 +695,114 @@ namespace dataadvice
     }
     if (auto jurisdiction = m_jurisdiction.lock())
     {
-        m_folio->setJurisdiction(jurisdiction.get());
-        if (!m_folio->save())
-            throw SaveError(m_folio->lastError().text());
-        // save child objects... add error handling...
-        for (auto &&addr: m_folioAddresses)
+        if (m_action->actionType() == model::FolioAction::ADD)
         {
-            addr->setFolio(m_folio.get());
-            if(!addr->save())
-                throw SaveError(addr->lastError().text());
-        }
-        for (auto &&ownGroup: m_ownershipGroups)
-        {
-            ownGroup->setFolio(m_folio.get());
-            if(!ownGroup->save())
-                throw SaveError(ownGroup->lastError().text());
-        }
-        for (auto &&legal: m_legalDescriptions)
-        {
-            legal->setFolio(m_folio.get());
-            if (!legal->save())
-                throw SaveError(legal->lastError().text());
-        }
-        // folio description
-        m_folioDescription->setFolio(m_folio.get());
-        if (!m_folioDescription->save())
-            throw SaveError(QString("Folio Description: ")+ m_folioDescription->lastError().text());
-        if (m_folioDescription->landMeasurement())
-        {
-            m_folioDescription->landMeasurement()->setFolioDescription(m_folioDescription.get());
-            if (!m_folioDescription->landMeasurement()->save())
-                throw SaveError(QString("Land Measurement: ")
-                        + m_folioDescription->landMeasurement()->lastError().text());
-            m_folioDescription->neighbourhood()->setFolioDescription(m_folioDescription.get());
-        }
-        if (m_folioDescription->neighbourhood())
-        {
-            m_folioDescription->neighbourhood()->setFolioDescription(m_folioDescription.get());
-            if (!m_folioDescription->neighbourhood()->save())
-                throw SaveError(QString("Neighbourhood: ")
-                    + m_folioDescription->neighbourhood()->lastError().text());
-        }
-        // property values
-        for (auto &&value: m_propertyValues->first)
-        {
-            value->setFolio(m_folio.get());
-            if (!value->save())
-                throw SaveError(QString("Values By ETC: ")
-                                + value->lastError().text());
-        }
+            m_folio->setJurisdiction(jurisdiction.get());
+            if (!m_folio->save())
+                throw SaveError(m_folio->lastError().text());
+            // save child objects... add error handling...
+            for (auto &&addr: m_folioAddresses)
+            {
+                addr->setFolio(m_folio.get());
+                if(!addr->save())
+                    throw SaveError(addr->lastError().text());
+            }
+            for (auto &&ownGroup: m_ownershipGroups)
+            {
+                ownGroup->setFolio(m_folio.get());
+                if(!ownGroup->save())
+                    throw SaveError(ownGroup->lastError().text());
+            }
+            for (auto &&legal: m_legalDescriptions)
+            {
+                legal->setFolio(m_folio.get());
+                if (!legal->save())
+                    throw SaveError(legal->lastError().text());
+            }
+            // folio description
+            m_folioDescription->setFolio(m_folio.get());
+            if (!m_folioDescription->save())
+                throw SaveError(QString("Folio Description: ")+ m_folioDescription->lastError().text());
+            if (m_folioDescription->landMeasurement())
+            {
+                m_folioDescription->landMeasurement()->setFolioDescription(m_folioDescription.get());
+                if (!m_folioDescription->landMeasurement()->save())
+                    throw SaveError(QString("Land Measurement: ")
+                                        + m_folioDescription->landMeasurement()->lastError().text());
+                m_folioDescription->neighbourhood()->setFolioDescription(m_folioDescription.get());
+            }
+            if (m_folioDescription->neighbourhood())
+            {
+                m_folioDescription->neighbourhood()->setFolioDescription(m_folioDescription.get());
+                if (!m_folioDescription->neighbourhood()->save())
+                    throw SaveError(QString("Neighbourhood: ")
+                                        + m_folioDescription->neighbourhood()->lastError().text());
+            }
+            // property values
+            for (auto &&value: m_propertyValues->first)
+            {
+                value->setFolio(m_folio.get());
+                if (!value->save())
+                    throw SaveError(QString("Values By ETC: ")
+                                        + value->lastError().text());
+            }
 
-        for (auto &&value: m_propertyValues->second)
-        {
-            value->setFolio(m_folio.get());
-            if (!value->save())
-                throw SaveError(QString("Property Values: ")
-                                + value->lastError().text());
-        }
+            for (auto &&value: m_propertyValues->second)
+            {
+                value->setFolio(m_folio.get());
+                if (!value->save())
+                    throw SaveError(QString("Property Values: ")
+                                        + value->lastError().text());
+            }
 
-        // sales
-        for (auto &&sale: m_sales)
-        {
-            sale->setFolio(m_folio.get());
-            if (!sale->save())
-                throw SaveError(sale->lastError().text());
+            // sales
+            for (auto &&sale: m_sales)
+            {
+                sale->setFolio(m_folio.get());
+                if (!sale->save())
+                    throw SaveError(sale->lastError().text());
+            }
+            for (auto &&minorTax: m_minorTaxingJurisdictions)
+            {
+                // minor tax jurisdictions
+                model::minortaxing::MinorTaxing taxing;
+                taxing.setFolio(m_folio.get());
+                if (!minorTax->save())
+                    throw SaveError(minorTax->lastError().text());
+                taxing.setMinorTaxingJurisdiction(minorTax.get());
+                if (!taxing.save())
+                    throw SaveError(taxing.lastError().text());
+            }
+            for (auto &&oAndG: m_oilAndGas)
+            {
+                oAndG->setFolio(m_folio.get());
+                if (!oAndG->save())
+                    throw SaveError(oAndG->lastError().text());
+            }
+            for (auto &&land : m_landCharacteristics)
+            {
+                land->setFolio(m_folio.get());
+                if (!land->save())
+                    throw SaveError(land->lastError().text());
+            }
+            // property values
+            for (auto &&vByETC: m_propertyValues->first)
+            {
+                vByETC->setFolio(m_folio.get());
+                if (!vByETC->save())
+                    throw SaveError(vByETC->lastError().text());
+            }
+            for (auto &&valuation: m_propertyValues->second)
+            {
+                valuation->setFolio(m_folio.get());
+                if (!valuation->save())
+                    throw SaveError(valuation->lastError().text());
+            }
         }
-        for (auto &&minorTax: m_minorTaxingJurisdictions)
+        else if (m_action->actionType() == model::FolioAction::DELETE)
         {
-            // minor tax jurisdictions
-            model::minortaxing::MinorTaxing taxing;
-            taxing.setFolio(m_folio.get());
-            if (!minorTax->save())
-                throw SaveError(minorTax->lastError().text());
-            taxing.setMinorTaxingJurisdiction(minorTax.get());
-            if (!taxing.save())
-                throw SaveError(taxing.lastError().text());
-        }
-        for (auto &&oAndG: m_oilAndGas)
-        {
-            oAndG->setFolio(m_folio.get());
-            if (!oAndG->save())
-                throw SaveError(oAndG->lastError().text());
-        }
-        for (auto &&land : m_landCharacteristics)
-        {
-            land->setFolio(m_folio.get());
-            if (!land->save())
-                throw SaveError(land->lastError().text());
-        }
-        // property values
-        for (auto &&vByETC: m_propertyValues->first)
-        {
-            vByETC->setFolio(m_folio.get());
-            if (!vByETC->save())
-                throw SaveError(vByETC->lastError().text());
-        }
-        for (auto &&valuation: m_propertyValues->second)
-        {
-            valuation->setFolio(m_folio.get());
-            if (!valuation->save())
-                throw SaveError(valuation->lastError().text());
+            if (!m_folio->remove())
+                throw SaveError(m_folio->lastError().text());
         }
     }
     else
@@ -827,7 +811,7 @@ namespace dataadvice
     }
 
     // calculate progress
-    size_t prog = m_inputStream.tellg();
+    auto prog = m_inputStream.tellg();
     float pct = static_cast<float>(prog) / static_cast<float>(m_inputSize);
     emit folioSaved(pct);
 
@@ -1037,12 +1021,20 @@ namespace dataadvice
   void FolioAddressCollectionImpl::
   FolioAddress (std::unique_ptr<model::FolioAddress> &FolioAddress)
   {
-      addresses.push_back(std::move(FolioAddress));
+      if (FolioAddress)
+          addresses.push_back(std::move(FolioAddress));
   }
 
   std::vector<std::unique_ptr<model::FolioAddress> > FolioAddressCollectionImpl::post_FolioAddressCollection()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        for (auto &&obj: addresses)
+        {
+            obj->remove();
+        }
+        addresses.clear();
+    }
     return std::move(addresses);
   }
 
@@ -1124,13 +1116,16 @@ namespace dataadvice
   void FolioAddressImpl::
   ID (const QString& ID)
   {
-    // TODO FolioAddressImpl::ID
-    //
+      m_address->setId(ID);
   }
 
   std::unique_ptr<model::FolioAddress> FolioAddressImpl::post_FolioAddress()
   {
-    auto action = post_FolioItemGroup (); // TODO: use the action for something
+    model::ActionCode::Code action = post_FolioItemGroup (); // TODO: use the action for something
+    if (action == model::ActionCode::Delete)
+    {
+        m_address->remove();
+    }
     auto ret = std::move(m_address);
     m_address.reset();
     return ret;
@@ -1148,12 +1143,21 @@ namespace dataadvice
   void OwnershipGroupCollectionImpl::
   OwnershipGroup (std::unique_ptr<model::OwnershipGroup> &OwnershipGroup)
   {
-      m_owners.push_back(std::move(OwnershipGroup));
+      if (OwnershipGroup)
+          m_owners.push_back(std::move(OwnershipGroup));
   }
 
   std::vector<std::unique_ptr<model::OwnershipGroup> > OwnershipGroupCollectionImpl::post_OwnershipGroupCollection()
   {
     auto action = post_FolioItemGroup ();
+    if (action == model::ActionCode::Delete)
+    {
+        for (auto &&owner: m_owners)
+        {
+            owner->remove();
+        }
+        m_owners.clear();
+    }
     return std::move(m_owners);
   }
 
@@ -1234,6 +1238,11 @@ namespace dataadvice
   std::unique_ptr<model::OwnershipGroup> OwnershipGroupImpl::post_OwnershipGroup()
   {
     auto action = post_FolioItemGroup ();
+    if (action == model::ActionCode::Delete)
+    {
+        m_owners->remove();
+        m_owners.release();
+    }
     return std::move(m_owners);
   }
 
@@ -1249,12 +1258,21 @@ namespace dataadvice
   void OwnerCollectionImpl::
   Owner (std::unique_ptr<model::Owner> &Owner)
   {
-      m_owners.push_back(std::move(Owner));
+      if (Owner)
+          m_owners.push_back(std::move(Owner));
   }
 
   std::vector<std::unique_ptr<model::Owner> > OwnerCollectionImpl::post_OwnerCollection()
   {
     auto action = post_FolioItemGroup ();
+    if (action == model::ActionCode::Delete)
+    {
+        for (auto &&owner: m_owners)
+        {
+            owner->remove();
+        }
+        m_owners.clear();
+    }
     return std::move(m_owners);
   }
 
@@ -1294,7 +1312,7 @@ namespace dataadvice
   void OwnerImpl::
   OwnerSequenceID (const model::StringItem &item)
   {
-      //m_owner->setOwnerSequenceID(item.value());
+      m_owner->setOwnerSequenceID(item.value());
   }
 
   void OwnerImpl::
@@ -1312,13 +1330,17 @@ namespace dataadvice
   void OwnerImpl::
   ID (const QString& ID)
   {
-    // TODO OwnerImpl::ID
-    //
+      m_owner->setId(ID);
   }
 
   std::unique_ptr<model::Owner> OwnerImpl::post_Owner()
   {
     auto action = post_FolioItemGroup ();
+    if (action == model::ActionCode::Delete)
+    {
+        m_owner->remove();
+        m_owner.release();
+    }
     return std::move(m_owner);
   }
 
@@ -1460,14 +1482,18 @@ namespace dataadvice
   void MailingAddressImpl::
   ID (const QString& ID)
   {
-    // TODO MailingAddressImpl::ID
-    //
+      m_addr->setId(ID);
   }
 
   std::unique_ptr<model::MailingAddress> MailingAddressImpl::
   post_MailingAddress ()
   {
     auto action = post_FolioItemGroup ();
+    if (action == model::ActionCode::Delete)
+    {
+        m_addr->remove();
+        m_addr.release();
+    }
     return std::move(m_addr);
   }
 
@@ -1519,14 +1545,18 @@ namespace dataadvice
   void FormattedMailingAddressImpl::
   ID (const QString& ID)
   {
-    // TODO FormattedMailingAddressImpl::ID
-    //
+      m_addr->setId(ID);
   }
 
   std::unique_ptr<model::FormattedMailingAddress>
   FormattedMailingAddressImpl::post_FormattedMailingAddress()
   {
     auto action = post_FolioItemGroup ();
+    if (action == model::ActionCode::Delete)
+    {
+        m_addr->remove();
+        m_addr.release();
+    }
     return std::move(m_addr);
   }
 
@@ -1583,13 +1613,22 @@ namespace dataadvice
   void LegalDescriptionCollectionImpl::
   LegalDescription (std::unique_ptr<model::LegalDescription> &LegalDescription)
   {
-      m_descr.push_back(std::move(LegalDescription));
+      if (LegalDescription)
+          m_descr.push_back(std::move(LegalDescription));
   }
 
   std::vector<std::unique_ptr<model::LegalDescription> >
   LegalDescriptionCollectionImpl::post_LegalDescriptionCollection()
   {
     auto action = post_FolioItemGroup ();
+    if (action == model::ActionCode::Delete)
+    {
+        for (auto &&descr: m_descr)
+        {
+            descr->remove();
+        }
+        m_descr.clear();
+    }
     return std::move(m_descr);
   }
 
@@ -1797,14 +1836,17 @@ namespace dataadvice
   void LegalDescriptionImpl::
   ID (const QString& ID)
   {
-    // TODO LegalDescriptionImpl::ID
-    //
+      m_descr->setId(ID);
   }
 
   std::unique_ptr<model::LegalDescription>
   LegalDescriptionImpl::post_LegalDescription()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_descr->remove();
+        m_descr.release();
+    }
     return std::move(m_descr);
   }
 
@@ -1832,7 +1874,11 @@ namespace dataadvice
   std::unique_ptr<model::LandCharacteristic>
   LandCharacteristicImpl::post_LandCharacteristic()
   {
-    auto action = post_FolioItemGroup ();
+    if (post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_characteristic->remove();
+        m_characteristic.release();
+    }
     return std::move(m_characteristic);
   }
 
@@ -1848,13 +1894,21 @@ namespace dataadvice
   void LandCharacteristicCollectionImpl::
   LandCharacteristic (std::unique_ptr<model::LandCharacteristic> &LandCharacteristic)
   {
-      m_landcharacteristics.push_back(std::move(LandCharacteristic));
+      if (LandCharacteristic)
+          m_landcharacteristics.push_back(std::move(LandCharacteristic));
   }
 
   std::vector<std::unique_ptr<model::LandCharacteristic> >
   LandCharacteristicCollectionImpl::post_LandCharacteristicCollection()
   {
-    auto action = post_FolioItemGroup ();
+    if (post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        for (auto &&character: m_landcharacteristics)
+        {
+            character->remove();
+        }
+        m_landcharacteristics.clear();
+    }
     return std::move(m_landcharacteristics);
   }
 
@@ -1870,13 +1924,21 @@ namespace dataadvice
   void ManufacturedHomeCollectionImpl::
   ManufacturedHome (std::unique_ptr<model::ManufacturedHome> &home)
   {
-      m_homes.push_back(std::move(home));
+      if (home)
+          m_homes.push_back(std::move(home));
   }
 
   std::vector<std::unique_ptr<model::ManufacturedHome>> ManufacturedHomeCollectionImpl::
   post_ManufacturedHomeCollection ()
   {
-    auto action = post_FolioItemGroup ();
+    if (post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        for (auto &&home: m_homes)
+        {
+            home->remove();
+        }
+        m_homes.clear();
+    }
     return std::move(m_homes);
   }
 
@@ -1916,13 +1978,17 @@ namespace dataadvice
   void ManufacturedHomeImpl::
   ID (const QString& ID)
   {
-    // TODO ManufacturedHomeImpl::ID
-    //
+      m_home->setId(ID);
   }
 
   std::unique_ptr<model::ManufacturedHome> ManufacturedHomeImpl::post_ManufacturedHome()
   {
     auto action = post_FolioItemGroup ();
+    if (action == model::ActionCode::Delete)
+    {
+        m_home->remove();
+        m_home.release();
+    }
     return std::move(m_home);
   }
 
@@ -1938,12 +2004,18 @@ namespace dataadvice
   void FarmCollectionImpl::
   Farm (std::unique_ptr<model::Farm> &Farm)
   {
-      farms.push_back(std::move(Farm));
+      if (Farm)
+          farms.push_back(std::move(Farm));
   }
 
   std::vector<std::unique_ptr<model::Farm> > FarmCollectionImpl::post_FarmCollection()
   {
-    auto action = post_FolioItemGroup ();
+    if (post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        for (auto &&farm: farms)
+            farm->remove();
+        farms.clear();
+    }
     return std::move(farms);
   }
 
@@ -1965,13 +2037,16 @@ namespace dataadvice
   void FarmImpl::
   ID (const QString& ID)
   {
-    // TODO FarmImpl::ID
-    //
+      m_farm->setId(ID);
   }
 
   std::unique_ptr<model::Farm> FarmImpl::post_Farm()
   {
-    auto action = post_FolioItemGroup ();
+    if (post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_farm->remove();
+        m_farm.release();
+    }
     return std::move(m_farm);
   }
 
@@ -1987,13 +2062,19 @@ namespace dataadvice
   void OilAndGasCollectionImpl::
   OilAndGas (std::unique_ptr<model::OilAndGas>& oilAndGas)
   {
-      m_oil.push_back(std::move(oilAndGas));
+      if (oilAndGas)
+          m_oil.push_back(std::move(oilAndGas));
   }
 
   std::vector<std::unique_ptr<model::OilAndGas> >
   OilAndGasCollectionImpl::post_OilAndGasCollection()
   {
-    auto action = post_FolioItemGroup ();
+    if (post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        for (auto &&oil: m_oil)
+            oil->remove();
+        m_oil.clear();
+    }
     return std::move(m_oil);
   }
 
@@ -2015,13 +2096,16 @@ namespace dataadvice
   void OilAndGasImpl::
   ID (const QString& ID)
   {
-    // TODO OilAndGasImpl::ID
-    //
+      m_oil->setId(ID);
   }
 
   std::unique_ptr<model::OilAndGas> OilAndGasImpl::post_OilAndGas()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_oil->remove();
+        m_oil.release();
+    }
     return std::move(m_oil);
   }
 
@@ -2037,12 +2121,20 @@ namespace dataadvice
   void ManagedForestCollectionImpl::
   ManagedForest (std::unique_ptr<model::ManagedForest> &forest)
   {
-      m_forest.push_back(std::move(forest));
+      if (forest)
+          m_forest.push_back(std::move(forest));
   }
 
   std::vector<std::unique_ptr<model::ManagedForest> > ManagedForestCollectionImpl::post_ManagedForestCollection()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        for (auto &&obj: m_forest)
+        {
+            obj->remove();
+        }
+        m_forest.clear();
+    }
     return std::move(m_forest);
   }
 
@@ -2064,13 +2156,16 @@ namespace dataadvice
   void ManagedForestImpl::
   ID (const QString& ID)
   {
-    // TODO ManagedForestImpl::ID
-    //
+      m_forest->setId(ID);
   }
 
   std::unique_ptr<model::ManagedForest> ManagedForestImpl::post_ManagedForest()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_forest->remove();
+        m_forest.release();
+    }
     return std::move(m_forest);
   }
 
@@ -2156,13 +2251,21 @@ namespace dataadvice
   void SaleCollectionImpl::
   Sale (std::unique_ptr<model::Sale> &Sale)
   {
-      sales.push_back(std::move(Sale));
+      if (Sale)
+          sales.push_back(std::move(Sale));
   }
 
   std::vector<std::unique_ptr<model::Sale>> SaleCollectionImpl::
   post_SaleCollection ()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        for (auto &&obj: sales)
+        {
+            obj->remove();
+        }
+        sales.clear();
+    }
     return std::move(sales);
   }
 
@@ -2220,13 +2323,16 @@ namespace dataadvice
   void SaleImpl::
   ID (const QString& ID)
   {
-    // TODO SaleImpl::ID
-    //
+      m_sale->setId(ID);
   }
 
   std::unique_ptr<model::Sale> SaleImpl::post_Sale()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_sale->remove();
+        m_sale.release();
+    }
     return std::move(m_sale);
   }
 
@@ -2347,7 +2453,11 @@ namespace dataadvice
   std::unique_ptr<model::FolioDescription> FolioDescriptionImpl::
   post_FolioDescription ()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_descr->remove();
+        m_descr.release();
+    }
     return std::move(m_descr);
   }
 
@@ -2393,7 +2503,11 @@ namespace dataadvice
   std::unique_ptr<model::LandMeasurement> LandMeasurementImpl::
   post_LandMeasurement ()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_measurement->remove();
+        m_measurement.release();
+    }
     return std::move(m_measurement);
   }
 
@@ -2421,7 +2535,11 @@ namespace dataadvice
   std::unique_ptr<model::Neighbourhood> NeighbourhoodImpl::
   post_Neighbourhood ()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_neighbourhood->remove();
+        m_neighbourhood.release();
+    }
     return std::move(m_neighbourhood);
   }
 
@@ -2449,7 +2567,11 @@ namespace dataadvice
   std::unique_ptr<model::SpecialDistrict> SpecialDistrictImpl::
   post_SpecialDistrict ()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_district->remove();
+        m_district.release();
+    }
     return std::move(m_district);
   }
 
@@ -2483,7 +2605,11 @@ namespace dataadvice
   std::unique_ptr<model::ManualClass> ManualClassImpl::
   post_ManualClass ()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_class->remove();
+        m_class.release();
+    }
     return std::move(m_class);
   }
 
@@ -2625,7 +2751,14 @@ namespace dataadvice
   std::vector<std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction> >
   MinorTaxingImpl::post_MinorTaxing()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        for (auto &&obj: m_taxings)
+        {
+            obj->remove();
+        }
+        m_taxings.clear();
+    }
     return std::move(m_taxings);
   }
 
@@ -2641,13 +2774,21 @@ namespace dataadvice
   void MinorTaxingJurisdictionCollectionImpl::
   MinorTaxingJurisdiction (std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction> &taxing)
   {
-      m_jurisdictions.push_back(std::move(taxing));
+      if (taxing)
+          m_jurisdictions.push_back(std::move(taxing));
   }
 
   std::vector<std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction> >
   MinorTaxingJurisdictionCollectionImpl::post_MinorTaxingJurisdictionCollection()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        for (auto &&obj: m_jurisdictions)
+        {
+            obj->remove();
+        }
+        m_jurisdictions.clear();
+    }
     return std::move(m_jurisdictions);
   }
 
@@ -2687,7 +2828,11 @@ namespace dataadvice
  std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>
   MinorTaxingJurisdictionImpl::post_MinorTaxingJurisdiction()
   {
-    auto action = post_FolioItemGroup ();
+    if ( post_FolioItemGroup () == model::ActionCode::Delete)
+    {
+        m_jurisdiction->remove();
+        m_jurisdiction.release();
+    }
     return std::move(m_jurisdiction);
   }
 

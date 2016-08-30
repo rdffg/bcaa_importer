@@ -130,6 +130,16 @@ void FolioAddress::setProvinceState(const QString &provinceState)
     m_provinceState = provinceState;
 }
 
+QString FolioAddress::id() const
+{
+    return m_id;
+}
+
+void FolioAddress::setId(const QString &id)
+{
+    m_id = id;
+}
+
 //FolioAddress::FolioAddress(FolioAddress &&f)
 //{
 

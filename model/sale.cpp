@@ -93,6 +93,16 @@ void Sale::setFolio(std::unique_ptr<Folio> folio)
     setForeignKey("folio", folio.get());
 }
 
+QString Sale::id() const
+{
+    return m_id;
+}
+
+void Sale::setId(const QString &id)
+{
+    m_id = id;
+}
+
 //std::unique_ptr<Sale> Sale::fromXml(const dataadvice::Sale &sale)
 //{
 //    auto model = std::make_unique<Sale>();

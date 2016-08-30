@@ -13,15 +13,17 @@ class FormattedMailingAddress : public QDjangoModel
     Q_PROPERTY(QString line3 READ line3 WRITE setLine3)
     Q_PROPERTY(QString line4 READ line4 WRITE setLine4)
     Q_PROPERTY(QString line5 READ line5 WRITE setLine5)
+    Q_PROPERTY(QString id READ id WRITE setId)
     Q_PROPERTY(QString line6 READ line6 WRITE setLine6)
     Q_PROPERTY(model::OwnershipGroup *ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
     Q_CLASSINFO("__meta__", "db_table=formatted_mailing_address")
-    Q_CLASSINFO("line1", "null=true")
-    Q_CLASSINFO("line2", "null=true")
-    Q_CLASSINFO("line3", "null=true")
-    Q_CLASSINFO("line4", "null=true")
-    Q_CLASSINFO("line5", "null=true")
-    Q_CLASSINFO("line6", "null=true")
+    Q_CLASSINFO("id", "primary_key=true length=32")
+    Q_CLASSINFO("line1", "null=true length=40")
+    Q_CLASSINFO("line2", "null=true length=40")
+    Q_CLASSINFO("line3", "null=true length=40")
+    Q_CLASSINFO("line4", "null=true length=40")
+    Q_CLASSINFO("line5", "null=true length=40")
+    Q_CLASSINFO("line6", "null=true length=40")
     Q_CLASSINFO(OWNERSHIPGROUP_PROPERTY, "on_delete=cascade")
 
 public:
@@ -49,7 +51,11 @@ public:
 
 //    static FormattedMailingAddress *fromXml(dataadvice::FormattedMailingAddress const &address);
 
+    QString id() const;
+    void setId(const QString &id);
+
 private:
+    QString m_id;
     QString m_line1;
     QString m_line2;
     QString m_line3;

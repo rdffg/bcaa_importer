@@ -38,17 +38,12 @@ void Folio::setJurisdiction(Jurisdiction *juris) {
     setForeignKey(JURISDICTION_PROPERTY, juris);
 }
 
-//model::Folio *Folio::fromXml(const dataadvice::FolioRecord &folio)
-//{
-//    auto foliomodel = new model::Folio();
-//    foliomodel->setRollNumber(QString::fromStdString(folio.RollNumber()));
-//    if (folio.FolioStatus().present())
-//        foliomodel->setStatus(
-//                    QString::fromStdString(folio.FolioStatus().get()));
-//    if (folio.FolioStatusDescription().present())
-//        foliomodel->setStatusDescription(
-//                    QString::fromStdString(folio.FolioStatusDescription().get()));
+QString Folio::id() const
+{
+    return m_id;
+}
 
-//    return foliomodel;
-//}
-
+void Folio::setId(const QString &id)
+{
+    m_id = id;
+}

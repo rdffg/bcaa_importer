@@ -10,10 +10,12 @@ class Farm : public QDjangoModel
 {
 
     Q_OBJECT
+    Q_PROPERTY(QString id READ id WRITE setId)
     Q_PROPERTY(QString farmNumber READ farmNumber WRITE setFarmNumber)
     Q_PROPERTY(model::Folio* folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=farm")
+    Q_CLASSINFO("id", "primary_key=true length=32")
     Q_CLASSINFO("farmNumber", "null=true")
     Q_CLASSINFO("folio", "on_delete=cascade")
 public:
@@ -29,10 +31,11 @@ public:
     Folio *folio() const;
     void setFolio(Folio *folio);
     void setFolio(std::unique_ptr<Folio> folio);
-
-//    static std::unique_ptr<Farm> fromXml(const dataadvice::FolioString255Item &farmNumber);
+    QString id() const;
+    void setId(const QString &id);
 
 private:
+    QString m_id;
     QString m_farmNumber;
 };
 

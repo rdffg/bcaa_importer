@@ -32,6 +32,16 @@ void OilAndGas::setFolio(std::unique_ptr<Folio> folio)
     setForeignKey("folio", folio.get());
 }
 
+QString OilAndGas::id() const
+{
+    return m_id;
+}
+
+void OilAndGas::setId(const QString &id)
+{
+    m_id = id;
+}
+
 //std::unique_ptr<OilAndGas> OilAndGas::fromXml(const dataadvice::OilAndGas &oil)
 //{
 //    auto model = std::make_unique<OilAndGas>();

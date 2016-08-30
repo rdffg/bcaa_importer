@@ -214,3 +214,13 @@ void MailingAddress::setModeOfDeliveryValue(const QString &modeOfDeliveryValue)
 {
     m_modeOfDeliveryValue = modeOfDeliveryValue;
 }
+
+QString MailingAddress::id() const
+{
+    return m_id;
+}
+
+void MailingAddress::setId(const QString &id)
+{
+    m_id = id;
+}

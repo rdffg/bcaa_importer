@@ -2,6 +2,11 @@
 
 namespace model {
 
+FolioAction::ActionType FolioAction::actionType() const
+{
+    return m_actionType;
+}
+
 FolioAction::FolioAction(ActionType type, const FolioRenumber &renumber) :
      m_renumber(std::make_unique<FolioRenumber>())
    , m_actionType(type)
@@ -38,6 +43,15 @@ FolioAction& FolioAction::operator=(const FolioAction& other)
     m_deleteReasonCode = other.m_deleteReasonCode;
     m_deleteReasonDescr = other.m_deleteReasonDescr;
     return *this;
+}
+
+FolioAction::FolioAction(FolioAction &other)
+    : m_renumber(std::make_unique<model::FolioRenumber>())
+    , m_actionType(other.m_actionType)
+    , m_deleteReasonCode(other.m_deleteReasonCode)
+    , m_deleteReasonDescr(other.m_deleteReasonDescr)
+{
+    *m_renumber = *other.m_renumber;
 }
 
 FolioAction::FolioAction()

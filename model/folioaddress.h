@@ -16,6 +16,7 @@ namespace model {
 class FolioAddress : public QDjangoModel
 {
     Q_OBJECT
+    Q_PROPERTY(QString id READ id WRITE setId)
     Q_PROPERTY(bool primaryFlag READ primaryFlag WRITE setPrimaryFlag)
     Q_PROPERTY(QString unitNumber READ unitNumber WRITE setUnitNumber )
     Q_PROPERTY(QString streetNumber READ streetNumber WRITE setStreetNumber )
@@ -30,6 +31,7 @@ class FolioAddress : public QDjangoModel
     Q_PROPERTY(model::Folio * folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=folio_address")
+    Q_CLASSINFO("id", "primary_key=true")
     Q_CLASSINFO("primaryFlag", "null=true")
     Q_CLASSINFO("unitNumber", "null=true")
     Q_CLASSINFO("streetNumber", "null=true")
@@ -78,12 +80,11 @@ public:
     Folio *folio();
     void setFolio(Folio *folio);
 
-//    FolioAddress(FolioAddress &&);
-
-//    static FolioAddress *fromXml(dataadvice::FolioAddress const &address);
-
     QString provinceState() const;
     void setProvinceState(const QString &provinceState);
+
+    QString id() const;
+    void setId(const QString &id);
 
 signals:
 
@@ -100,6 +101,7 @@ private:
     QString m_mapref;
     QString m_streettype;
     QString m_provinceState;
+    QString m_id;
 };
 }
 #endif // FOLIOADDRESS_H

@@ -14,13 +14,15 @@ namespace model {
 class Folio : public QDjangoModel
 {
     Q_OBJECT
+    Q_PROPERTY(QString id READ id WRITE setId)
     Q_PROPERTY(QString rollNumber READ rollNumber WRITE setRollNumber)
     Q_PROPERTY(QString status READ status WRITE setStatus)
     Q_PROPERTY(QString statusDescription READ statusDescription WRITE setStatusDescription)
     Q_PROPERTY(model::Jurisdiction *jurisdiction READ jurisdiction WRITE setJurisdiction)
 
     Q_CLASSINFO("__meta__", "db_table=folio")
-    Q_CLASSINFO("rollNumber", "max_length=32 primary_key=true")
+    Q_CLASSINFO("id", "primary_key=true")
+    Q_CLASSINFO("rollNumber", "max_length=32")
     Q_CLASSINFO("status", "max_length=16 blank=true null=true")
     Q_CLASSINFO("statusDescription", "max_length=255 blank=true null=true")
     Q_CLASSINFO(JURISDICTION_PROPERTY, "on_delete=cascade")
@@ -35,12 +37,14 @@ public:
     void setStatusDescription(QString desc);
     Jurisdiction *jurisdiction() const;
     void setJurisdiction(Jurisdiction *juris);
-//    static Folio *fromXml(dataadvice::FolioRecord const &folio);
+    QString id() const;
+    void setId(const QString &id);
 
 signals:
 
 public slots:
 private:
+    QString m_id;
     QString m_rollNumber;
     QString m_status;
     QString m_statusDescription;

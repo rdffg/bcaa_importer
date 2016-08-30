@@ -9,6 +9,7 @@ namespace model {
 class Sale : public QDjangoModel
 {
     Q_OBJECT
+    Q_PROPERTY(QString id READ id WRITE setId)
     Q_PROPERTY(QString documentNumber READ documentNumber WRITE setDocumentNumber)
     Q_PROPERTY(QDate conveyanceDate READ conveyanceDate WRITE setConveyanceDate)
     Q_PROPERTY(double conveyancePrice READ conveyancePrice WRITE setConveyancePrice)
@@ -19,6 +20,7 @@ class Sale : public QDjangoModel
     Q_PROPERTY(model::Folio* folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=sale")
+    Q_CLASSINFO("id", "primary_key=true length=32")
     Q_CLASSINFO("documentNumber", "null=true, max_length=255")
     Q_CLASSINFO("conveyanceDate", "null=true")
     Q_CLASSINFO("conveyancePrice", "null=true")
@@ -55,12 +57,14 @@ public:
     void setFolio(Folio *folio);
     void setFolio(std::unique_ptr<Folio> folio);
 
-//    static std::unique_ptr<Sale> fromXml(const dataadvice::Sale &sale);
+    QString id() const;
+    void setId(const QString &id);
 
 signals:
 
 public slots:
 private:
+    QString m_id;
     QString m_documentNumber;
     QDate m_conveyanceDate;
     double m_conveyancePrice;

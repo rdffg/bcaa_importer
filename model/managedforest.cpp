@@ -27,6 +27,16 @@ void ManagedForest::setFolio(Folio *folio)
     setForeignKey("folio", folio);
 }
 
+QString ManagedForest::id() const
+{
+    return m_id;
+}
+
+void ManagedForest::setId(const QString &id)
+{
+    m_id = id;
+}
+
 //std::unique_ptr<ManagedForest> ManagedForest::fromXml(const dataadvice::ManagedForest &forest)
 //{
 //    auto model = std::make_unique<ManagedForest>();

@@ -333,3 +333,13 @@ void LegalDescription::setNtsLocation(const QString &ntsLocation)
 {
     m_ntsLocation = ntsLocation;
 }
+
+QString LegalDescription::id() const
+{
+    return m_id;
+}
+
+void LegalDescription::setId(const QString &id)
+{
+    m_id = id;
+}
