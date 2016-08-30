@@ -18,6 +18,7 @@ namespace model {
         Q_CLASSINFO("__meta__", "db_table=jurisdiction")
         Q_CLASSINFO("code", "max_length=16 primary_key=true")
         Q_CLASSINFO("description", "max_length=255 null=true blank=true")
+        Q_CLASSINFO("assessmentArea", "on_delete=cascade")
     public:
         explicit Jurisdiction(QObject *parent=0);
         QString code();
