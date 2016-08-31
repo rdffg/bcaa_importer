@@ -244,6 +244,8 @@ namespace dataadvice
   {
   }
 
+#pragma warning(push)
+#pragma warning(disable:4100)
   void AmendmentReasonCountImpl::
   AmendmentReasonCode (const QString& AmendmentReasonCode)
   {
@@ -264,6 +266,7 @@ namespace dataadvice
     // TODO AmendmentReasonCount
     //
   }
+#pragma warning(pop)
 
   void AmendmentReasonCountImpl::
   post_AmendmentReasonCount ()
@@ -296,6 +299,8 @@ namespace dataadvice
   {
   }
 
+#pragma warning(push)
+#pragma warning(disable:4100)
   void DeleteReasonCountImpl::
   DeleteReasonCode (const QString& DeleteReasonCode)
   {
@@ -316,6 +321,7 @@ namespace dataadvice
     // TODO DeleteReasonCount
     //
   }
+#pragma warning(pop)
 
   void DeleteReasonCountImpl::
   post_DeleteReasonCount ()
@@ -366,12 +372,15 @@ namespace dataadvice
 
   void AssessmentAreaImpl::Jurisdictions() {}
 
+#pragma warning(push)
+#pragma warning(disable:4100)
   void AssessmentAreaImpl::
   AreaSummary (std::unique_ptr<model::DeliverySummary> &AreaSummary)
   {
     // TODO AssessmentAreaImpl::AreaSummary
     //
   }
+#pragma warning(pop)
 
   void AssessmentAreaImpl::post_AssessmentArea() {}
 
@@ -452,12 +461,15 @@ namespace dataadvice
     folios = std::move(FolioRecords);
   }
 
+#pragma warning(push)
+#pragma warning(disable:4100)
   void JurisdictionImpl::
   JurisdictionSummary (std::unique_ptr<model::DeliverySummary> &JurisdictionSummary)
   {
     // TODO JurisdictionSummary
     //
   }
+#pragma warning(pop)
 
   void JurisdictionImpl::post_Jurisdiction() {}
 
@@ -492,6 +504,8 @@ namespace dataadvice
   {
   }
 
+#pragma warning(push)
+#pragma warning(disable:4100)
   void FolioGroupValuesImpl::
   LandValue (double LandValue)
   {
@@ -505,6 +519,7 @@ namespace dataadvice
     // TODO FolioGroupValues
     //
   }
+#pragma warning(pop)
 
   void FolioGroupValuesImpl::
   post_FolioGroupValues ()
@@ -695,7 +710,7 @@ namespace dataadvice
     }
     if (auto jurisdiction = m_jurisdiction.lock())
     {
-        if (m_action->actionType() == model::FolioAction::ADD)
+        if (!m_action || m_action->actionType() == model::FolioAction::ADD) // folio action is null or Add
         {
             m_folio->setJurisdiction(jurisdiction.get());
             if (!m_folio->save())
@@ -2185,8 +2200,11 @@ namespace dataadvice
   void FolioAmendmentCollectionImpl::
   post_FolioAmendmentCollection ()
   {
+#pragma warning(push)
+#pragma warning(disable:4189)
     auto action = post_FolioItemGroup ();
   }
+#pragma warning(pop)
 
   // FolioAmendmentImpl
   //
@@ -2226,18 +2244,24 @@ namespace dataadvice
   {
   }
 
+#pragma warning(push)
+#pragma warning(disable:4100)
   void FolioAmendmentImpl::
   ID (const QString& ID)
   {
     // TODO FolioAmendmentImpl::ID
     //
   }
+#pragma warning(pop)
 
   void FolioAmendmentImpl::
   post_FolioAmendment ()
   {
+#pragma warning(push)
+#pragma warning(disable:4189)
     auto action = post_FolioItemGroup ();
   }
+#pragma warning(pop)
 
   // SaleCollectionImpl
   //

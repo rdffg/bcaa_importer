@@ -28,8 +28,8 @@ class Owner : public QDjangoModel
     Q_CLASSINFO("companyOrLastName","null=true")
     Q_CLASSINFO("equityType", "null=true")
     Q_CLASSINFO("equityTypeDescription", "null=true")
-    Q_CLASSINFO("ownerSequenceID", "null=true length=32")
-    Q_CLASSINFO("id", "primary_key=true, length=32")
+    Q_CLASSINFO("ownerSequenceID", "null=true max_length=32")
+    Q_CLASSINFO("id", "primary_key=true max_length=32")
     Q_CLASSINFO(OWNERSHIPGROUP_PROPERTY, "on_delete=cascade")
 
 public:

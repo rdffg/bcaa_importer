@@ -14,7 +14,7 @@ class OilAndGas : public QDjangoModel
     Q_PROPERTY(model::Folio *folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=oil_and_gas")
-    Q_CLASSINFO("id", "primary_key=true length=32")
+    Q_CLASSINFO("id", "primary_key=true max_length=32")
     Q_CLASSINFO("pipelineProjectNumber", "null=true")
     Q_CLASSINFO("folio", "on_delete=cascade")
 public:

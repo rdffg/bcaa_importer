@@ -18,7 +18,7 @@ class ManufacturedHome : public QDjangoModel
     Q_PROPERTY(model::Folio* folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=manufactured_home")
-    Q_CLASSINFO("id", "primary_key=true length=32")
+    Q_CLASSINFO("id", "primary_key=true max_length=32")
     Q_CLASSINFO("mhRegistryNumber", "null=true")
     Q_CLASSINFO("mhBayNumber", "null=true")
     Q_CLASSINFO("mhPark", "null=true")

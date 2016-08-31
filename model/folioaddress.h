@@ -31,7 +31,7 @@ class FolioAddress : public QDjangoModel
     Q_PROPERTY(model::Folio * folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=folio_address")
-    Q_CLASSINFO("id", "primary_key=true")
+    Q_CLASSINFO("id", "primary_key=true max_length=32")
     Q_CLASSINFO("primaryFlag", "null=true")
     Q_CLASSINFO("unitNumber", "null=true")
     Q_CLASSINFO("streetNumber", "null=true")

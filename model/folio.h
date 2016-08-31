@@ -21,7 +21,7 @@ class Folio : public QDjangoModel
     Q_PROPERTY(model::Jurisdiction *jurisdiction READ jurisdiction WRITE setJurisdiction)
 
     Q_CLASSINFO("__meta__", "db_table=folio")
-    Q_CLASSINFO("id", "primary_key=true")
+    Q_CLASSINFO("id", "primary_key=true max_length=32")
     Q_CLASSINFO("rollNumber", "max_length=32")
     Q_CLASSINFO("status", "max_length=16 blank=true null=true")
     Q_CLASSINFO("statusDescription", "max_length=255 blank=true null=true")

@@ -9,6 +9,7 @@ namespace model {
 class MailingAddress : public QDjangoModel
 {
     Q_OBJECT
+    Q_PROPERTY(QString id READ id WRITE setId)
     Q_PROPERTY(QString attention READ attention WRITE setAttention)
     Q_PROPERTY(QString careOf READ careOf WRITE setCareOf)
     Q_PROPERTY(QString floor READ floor WRITE setFloor)
@@ -29,10 +30,10 @@ class MailingAddress : public QDjangoModel
     Q_PROPERTY(QString modeOfDeliveryValue READ modeOfDeliveryValue WRITE setModeOfDeliveryValue)
     Q_PROPERTY(QString site READ site WRITE setSite)
     Q_PROPERTY(QString bulkMailCode READ bulkMailCode WRITE setBulkMailCode)
-    Q_PROPERTY(QString id READ id WRITE setId)
     Q_PROPERTY(model::OwnershipGroup* ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
 
     Q_CLASSINFO("__meta__", "db_table=mailing_address")
+    Q_CLASSINFO("id", "primary_key=true max_length=32")
     Q_CLASSINFO("attention", "null=true")
     Q_CLASSINFO("careOf", "null=true")
     Q_CLASSINFO("floor", "null=true")
@@ -53,7 +54,6 @@ class MailingAddress : public QDjangoModel
     Q_CLASSINFO("modeOfDeliveryValue", "null=true length=255")
     Q_CLASSINFO("site", "null=true")
     Q_CLASSINFO("bulkMailCode", "null=true")
-    Q_CLASSINFO("id", "primary_key=true length=32")
     Q_CLASSINFO(OWNERSHIPGROUP_PROPERTY, "on_delete=cascade")
 
 public:

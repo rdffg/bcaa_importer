@@ -20,14 +20,14 @@ class Sale : public QDjangoModel
     Q_PROPERTY(model::Folio* folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=sale")
-    Q_CLASSINFO("id", "primary_key=true length=32")
-    Q_CLASSINFO("documentNumber", "null=true, max_length=255")
+    Q_CLASSINFO("id", "primary_key=true max_length=32")
+    Q_CLASSINFO("documentNumber", "null=true max_length=255")
     Q_CLASSINFO("conveyanceDate", "null=true")
     Q_CLASSINFO("conveyancePrice", "null=true")
-    Q_CLASSINFO("conveyanceType", "null=true, max_length=16")
-    Q_CLASSINFO("conveyanceTypeDescription", "null=true, max_length=255")
-    Q_CLASSINFO("rejectReasonCode", "null=true, max_length=16")
-    Q_CLASSINFO("rejectReasonDescription", "null=true, max_length=255")
+    Q_CLASSINFO("conveyanceType", "null=true max_length=16")
+    Q_CLASSINFO("conveyanceTypeDescription", "null=true max_length=255")
+    Q_CLASSINFO("rejectReasonCode", "null=true max_length=16")
+    Q_CLASSINFO("rejectReasonDescription", "null=true max_length=255")
     Q_CLASSINFO("folio", "on_delete=cascade")
 public:
     explicit Sale(QObject *parent = 0);

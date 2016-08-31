@@ -44,7 +44,7 @@ class LegalDescription : public QDjangoModel {
     Q_PROPERTY(model::Folio * folio READ folio WRITE setFolio)
 
     Q_CLASSINFO("__meta__", "db_table=legal_description")
-    Q_CLASSINFO("id", "primary_key=true length=32")
+    Q_CLASSINFO("id", "primary_key=true max_length=32")
     Q_CLASSINFO("formattedLegalDescription", "null=true")
     Q_CLASSINFO("PID", "null=true")
     Q_CLASSINFO("lot", "null=true")
