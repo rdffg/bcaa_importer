@@ -586,6 +586,7 @@ namespace dataadvice
       m_manufacturedHomes = std::vector<std::unique_ptr<model::ManufacturedHome>>();
       m_oilAndGas = std::vector<std::unique_ptr<model::OilAndGas>>();
       m_landCharacteristics = std::vector<std::unique_ptr<model::LandCharacteristic>>();
+      m_propertyValues = std::make_unique<model::PropertyValues>();
 
   }
 
@@ -727,6 +728,12 @@ namespace dataadvice
                 ownGroup->setFolio(m_folio.get());
                 if(!ownGroup->save())
                     throw SaveError(ownGroup->lastError().text());
+                for (auto &&owner: ownGroup->owners())
+                {
+                    owner->setOwnershipGroup(ownGroup.get());
+                    if (!owner->save())
+                        throw SaveError(owner->lastError().text());
+                }
             }
             for (auto &&legal: m_legalDescriptions)
             {
@@ -1009,6 +1016,7 @@ namespace dataadvice
   void FolioItemGroupImpl::
   pre ()
   {
+      action = model::ActionCode::Add;
   }
 
   void FolioItemGroupImpl::
@@ -1017,10 +1025,14 @@ namespace dataadvice
       action = Action;
   }
 
+  // don't call post_FolioItemGroup twice (as the second
+  // will be defaulted to Add)
   model::ActionCode::Code FolioItemGroupImpl::
   post_FolioItemGroup ()
   {
-      return action;
+      auto last_action = action;
+      action = model::ActionCode::Add;
+      return last_action;
   }
 
   // FolioAddressCollectionImpl

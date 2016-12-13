@@ -3,6 +3,7 @@
 
 #include <QtCore>
 #include <sstream>
+#include <memory>
 
 namespace model
 {
@@ -23,12 +24,13 @@ static Code fromString(const QString& action);
 
 inline model::ActionCode::Code model::ActionCode::fromString(const QString& action)
 {
-    const QMetaObject& mo = ActionCode::staticQtMetaObject;
+    const QMetaObject& mo = ActionCode::staticMetaObject;
     QMetaEnum me = mo.enumerator(0);
-    bool *ok = 0;
-    Code actionCode = static_cast<Code>(me.keyToValue(action.toStdString().c_str(), ok));
-    if (ok)
+    std::unique_ptr<bool> ok = std::make_unique<bool>();
+    Code actionCode = static_cast<Code>(me.keyToValue(action.toStdString().c_str(), ok.get()));
+    if (ok) {
         return actionCode;
+    }
     else
     {
         std::ostringstream msg;

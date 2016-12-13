@@ -37,9 +37,12 @@ FolioAction& FolioAction::operator=(const FolioAction& other)
 {
     if (&other == this)
         return *this;
-    m_renumber = std::make_unique<model::FolioRenumber>();
     m_actionType = other.m_actionType;
-    *m_renumber = *other.m_renumber;
+    if (other.m_renumber)
+    {
+        m_renumber = std::make_unique<model::FolioRenumber>();
+        *m_renumber = *other.m_renumber;
+    }
     m_deleteReasonCode = other.m_deleteReasonCode;
     m_deleteReasonDescr = other.m_deleteReasonDescr;
     return *this;

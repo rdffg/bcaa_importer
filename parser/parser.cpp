@@ -14,8 +14,8 @@
 Parser::Parser(QString filePath, QObject *parent):
     QObject(parent)
   , filePath(filePath)
-  , m_cancel(new bool(false))
 {
+    m_cancel = std::make_unique<bool>();
 }
 
 std::string Parser::findXsdPath()
@@ -87,8 +87,8 @@ void Parser::cancel()
 std::unique_ptr<model::DataAdvice> Parser::getFileInfo()
 {
     auto xsdPath = findXsdPath();
-    auto advice = std::move(readFile(filePath.toStdString(), findXsdPath(), true));
-    return std::move(advice);
+    auto advice = readFile(filePath.toStdString(), findXsdPath(), true);
+    return advice;
 }
 
 std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, const std::string& xsdPath, bool forSummary)
@@ -649,6 +649,6 @@ std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, con
     {
         file.close();
         qDebug() << "Stopped parsing";
-        return std::move(DataAdvice_p->post_DataAdvice());
+        return DataAdvice_p->post_DataAdvice();
     }
 }

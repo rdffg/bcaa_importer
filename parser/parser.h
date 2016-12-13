@@ -28,7 +28,7 @@ private:
     void writeMetadata(const std::unique_ptr<model::DataAdvice> &summary);
     QString filePath;
     std::string findXsdPath();
-    bool* m_cancel;
+    std::unique_ptr<bool> m_cancel;
 };
 
 #endif // PARSER_H
