@@ -14,13 +14,15 @@ public:
     std::unique_ptr<model::DataAdvice> readFile(const std::string& path, const std::string& xsdPath, bool forSummary=false);
     std::unique_ptr<model::DataAdvice> getFileInfo();
     void cancel();
+    ~Parser();
 
 public slots:
     void import ();
 
 signals:
     void message(QString msg);
-    void finished();
+    //void finished();
+    void finished(bool success);
     void folioSaved(float percent);
     void fileInfo(model::DataAdvice*);
 

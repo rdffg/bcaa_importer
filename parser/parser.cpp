@@ -18,6 +18,10 @@ Parser::Parser(QString filePath, QObject *parent):
     m_cancel = std::make_unique<bool>();
 }
 
+Parser::~Parser()
+{
+}
+
 std::string Parser::findXsdPath()
 {
     QString xsdName = "DataAdvice.xsd";
@@ -45,8 +49,7 @@ void Parser::import()
     *m_cancel = false;
     if (!QDjango::createTables())
     {
-        this->message(QString("Failed to create tables: ") + QDjango::database().lastError().text());
-        //this->finished();
+        this->message(QString("Did not create tables (this is okay if the tables already exist)"));
     }
     try
     {
@@ -60,12 +63,12 @@ void Parser::import()
         writeMetadata(dataAdvice);
         if (!QDjango::database().commit())
             throw SaveError("Failed to commit transaction.");
-        emit finished();
+        emit finished(true);
     }
     catch (SaveError &err)
     {
         this->message(err.text());
-        this->finished();
+        emit finished(false);
     }
 }
 

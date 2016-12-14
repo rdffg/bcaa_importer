@@ -86,6 +86,7 @@ void BCAADataImporter::beginImport()
             }
             QDjango::setDatabase(db);
         } else {
+            emit statusChanged(QString("Failed to open database: ") + QString(db.lastError().text()));
             qDebug() << "Failed to open database:" << db.lastError();
         }
     } else {
@@ -101,13 +102,16 @@ void BCAADataImporter::beginImport()
     });
     r->moveToThread(t);
     QObject::connect(t, &QThread::started, r, &Parser::import);
-    QObject::connect(r, &Parser::finished, t, &QThread::quit);
-    QObject::connect(t, &QThread::finished, t, &QThread::deleteLater);
+    QObject::connect(r, &Parser::finished, [=](bool success){ t->quit(); });
     QObject::connect(r, &Parser::finished, this, &BCAADataImporter::onImportFinished);
-    QObject::connect(r, &Parser::finished, r, &Parser::deleteLater);
     QObject::connect(r, &Parser::folioSaved, this, &BCAADataImporter::onProgressChanged);
-    QObject::connect(this, &BCAADataImporter::cancelJob, [=]() { r->cancel(); });
-    QObject::connect(t, &QThread::finished, t, &QThread::deleteLater);
+    QObject::connect(this, &BCAADataImporter::cancelJob, [=]() {
+        r->cancel();
+    });
+    QObject::connect(t, &QThread::finished, [=] () {
+        t->deleteLater();
+    });
+    QObject::connect(t, &QThread::destroyed, r, &Parser::deleteLater);
     t->start();
 }
 
@@ -123,11 +127,10 @@ float BCAADataImporter::percentDone()  const
     return m_percentDone;
 }
 
-void BCAADataImporter::onImportFinished()
+void BCAADataImporter::onImportFinished(bool success)
 {
     // if we have a post-processing plugin for this database type, run it
-    //TODO: don't run if the import didn't complete successfully.
-    if (m_plugins.count(m_dbconnection->driver()) > 0)
+    if (success && m_plugins.count(m_dbconnection->driver()) > 0)
         m_plugins[m_dbconnection->driver()]->processDatabase(
                     new QSqlDatabase(m_dbconnection->makeDbConnection()), this->runType());
     m_isrunning = false;
@@ -153,7 +156,7 @@ bool BCAADataImporter::verifyDataFile()
 {
     try {
         auto parser = new Parser(QUrl(m_datafilepath).toLocalFile(), this);
-        auto advice = std::move(parser->getFileInfo());
+        auto advice = parser->getFileInfo();
         m_runType = advice->runType();
     } catch (const xml_schema::parsing& e)
     {
