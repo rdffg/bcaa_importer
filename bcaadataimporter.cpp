@@ -71,6 +71,7 @@ void BCAADataImporter::beginImport()
 #endif
 
     m_progress = 0;
+    m_percentDone = 0;
     emit progressChanged();
 
     m_isrunning = true;
@@ -102,7 +103,7 @@ void BCAADataImporter::beginImport()
     });
     r->moveToThread(t);
     QObject::connect(t, &QThread::started, r, &Parser::import);
-    QObject::connect(r, &Parser::finished, [=](bool success){ t->quit(); });
+    QObject::connect(r, &Parser::finished, [=](bool){ t->quit(); });
     QObject::connect(r, &Parser::finished, this, &BCAADataImporter::onImportFinished);
     QObject::connect(r, &Parser::folioSaved, this, &BCAADataImporter::onProgressChanged);
     QObject::connect(this, &BCAADataImporter::cancelJob, [=]() {
@@ -134,6 +135,8 @@ void BCAADataImporter::onImportFinished(bool success)
         m_plugins[m_dbconnection->driver()]->processDatabase(
                     new QSqlDatabase(m_dbconnection->makeDbConnection()), this->runType());
     m_isrunning = false;
+    m_canRun = false;
+    emit dataChanged();
     emit runningChanged();
 }
 

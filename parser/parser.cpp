@@ -59,10 +59,12 @@ void Parser::import()
         model::PropertyClassValueType::populate();
         model::minortaxing::JurisdictionType::populate();
         message("Done.");
+        message(QString("Importing records from ") + filePath + "...");
         auto dataAdvice = readFile(filePath.toStdString(), findXsdPath(), false);
         writeMetadata(dataAdvice);
         if (!QDjango::database().commit())
             throw SaveError("Failed to commit transaction.");
+        message("Successfully imported the data file.");
         emit finished(true);
     }
     catch (SaveError &err)
