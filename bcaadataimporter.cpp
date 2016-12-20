@@ -9,6 +9,8 @@
 #include <QSqlDatabase>
 #include <QtCore>
 #include "QDjango.h"
+#include "QDjangoQuerySet.h"
+#include "QDjangoWhere.h"
 #include "bcaadataimporter.h"
 //#include "bcaaxmlreader.h"
 #include "parser/parser.h"
@@ -32,6 +34,7 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
         m_datafilepath = dataFilePath.toString();
     registerModels();
     loadPlugins();
+    m_importMeta = new model::ImportMeta(this);
 }
 
 QString BCAADataImporter::dataFilePath()
@@ -128,6 +131,38 @@ float BCAADataImporter::percentDone()  const
     return m_percentDone;
 }
 
+model::ImportMeta *BCAADataImporter::importMeta() const
+{
+    return m_importMeta;
+}
+
+model::ImportMeta *BCAADataImporter::lastRun() const
+{
+    if (m_dbconnection != NULL)
+    {
+        auto db = m_dbconnection->makeDbConnection();
+        if (db.open())
+        {
+            QDjango::setDatabase(db);
+            QDjangoQuerySet<model::ImportMeta> qs;
+            QDjango::setDebugEnabled(true);
+            qs = qs.orderBy(QStringList("-runDate")).limit(0,1);
+            if (qs.size() > 0)
+                return qs.at(0);
+            QDjango::setDebugEnabled(false);
+        }
+        else
+        {
+            emit statusChanged(QString("Failed to open database: ") + db.lastError().text());
+        }
+    }
+    else
+    {
+        emit statusChanged(QString("No sql connection settings defined."));
+    }
+    return NULL;
+}
+
 void BCAADataImporter::onImportFinished(bool success)
 {
     // if we have a post-processing plugin for this database type, run it
@@ -160,6 +195,8 @@ bool BCAADataImporter::verifyDataFile()
     try {
         auto parser = new Parser(QUrl(m_datafilepath).toLocalFile(), this);
         auto advice = parser->getFileInfo();
+        m_importMeta->setRunType(advice->runType());
+        m_importMeta->setRunDate(advice->runDate());
         m_runType = advice->runType();
     } catch (const xml_schema::parsing& e)
     {

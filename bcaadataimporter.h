@@ -4,6 +4,7 @@
 #include <map>
 #include "post_process_interface.h"
 #include "dbconnectionsettings.h"
+#include "model/importmeta.h"
 
 class BCAADataImporter : public QObject
 {
@@ -15,6 +16,8 @@ class BCAADataImporter : public QObject
     Q_PROPERTY(float percentDone READ percentDone NOTIFY progressChanged)
     Q_PROPERTY(QString runType READ runType WRITE setRunType NOTIFY dataChanged)
     Q_PROPERTY(bool canRun READ canRun NOTIFY dataChanged)
+    Q_PROPERTY(model::ImportMeta *lastRun READ lastRun NOTIFY dataChanged)
+    Q_PROPERTY(model::ImportMeta *importMeta READ importMeta NOTIFY dataChanged)
 
 public:
     explicit BCAADataImporter(QObject *parent = 0);
@@ -29,13 +32,16 @@ public:
     float percentDone() const;
 
     QString runType() const;
+    QDate runDate() const;
+    model::ImportMeta *importMeta() const;
+    model::ImportMeta *lastRun() const;
     void setRunType(const QString &runType);
     bool canRun() const;
 
 signals:
-    void statusChanged(QString const &message);
+    void statusChanged(QString const &message) const;
     void runningChanged();
-    void dataChanged();
+    void dataChanged() const;
     void progressChanged();
     void cancelJob();
 
@@ -59,6 +65,7 @@ private:
     float m_percentDone;
     QString m_runType;
     bool m_canRun;
+    model::ImportMeta *m_importMeta;
     std::map<QString, std::unique_ptr<rdffg::IPostProcess> > m_plugins;
 };
 

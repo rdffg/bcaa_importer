@@ -70,7 +70,7 @@ ApplicationWindow {
                 text: qsTr("&Open")
                 shortcut: "Ctrl+O"
                 onTriggered: {
-                    if (importer.dataFilePath == "")
+                    if (importer.dataFilePath === "")
                     {
                         fileDialog.folder = fileDialog.shortcuts.home;
                     }
@@ -110,7 +110,15 @@ ApplicationWindow {
             }
             else
             {
-                verifyImportDialog.open();
+                overwrite = false;
+                var lastRun = importer.lastRun;
+                var thisRun = importer.importMeta;
+                if (lastRun.runDate >= thisRun.runDate)
+                {
+                    overwriteImportDialog.open();
+                } else {
+                    verifyImportDialog.open();
+                }
             }
         }
 
@@ -164,6 +172,7 @@ ApplicationWindow {
 
     MessageDialog {
         id: verifyImportDialog
+        icon: StandardIcon.Question
         title: qsTr("Continue Import?")
         text: "Run Type is " + importer.runType + ". Proceed?"
         onAccepted: {
@@ -172,8 +181,19 @@ ApplicationWindow {
     }
 
     MessageDialog {
+        id: overwriteImportDialog
+        icon: StandardIcon.Warning
+        title: "Overwrite import?"
+        text: "This datafile is older than a previously imported file. Import anyway?"
+        onAccepted: {
+            verifyImportDialog();
+        }
+    }
+
+    MessageDialog {
         id: testConnectionDialog
         title: qsTr("Connection Result")
+        icon: StandardIcon.Information
 
         function show(caption) {
             testConnectionDialog.text = caption;
