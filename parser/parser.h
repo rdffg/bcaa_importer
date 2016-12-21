@@ -3,7 +3,6 @@
 #include "DataAdvice-pimpl.h"
 #include "DataAdvice-pskel.h"
 #include <QObject>
-#include "ixmlfilereader.h"
 #include "model/deliverysummary.h"
 
 /**

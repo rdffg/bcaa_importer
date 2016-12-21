@@ -12,11 +12,8 @@
 #include "QDjangoQuerySet.h"
 #include "QDjangoWhere.h"
 #include "bcaadataimporter.h"
-//#include "bcaaxmlreader.h"
 #include "parser/parser.h"
 #include "model/model.h"
-//#include "bcaafilereader.h"
-//#include "DataAdvice.hxx"
 #include "parser/DataAdvice-pimpl.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)

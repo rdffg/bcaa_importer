@@ -47,7 +47,6 @@ SOURCES += main.cpp \
     parser/parser.cpp \
     model/deliverysummary.cpp \
     model/dataadvice.cpp \
-    parser/ixmlfilereader.cpp \
     parser/folioitem.cpp \
     parser/runtypeparser.cpp \
     model/bcaamodel.cpp \
@@ -105,7 +104,6 @@ HEADERS += \
     parser/DataAdvice-pimpl.h \
     parser/DataAdvice-pskel.h \
     parser/parser.h \
-    ixmlfilereader.h \
     model/deliverysummary.h \
     model/dataadvice.h \
     model/action.h \
