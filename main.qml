@@ -110,7 +110,6 @@ ApplicationWindow {
             }
             else
             {
-                overwrite = false;
                 var lastRun = importer.lastRun;
                 var thisRun = importer.importMeta;
                 if (lastRun.runDate >= thisRun.runDate)
@@ -160,11 +159,6 @@ ApplicationWindow {
                 y: 4
                 text: Math.round(importer.progress / 10) * 10;
                 anchors.horizontalCenter: parent.horizontalCenter
-                //hackety hack, why doesn't the progress bar notice on its own?
-                /* onTextChanged: {
-                    progressBar1.maximumValue = 100;
-                    progressBar1.value = importer.percentDone;
-                } */
             }
         }
 
@@ -186,7 +180,7 @@ ApplicationWindow {
         title: "Overwrite import?"
         text: "This datafile is older than a previously imported file. Import anyway?"
         onAccepted: {
-            verifyImportDialog();
+            verifyImportDialog.open();
         }
     }
 

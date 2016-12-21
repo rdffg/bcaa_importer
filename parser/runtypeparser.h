@@ -7,6 +7,12 @@
 
 namespace dataadvice
 {
+/**
+ * @brief The RunTypeParser class
+ *
+ * This implementation of the dataadvice::DataAdvice_pskel class begins
+ * to read a data file, but aborts after reading the metadata at the top.
+ */
 class RunTypeParser : public QObject, public dataadvice::DataAdvice_pskel
 {
     // DataAdvice_pskel interface

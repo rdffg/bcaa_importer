@@ -7,6 +7,13 @@
 #include <QStringList>
 #include <memory>
 
+/**
+ * @brief The DbConnectionSettings class
+ *
+ * The DbConnectionSettings class is responsible for holding database connection
+ * settings for the UI, and for validating those settings by creating a connection
+ * to the database.
+ */
 class DbConnectionSettings : public QObject
 {
     Q_OBJECT

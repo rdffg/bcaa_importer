@@ -5,6 +5,11 @@
 
 namespace parser
 {
+    /**
+     * @brief ParseError
+     *
+     * XML parsing failed.
+     */
     typedef std::exception ParseError;
 }
 #endif // EXCEPTION_H

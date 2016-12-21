@@ -2,6 +2,11 @@
 #define SAVEERROR_H
 #include <QtCore>
 
+/**
+ * @brief The SaveError class
+ *
+ * This error is thrown when a model could not be saved to the database.
+ */
 class SaveError
 {
 public:
