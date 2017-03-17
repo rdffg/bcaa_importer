@@ -110,9 +110,10 @@ ApplicationWindow {
             }
             else
             {
+                importer.createTables();
                 var lastRun = importer.lastRun;
                 var thisRun = importer.importMeta;
-                if (lastRun.runDate >= thisRun.runDate)
+                if (lastRun != undefined && lastRun.runDate >= thisRun.runDate)
                 {
                     overwriteImportDialog.open();
                 } else {

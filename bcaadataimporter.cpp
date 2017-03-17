@@ -177,6 +177,20 @@ void BCAADataImporter::cancel()
     emit cancelJob();
 }
 
+void BCAADataImporter::createTables()
+{
+    auto db = m_dbconnection->makeDbConnection();
+    if (db.open())
+    {
+        QDjango::setDatabase(db);
+        QDjango::createTables();
+    }
+    else
+    {
+        emit statusChanged(QString("Failed to open database: ") + db.lastError().text());
+    }
+}
+
 void BCAADataImporter::onStatusChanged(const QString &message)
 {
     emit statusChanged(message);

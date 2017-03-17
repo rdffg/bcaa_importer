@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>MainForm.ui.qml</file>
         <file>Settings.qml</file>
+        <file>bcaa_importer2.ico</file>
     </qresource>
 </RCC>

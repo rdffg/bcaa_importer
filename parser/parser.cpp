@@ -60,7 +60,18 @@ void Parser::import()
         model::minortaxing::JurisdictionType::populate();
         message("Done.");
         message(QString("Importing records from ") + filePath + "...");
-        auto dataAdvice = readFile(filePath.toStdString(), findXsdPath(), false);
+        std::unique_ptr<model::DataAdvice> dataAdvice;
+        try
+        {
+            dataAdvice = readFile(filePath.toStdString(), findXsdPath(), false);
+        }
+        catch ( ... )
+        {
+            QDjango::database().rollback();
+            emit finished(false);
+            return;
+        }
+
         writeMetadata(dataAdvice);
         if (!QDjango::database().commit())
             throw SaveError("Failed to commit transaction.");
@@ -634,20 +645,27 @@ std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, con
         {
             qDebug() << "Parse error on line " << d.line() << ", column " << d.column();
             qDebug() << QString::fromStdString(d.message());
+            emit message(QString("Parse error on line ")
+                         + QString::number(d.line())
+                         + ", column "
+                         + QString::number(d.column()));
+            emit message(QString::fromStdString(d.message()));
         }
-        throw e;
+        throw QString(*e.what());
     }
 
     catch (const ::xml_schema::exception& e)
     {
         file.close();
         qDebug() << e.what();
+        message(QString("Parse error: ") + QString(*e.what()));
         throw e.what();
     }
     catch (const std::ios_base::failure&)
     {
         file.close();
         qDebug() << "IO failue.";
+        emit message(QString("IO Failure"));
         throw QString("IO Failure");
     }
     catch (dataadvice::StopParsing&)

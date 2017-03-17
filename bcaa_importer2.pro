@@ -152,3 +152,6 @@ EXTRA_BINFILES += $$PWD/DataAdvice.xsd
 #QMAKE_POST_LINK += xcopy $$EXTRA_BINFILES $$OUT_DIR
 CONFIG(debug, debug|release): QMAKE_POST_LINK += $$quote(copy /Y $$shell_path($$PWD/DataAdvice.xsd) $$shell_path($$OUT_PWD)\debug\\$$escape_expand(\\n))
 CONFIG(release, debug|release): QMAKE_POST_LINK += $$quote(copy /Y $$shell_path($$PWD/DataAdvice.xsd) $$shell_path($$OUT_PWD)\release\\$$escape_expand(\\n))
+
+# icon
+RC_ICONS = bcaa_importer2.ico

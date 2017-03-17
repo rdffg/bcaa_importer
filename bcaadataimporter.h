@@ -149,6 +149,8 @@ public slots:
       */
     Q_INVOKABLE void cancel();
 
+    Q_INVOKABLE void createTables();
+
 private slots:
     void onStatusChanged(QString const &message);
     void onProgressChanged(float percent);
