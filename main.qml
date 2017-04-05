@@ -93,6 +93,7 @@ ApplicationWindow {
     FileDialog {
         id: fileDialog
         title: qsTr("Select Data Advice File")
+        nameFilters: ["BCA XML Files (*.xml)", "All Files (*)"]
         onAccepted: {
             importer.dataFilePath = fileDialog.fileUrl;
         }
