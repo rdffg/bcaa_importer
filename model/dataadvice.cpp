@@ -72,7 +72,7 @@ const std::unique_ptr<DeliverySummary> &DataAdvice::reportSummary()
     return m_reportSummary;
 }
 
-void DataAdvice::setReportSummary(std::unique_ptr<DeliverySummary> &reportSummary)
+void DataAdvice::setReportSummary(std::unique_ptr<DeliverySummary> reportSummary)
 {
     m_reportSummary = std::move(reportSummary);
 }

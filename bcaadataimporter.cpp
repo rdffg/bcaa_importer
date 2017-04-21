@@ -109,10 +109,11 @@ void BCAADataImporter::beginImport()
     QObject::connect(this, &BCAADataImporter::cancelJob, [=]() {
         r->cancel();
     });
-    QObject::connect(t, &QThread::finished, [=] () {
+   /* QObject::connect(t, &QThread::finished, [=] () {
         t->deleteLater();
-    });
+    });*/
     QObject::connect(t, &QThread::destroyed, r, &Parser::deleteLater);
+    emit statusChanged(QString("Import started at " + QTime::currentTime().toString()));
     t->start();
 }
 
@@ -166,6 +167,7 @@ void BCAADataImporter::onImportFinished(bool success)
     if (success && m_plugins.count(m_dbconnection->driver()) > 0)
         m_plugins[m_dbconnection->driver()]->processDatabase(
                     new QSqlDatabase(m_dbconnection->makeDbConnection()), this->runType());
+    emit statusChanged(QString("Import finished at ") + QTime::currentTime().toString());
     m_isrunning = false;
     m_canRun = false;
     emit dataChanged();

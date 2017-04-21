@@ -65,6 +65,13 @@ void Parser::import()
         {
             dataAdvice = readFile(filePath.toStdString(), findXsdPath(), false);
         }
+        catch (SaveError &err)
+        {
+            QDjango::database().rollback();
+            emit message(err.text());
+            emit finished(false);
+            return;
+        }
         catch ( ... )
         {
             QDjango::database().rollback();
@@ -672,6 +679,10 @@ std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, con
     {
         file.close();
         qDebug() << "Stopped parsing";
-        return DataAdvice_p->post_DataAdvice();
+        //this is terrible, and should be refactored
+        if (forSummary)
+            return DataAdvice_p->post_DataAdvice();
+        else
+            throw;
     }
 }

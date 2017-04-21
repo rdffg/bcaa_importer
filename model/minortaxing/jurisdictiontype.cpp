@@ -34,7 +34,8 @@ void JurisdictionType::populate()
         {
             JurisdictionType prop;
             prop.setType(static_cast<TaxingJurisdictionType>(metaEnum.value(i)));
-            prop.setDescription(metaEnum.valueToKey(i));
+            prop.setDescription(metaEnum.valueToKey(prop.type()));
+            qDebug() << "Jurisdiction: " << static_cast<int>(prop.type()) << ", " << prop.description();
             if (!prop.save())
                 throw SaveError(prop.lastError().text());
         }
@@ -49,5 +50,5 @@ std::unique_ptr<JurisdictionType> JurisdictionType::getModel(TaxingJurisdictionT
     auto model = std::make_unique<JurisdictionType>();
     model->setType(type);
     model->setDescription(metaEnum.valueToKey(type));
-    return std::move(model);
+    return model;
 }

@@ -108,7 +108,7 @@ namespace dataadvice
     da->setVersion(version);
     da->setRequestID(requestID);
     da->setOrderID(orderID);
-    return std::move(da);
+    return da;
   }
 
   // VersionImpl
@@ -215,7 +215,7 @@ namespace dataadvice
       auto ds = std::make_unique<model::DeliverySummary>();
       ds->setTotalFolioCount(totalFolioCount);
 
-      return std::move(ds);
+      return ds;
   }
 
   // AmendmentReasonCountCollectionImpl
@@ -587,7 +587,7 @@ namespace dataadvice
       m_oilAndGas = std::vector<std::unique_ptr<model::OilAndGas>>();
       m_landCharacteristics = std::vector<std::unique_ptr<model::LandCharacteristic>>();
       m_propertyValues = std::make_unique<model::PropertyValues>();
-
+      m_action = NULL;
   }
 
   void FolioRecordImpl::
@@ -713,6 +713,10 @@ namespace dataadvice
     {
         if (!m_action || m_action->actionType() == model::FolioAction::ADD) // folio action is null or Add
         {
+            if (m_action && m_action->renumber())
+            {
+                emit message(QString("Found a folio renumber section in folio ID ") + m_folio->id() + QString(". This was not handled!"));
+            }
             m_folio->setJurisdiction(jurisdiction.get());
             if (!m_folio->save())
                 throw SaveError(m_folio->lastError().text());
@@ -732,7 +736,21 @@ namespace dataadvice
                 {
                     owner->setOwnershipGroup(ownGroup.get());
                     if (!owner->save())
-                        throw SaveError(owner->lastError().text());
+                        throw SaveError(QString("Owner: ") + owner->lastError().text());
+                }
+                if (ownGroup->mailingAddress())
+                {
+                    ownGroup->mailingAddress()->setOwnershipGroup(ownGroup.get());
+                    if (!ownGroup->mailingAddress()->save())
+                    throw SaveError(QString("Mailing Address: ")
+                                    + ownGroup->mailingAddress()->lastError().text());
+                }
+                if (ownGroup->formattedMailingAddress())
+                {
+                    ownGroup->formattedMailingAddress()->setOwnershipGroup(ownGroup.get());
+                    if (!ownGroup->formattedMailingAddress()->save())
+                        throw SaveError(QString("Formatted Mailing Address: ")
+                                        + ownGroup->formattedMailingAddress()->lastError().text());
                 }
             }
             for (auto &&legal: m_legalDescriptions)
@@ -823,6 +841,9 @@ namespace dataadvice
         }
         else if (m_action->actionType() == model::FolioAction::DELETE)
         {
+            if (m_action->renumber() != NULL) {
+                emit message(QString("Found a folio renumber section in folio ID ") + m_folio->id() + QString(". This was not handled!"));
+            }
             if (!m_folio->remove())
                 throw SaveError(m_folio->lastError().text());
         }
@@ -916,7 +937,7 @@ namespace dataadvice
   void FolioAddImpl::
   pre ()
   {
-      m_renumber = std::unique_ptr<model::FolioRenumber>();
+      m_renumber = NULL;
   }
 
   void FolioAddImpl::
@@ -939,12 +960,13 @@ namespace dataadvice
   void FolioDeleteImpl::
   pre ()
   {
+      m_renumber = NULL;
   }
 
   void FolioDeleteImpl::
   FolioRenumber (const model::FolioRenumber &renumber)
   {
-      m_renumber = renumber;
+      *m_renumber = renumber;
   }
 
   void FolioDeleteImpl::
@@ -962,7 +984,14 @@ namespace dataadvice
   model::FolioAction FolioDeleteImpl::
   post_FolioDelete ()
   {
-      return model::FolioAction(model::FolioAction::DELETE, m_renumber, m_deleteReason, m_reasonDescr);
+      if (m_renumber)
+      {
+        return model::FolioAction(model::FolioAction::DELETE, *m_renumber, m_deleteReason, m_reasonDescr);
+      }
+      else
+      {
+        return model::FolioAction(model::FolioAction::ActionType::DELETE, m_deleteReason, m_reasonDescr);
+      }
   }
 
   // FolioRenumberImpl

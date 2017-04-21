@@ -41,9 +41,10 @@ public:
     };
 
     ActionType actionType() const;
-    FolioAction(ActionType type, const FolioRenumber &renumber);
-    FolioAction (ActionType type, const FolioRenumber&, const QString &reasonCode,const QString &reasonDescr);
-    FolioAction(ActionType type);
+    FolioAction(const ActionType &type, const FolioRenumber &renumber);
+    FolioAction(const ActionType &type, const QString &reasonCode, const QString &reasonDescr);
+    FolioAction (const ActionType &type, const FolioRenumber&, const QString &reasonCode,const QString &reasonDescr);
+    FolioAction(const ActionType &type);
     FolioAction();
     QString deleteReasonCode() const;
     QString deleteReasonDescription() const;

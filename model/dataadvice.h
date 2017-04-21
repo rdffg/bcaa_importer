@@ -26,7 +26,7 @@ public:
     void setEndDate(const QDate &endDate);
 
     const std::unique_ptr<DeliverySummary>& reportSummary();
-    void setReportSummary(std::unique_ptr<DeliverySummary> &reportSummary );
+    void setReportSummary(std::unique_ptr<DeliverySummary> reportSummary );
 
     QString version() const;
     void setVersion(const QString &version);

@@ -21,7 +21,7 @@ class MinorTaxing : public QDjangoModel
 
     Q_CLASSINFO("__meta__", "db_table=folio_minortaxjurisdiction")
     Q_CLASSINFO("folio", "null=true on_delete=cascade")
-    Q_CLASSINFO("minorTaxingJurisdiction", "null=true")
+    Q_CLASSINFO("minorTaxingJurisdiction", "null=true on_delete=cascade")
 
 public:
         explicit MinorTaxing(QObject *parent=0);

@@ -7,7 +7,8 @@ QT += qml quick widgets sql
 
 CONFIG += qtquickcompiler
 
-unix:QMAKE_CXXFLAGS += -std=c++14
+#unix:QMAKE_CXXFLAGS += -std=c++14
+QMAKE_CXXFLAGS += -std=c++14
 
 SOURCES += main.cpp \
     bcaadataimporter.cpp \

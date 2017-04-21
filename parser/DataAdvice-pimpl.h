@@ -541,7 +541,7 @@ namespace dataadvice
     virtual model::FolioAction
     post_FolioDelete () override;
   private:
-      model::FolioRenumber m_renumber;
+      std::unique_ptr<model::FolioRenumber> m_renumber;
       QString m_deleteReason;
       QString m_reasonDescr;
   };

@@ -24,7 +24,7 @@ public:
      */
     virtual void processDatabase(const QString &runType) = 0;
     virtual void setDatabase(QSqlDatabase *db) = 0;
-    /** \summary Returns the database driver name. This should be
+    /** @brief summary Returns the database driver name. This should be
      * name of the QSql driver (QODBC, QSQLITE, QPGQL, QMYSQL, etc),
      * or MSSQL, which is handled as a special case of QODBC.
      */

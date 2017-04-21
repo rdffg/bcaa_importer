@@ -13,7 +13,7 @@ class Owner : public QDjangoModel
     Q_OBJECT
     Q_PROPERTY(QString firstname READ firstname WRITE setFirstname)
     Q_PROPERTY(QString middleName READ middleName WRITE setMiddleName)
-    Q_PROPERTY(QString middelInitial READ middleInitial WRITE setMiddleInitial)
+    Q_PROPERTY(QString middleInitial READ middleInitial WRITE setMiddleInitial)
     Q_PROPERTY(QString companyOrLastName READ companyOrLastName WRITE setCompanyOrLastName)
     Q_PROPERTY(QString equityType READ equityType WRITE setEquityType)
     Q_PROPERTY(QString equityTypeDescription READ equityTypeDescription WRITE setEquityTypeDescription)
