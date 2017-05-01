@@ -68,6 +68,8 @@ void BCAADataImporter::beginImport()
 {
 #ifdef QT_DEBUG
         QDjango::setDebugEnabled(true);
+#else
+        QDjango::setDebugEnabled(false);
 #endif
 
     m_progress = 0;
@@ -143,11 +145,9 @@ model::ImportMeta *BCAADataImporter::lastRun() const
         {
             QDjango::setDatabase(db);
             QDjangoQuerySet<model::ImportMeta> qs;
-            QDjango::setDebugEnabled(true);
             qs = qs.orderBy(QStringList("-runDate")).limit(0,1);
             if (qs.size() > 0)
                 return qs.at(0);
-            QDjango::setDebugEnabled(false);
         }
         else
         {

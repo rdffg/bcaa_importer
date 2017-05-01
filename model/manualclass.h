@@ -1,7 +1,6 @@
 #ifndef MANUALCLASS_H
 #define MANUALCLASS_H
 #include "QDjangoModel.h"
-//#include "DataAdvice.hxx"
 #include <memory>
 
 
@@ -27,8 +26,6 @@ public:
 
     double deviation() const;
     void setDeviation(double deviation);
-
-//    static std::unique_ptr<ManualClass> fromXml(const dataadvice::ManualClass &mclass);
 
 private:
     QString m_manualClassCode;

@@ -4,7 +4,6 @@
 #include <QDjangoModel.h>
 #include "valuation.h"
 #include <memory>
-//#include "DataAdvice.hxx"
 #include "propertyclassvaluetype.h"
 #include "folio.h"
 
@@ -13,23 +12,23 @@ namespace model {
 class PropertyClassValue : public QDjangoModel
 {
     Q_OBJECT
-    Q_PROPERTY(model::Valuation* grossValues READ grossValues WRITE setGrossValues)
-    Q_PROPERTY(model::Valuation* taxExemptValues READ taxExemptValues WRITE setTaxExemptValues)
-    Q_PROPERTY(model::Valuation* netValues READ netValues WRITE setNetValues)
     Q_PROPERTY(QString propertyClassCode READ propertyClassCode WRITE setPropertyClassCode)
     Q_PROPERTY(QString propertySubClassCode READ propertySubClassCode WRITE setPropertySubClassCode)
     Q_PROPERTY(QString propertyClassDescription READ propertyClassDescription WRITE setPropertyClassDescription)
     Q_PROPERTY(QString propertySubClassDescription READ propertySubClassDescription WRITE setPropertySubClassDescription)
     Q_PROPERTY(model::Folio *folio READ folio WRITE setFolio)
     Q_PROPERTY(model::PropertyClassValueType *valueType READ valueType WRITE setValueType)
+    Q_PROPERTY(model::Valuation *grossValues READ grossValues WRITE setGrossValues)
+    Q_PROPERTY(model::Valuation *taxExemptValues READ taxExemptValues WRITE setTaxExemptValues)
+    Q_PROPERTY(model::Valuation *netValues READ netValues WRITE setNetValues)
 
     Q_CLASSINFO("__meta__", "db_table=property_class_value")
     Q_CLASSINFO("propertyClassCode", "max_length=64")
     Q_CLASSINFO("propertySubClassCode", "null=true max_length=64")
     Q_CLASSINFO("propertyClassDescription", "null=true max_length=255")
     Q_CLASSINFO("propertySubClassDescription", "null=true max_length=255")
-    Q_CLASSINFO("grossValues", "null=true blank=true")
-    Q_CLASSINFO("taxExemptValues", "null=true")
+    Q_CLASSINFO("grossValues", "null=true on_delete=cascade")
+    Q_CLASSINFO("taxExemptValues", "null=true on_delete=cascade")
     Q_CLASSINFO("netValues", "null=true on_delete=cascade")
     Q_CLASSINFO("folio", "on_delete=cascade")
     Q_CLASSINFO("valueType", "on_delete=cascade")
@@ -38,15 +37,12 @@ public:
 
     explicit PropertyClassValue(QObject *parent = 0);
     Valuation *grossValues() const;
-    void setGrossValues(Valuation *valuation);
     void setGrossValues(std::unique_ptr<Valuation> valuation);
 
     Valuation *taxExemptValues() const;
-    void setTaxExemptValues(Valuation *valuation);
     void setTaxExemptValues(std::unique_ptr<Valuation> valuation);
 
     Valuation *netValues() const;
-    void setNetValues(Valuation *valuation);
     void setNetValues(std::unique_ptr<Valuation> valuation);
 
     QString propertyClassCode() const;
@@ -68,16 +64,20 @@ public:
     Folio* folio() const;
     void setFolio(Folio *folio);
 
-//    static std::unique_ptr<PropertyClassValue> fromXml(const dataadvice::PropertyClassValues &values);
-
 signals:
 
 public slots:
 private:
+    void setGrossValues(Valuation *valuation);
+    void setTaxExemptValues(Valuation *valuation);
+    void setNetValues(Valuation *valuation);
     QString m_propertyClassCode;
     QString m_propertyClassDescription;
     QString m_propertySubClassCode;
     QString m_propertySubClassDescription;
+    std::unique_ptr<model::Valuation> m_grossValues;
+    std::unique_ptr<model::Valuation> m_netValues;
+    std::unique_ptr<model::Valuation> m_taxExemptValues;
 };
 
 } // namespace model

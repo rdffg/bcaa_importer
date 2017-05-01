@@ -33,8 +33,6 @@ public:
 
     static std::unique_ptr<PropertyClassValueType> getModel(ValueType type);
 
-//    static std::unique_ptr<PropertyClassValueType> fromValueType(const ValueType &type);
-
 private:
     ValueType m_type;
     QString m_description;

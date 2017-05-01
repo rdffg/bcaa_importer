@@ -1,8 +1,6 @@
 #ifndef MODEL_IVALUATION_H
 #define MODEL_IVALUATION_H
 
-#include <QDjangoModel.h>
-
 namespace model {
 
 class IValuation

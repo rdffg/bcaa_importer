@@ -28,6 +28,7 @@ public:
     void setLandValue(const double &value) override;
     double improvementValue() const override;
     void setImprovementValue(const double &value) override;
+    ~Valuation();
 
 //    static std::unique_ptr<Valuation> fromXml(const dataadvice::Valuation &val);
 private:

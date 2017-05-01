@@ -19,7 +19,8 @@ void PropertyClassValue::setGrossValues(Valuation *valuation)
 
 void PropertyClassValue::setGrossValues(std::unique_ptr<Valuation> valuation)
 {
-    setGrossValues(valuation.get());
+    m_grossValues = std::move(valuation);
+    setGrossValues(m_grossValues.get());
 }
 
 Valuation *PropertyClassValue::taxExemptValues() const
@@ -34,7 +35,8 @@ void PropertyClassValue::setTaxExemptValues(Valuation *valuation)
 
 void PropertyClassValue::setTaxExemptValues(std::unique_ptr<Valuation> valuation)
 {
-    setTaxExemptValues(valuation.get());
+    m_taxExemptValues = std::move(valuation);
+    setTaxExemptValues(m_taxExemptValues.get());
 }
 
 Valuation *PropertyClassValue::netValues() const
@@ -49,7 +51,8 @@ void PropertyClassValue::setNetValues(Valuation *valuation)
 
 void PropertyClassValue::setNetValues(std::unique_ptr<Valuation> valuation)
 {
-    setNetValues(valuation.get());
+    m_netValues = std::move(valuation);
+    setNetValues(m_netValues.get());
 }
 
 QString PropertyClassValue::propertyClassCode() const

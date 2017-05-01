@@ -27,6 +27,11 @@ void Valuation::setImprovementValue(const double &value)
     m_improvementValue = value;
 }
 
+Valuation::~Valuation()
+{
+
+}
+
 //std::unique_ptr<Valuation> Valuation::fromXml(const dataadvice::Valuation &val)
 //{
 //    auto valuation = std::make_unique<Valuation>();

@@ -40,7 +40,7 @@ void PropertyClassValueType::populate()
         {
             PropertyClassValueType prop;
             prop.setType(static_cast<ValueType>(metaEnum.value(i)));
-            prop.setDescription(metaEnum.valueToKey(i));
+            prop.setDescription(metaEnum.valueToKey(metaEnum.value(i)));
             if (!prop.save())
                 throw SaveError(prop.lastError().text());
         }

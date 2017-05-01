@@ -834,6 +834,13 @@ namespace dataadvice
             }
             for (auto &&valuation: m_propertyValues->second)
             {
+                auto val = valuation->grossValues();
+                if (valuation->grossValues() != NULL)
+                    if (!valuation->grossValues()->save()) throw SaveError(valuation->grossValues()->lastError().text());
+                if (valuation->netValues() != NULL)
+                    if (!valuation->netValues()->save()) throw SaveError(valuation->netValues()->lastError().text());
+                if (valuation->taxExemptValues() != NULL)
+                    if (!valuation->taxExemptValues()->save()) throw SaveError(valuation->taxExemptValues()->lastError().text());
                 valuation->setFolio(m_folio.get());
                 if (!valuation->save())
                     throw SaveError(valuation->lastError().text());
@@ -850,7 +857,7 @@ namespace dataadvice
     }
     else
     {
-        // something went terribly wrong...
+        throw SaveError("failed to get lock (this should never happen)");
     }
 
     // calculate progress
@@ -3160,7 +3167,7 @@ namespace dataadvice
       auto valuation = std::make_unique<model::Valuation>();
       valuation->setImprovementValue(improvementValue);
       valuation->setLandValue(landValue);
-      return std::move(valuation);
+      return valuation;
   }
 
   // FolioIntegerItemImpl
