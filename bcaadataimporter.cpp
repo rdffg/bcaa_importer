@@ -111,9 +111,12 @@ void BCAADataImporter::beginImport()
     QObject::connect(this, &BCAADataImporter::cancelJob, [=]() {
         r->cancel();
     });
-   /* QObject::connect(t, &QThread::finished, [=] () {
+    QObject::connect(t, &QThread::finished, [=] () {
+        qDebug() << "parser thread finished.";
+        QDjango::database().close();
+        delete r;
         t->deleteLater();
-    });*/
+    });
     QObject::connect(t, &QThread::destroyed, r, &Parser::deleteLater);
     emit statusChanged(QString("Import started at " + QTime::currentTime().toString()));
     t->start();

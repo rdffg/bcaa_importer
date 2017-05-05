@@ -369,7 +369,7 @@ namespace dataadvice
       Q_OBJECT
     public:
 
-      FolioRecordImpl(std::ifstream& is, size_t size);
+      FolioRecordImpl(std::ifstream& is, long long size);
     virtual void
     pre () override;
 
@@ -457,7 +457,7 @@ namespace dataadvice
       std::unique_ptr<model::PropertyValues> m_propertyValues;
       bool* m_shouldCancel;
       std::ifstream& m_inputStream;
-      size_t m_inputSize;
+      long long m_inputSize;
   };
 
   class String32Impl: public virtual String32_pskel,

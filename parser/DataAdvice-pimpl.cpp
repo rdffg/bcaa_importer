@@ -559,7 +559,7 @@ namespace dataadvice
   // FolioRecordImpl
   //
 
-  FolioRecordImpl::FolioRecordImpl(std::ifstream &is, size_t size) :
+  FolioRecordImpl::FolioRecordImpl(std::ifstream &is, long long size) :
       FolioRecord_pskel()
     , QObject(0)
     , m_inputStream(is)
@@ -834,13 +834,6 @@ namespace dataadvice
             }
             for (auto &&valuation: m_propertyValues->second)
             {
-                auto val = valuation->grossValues();
-                if (valuation->grossValues() != NULL)
-                    if (!valuation->grossValues()->save()) throw SaveError(valuation->grossValues()->lastError().text());
-                if (valuation->netValues() != NULL)
-                    if (!valuation->netValues()->save()) throw SaveError(valuation->netValues()->lastError().text());
-                if (valuation->taxExemptValues() != NULL)
-                    if (!valuation->taxExemptValues()->save()) throw SaveError(valuation->taxExemptValues()->lastError().text());
                 valuation->setFolio(m_folio.get());
                 if (!valuation->save())
                     throw SaveError(valuation->lastError().text());
@@ -3090,18 +3083,24 @@ namespace dataadvice
   void PropertyClassValuesImpl::
   GrossValues (std::unique_ptr<model::Valuation> &GrossValues)
   {
+      if (!GrossValues->save())
+          throw SaveError(GrossValues->lastError().text());
       m_value->setGrossValues(std::move(GrossValues));
   }
 
   void PropertyClassValuesImpl::
   TaxExemptValues (std::unique_ptr<model::Valuation> &TaxExemptValues)
   {
+      if (!TaxExemptValues->save())
+          throw SaveError(TaxExemptValues->lastError().text());
       m_value->setTaxExemptValues(std::move(TaxExemptValues));
   }
 
   void PropertyClassValuesImpl::
   NetValues (std::unique_ptr<model::Valuation> &NetValues)
   {
+      if (!NetValues->save())
+          throw new SaveError(NetValues->lastError().text());
       m_value->setNetValues(std::move(NetValues));
   }
 

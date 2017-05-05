@@ -75,6 +75,7 @@ void Parser::import()
         catch ( ... )
         {
             QDjango::database().rollback();
+            qDebug() << "Stopped parsing the file.";
             emit finished(false);
             return;
         }
@@ -119,7 +120,7 @@ std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, con
     // use a stream so we can calculate progress based on
     // position in the file stream
     std::ifstream file;
-    size_t size;
+    long long size;
     file.open(path, std::ios::in | std::ios::ate); // open input stream at end of file
     if (file.is_open())
     {

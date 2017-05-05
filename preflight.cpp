@@ -11,4 +11,14 @@ void PreFlight::prepareDatabase(const QString &runType)
         if (query.lastError().type() != QSqlError::NoError)
             throw SaveError(query.lastError().text());
     }
+    if (runType == "COMP" || runType == "REVD") {
+        QString queryText = "TRUNCATE TABLE property_class_value";
+        auto query = QDjango::database().exec(queryText);
+        if (query.lastError().type() != QSqlError::NoError)
+            throw SaveError(query.lastError().text());
+        queryText = "TRUNCATE TABLE valuation";
+        query = QDjango::database().exec(queryText);
+        if (query.lastError().type() != QSqlError::NoError)
+            throw SaveError(query.lastError().text());
+    }
 }

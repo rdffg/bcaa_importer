@@ -19,8 +19,7 @@ void PropertyClassValue::setGrossValues(Valuation *valuation)
 
 void PropertyClassValue::setGrossValues(std::unique_ptr<Valuation> valuation)
 {
-    m_grossValues = std::move(valuation);
-    setGrossValues(m_grossValues.get());
+    setGrossValues(valuation.release());
 }
 
 Valuation *PropertyClassValue::taxExemptValues() const
@@ -35,8 +34,8 @@ void PropertyClassValue::setTaxExemptValues(Valuation *valuation)
 
 void PropertyClassValue::setTaxExemptValues(std::unique_ptr<Valuation> valuation)
 {
-    m_taxExemptValues = std::move(valuation);
-    setTaxExemptValues(m_taxExemptValues.get());
+    m_taxExemptValues = valuation.release();
+    setTaxExemptValues(m_taxExemptValues);
 }
 
 Valuation *PropertyClassValue::netValues() const
@@ -51,8 +50,8 @@ void PropertyClassValue::setNetValues(Valuation *valuation)
 
 void PropertyClassValue::setNetValues(std::unique_ptr<Valuation> valuation)
 {
-    m_netValues = std::move(valuation);
-    setNetValues(m_netValues.get());
+    m_netValues = valuation.release();
+    setNetValues(m_netValues);
 }
 
 QString PropertyClassValue::propertyClassCode() const
@@ -118,6 +117,14 @@ Folio *PropertyClassValue::folio() const
 void PropertyClassValue::setFolio(Folio *folio)
 {
     setForeignKey("folio", folio);
+}
+
+
+PropertyClassValue::~PropertyClassValue()
+{
+    delete foreignKey("grossValues");
+    delete foreignKey("netValues");
+    delete foreignKey("taxExemptValues");
 }
 
 //std::unique_ptr<PropertyClassValue> PropertyClassValue::fromXml(const dataadvice::PropertyClassValues &values)

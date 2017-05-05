@@ -64,20 +64,22 @@ public:
     Folio* folio() const;
     void setFolio(Folio *folio);
 
+    ~PropertyClassValue();
+
 signals:
 
 public slots:
 private:
-    void setGrossValues(Valuation *valuation);
     void setTaxExemptValues(Valuation *valuation);
+    void setGrossValues(Valuation *valuation);
     void setNetValues(Valuation *valuation);
     QString m_propertyClassCode;
     QString m_propertyClassDescription;
     QString m_propertySubClassCode;
     QString m_propertySubClassDescription;
-    std::unique_ptr<model::Valuation> m_grossValues;
-    std::unique_ptr<model::Valuation> m_netValues;
-    std::unique_ptr<model::Valuation> m_taxExemptValues;
+    model::Valuation* m_grossValues;
+    model::Valuation* m_netValues;
+    model::Valuation* m_taxExemptValues;
 };
 
 } // namespace model
