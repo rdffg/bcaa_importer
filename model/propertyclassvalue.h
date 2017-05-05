@@ -58,7 +58,6 @@ public:
     void setPropertySubClassDescription(const QString &propertySubClassDescription);
 
     PropertyClassValueType* valueType()  const;
-    void setValueType(PropertyClassValueType *type);
     void setValueType(std::unique_ptr<PropertyClassValueType> type);
 
     Folio* folio() const;
@@ -70,6 +69,7 @@ signals:
 
 public slots:
 private:
+    void setValueType(PropertyClassValueType *type);
     void setTaxExemptValues(Valuation *valuation);
     void setGrossValues(Valuation *valuation);
     void setNetValues(Valuation *valuation);
@@ -80,6 +80,7 @@ private:
     model::Valuation* m_grossValues;
     model::Valuation* m_netValues;
     model::Valuation* m_taxExemptValues;
+    model::PropertyClassValueType* m_valueType;
 };
 
 } // namespace model

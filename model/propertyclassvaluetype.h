@@ -19,7 +19,8 @@ public:
     {
         BCTransit = 1,
         General,
-        School
+        School,
+        Hospital
     };
     Q_ENUM(ValueType)
 

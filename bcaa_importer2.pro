@@ -8,7 +8,6 @@ QT += qml quick widgets sql
 CONFIG += qtquickcompiler
 
 #unix:QMAKE_CXXFLAGS += -std=c++14
-QMAKE_CXXFLAGS += -std=c++14
 
 SOURCES += main.cpp \
     bcaadataimporter.cpp \
@@ -53,7 +52,8 @@ SOURCES += main.cpp \
     model/bcaamodel.cpp \
     model/valuesbyetc.cpp \
     preflight.cpp \
-    model/folioaction.cpp
+    model/folioaction.cpp \
+    model/schoolclassconverter.cpp
 
 RESOURCES += qml.qrc
 
@@ -114,7 +114,8 @@ HEADERS += \
     model/bcaamodel.h \
     parser/stopparsing.h \
     preflight.h \
-    model/folioaction.h
+    model/folioaction.h \
+    model/schoolclassconverter.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d

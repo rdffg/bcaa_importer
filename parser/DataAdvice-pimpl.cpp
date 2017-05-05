@@ -9,7 +9,9 @@
 #include "saveerror.h"
 #include "stopparsing.h"
 #include "preflight.h"
+#include "model/schoolclassconverter.h"
 #include <fstream>
+#include <algorithm>
 
 namespace dataadvice
 {
@@ -778,22 +780,6 @@ namespace dataadvice
                     throw SaveError(QString("Neighbourhood: ")
                                         + m_folioDescription->neighbourhood()->lastError().text());
             }
-            // property values
-            for (auto &&value: m_propertyValues->first)
-            {
-                value->setFolio(m_folio.get());
-                if (!value->save())
-                    throw SaveError(QString("Values By ETC: ")
-                                        + value->lastError().text());
-            }
-
-            for (auto &&value: m_propertyValues->second)
-            {
-                value->setFolio(m_folio.get());
-                if (!value->save())
-                    throw SaveError(QString("Property Values: ")
-                                        + value->lastError().text());
-            }
 
             // sales
             for (auto &&sale: m_sales)
@@ -835,9 +821,21 @@ namespace dataadvice
             for (auto &&valuation: m_propertyValues->second)
             {
                 valuation->setFolio(m_folio.get());
+                if (valuation->valueType()->type() == model::PropertyClassValueType::School)
+                {
+                    std::vector<std::unique_ptr<model::PropertyClassValue> >::iterator it = std::find_if(m_propertyValues->second.begin(), m_propertyValues->second.end(), [](std::unique_ptr<model::PropertyClassValue> &a)->bool { return a->valueType()->type() == model::PropertyClassValueType::General;});
+                    model::FixSchoolValues(m_propertyValues->first, *valuation);
+                    if (it != m_propertyValues->second.end())
+                    {
+                        auto hospitalValue = model::createHospitalValuesFromSchoolValues(*valuation, **it, m_propertyValues->first);
+                        if (!hospitalValue->save())
+                            throw SaveError(hospitalValue->lastError().text());
+                    }
+                }
                 if (!valuation->save())
                     throw SaveError(valuation->lastError().text());
             }
+            // hospital tax values
         }
         else if (m_action->actionType() == model::FolioAction::DELETE)
         {
