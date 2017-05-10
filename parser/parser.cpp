@@ -191,6 +191,7 @@ std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, con
     ::dataadvice::SaleImpl Sale_p;
     ::dataadvice::PropertyValuesImpl PropertyValues_p;
     ::dataadvice::PropertyClassValuesCollectionImpl PropertyClassValuesCollection_p;
+    ::dataadvice::PropertyClassValuesCollectionImpl PropertyClassValuesSummaryCollection_p;
     ::dataadvice::PropertyClassValuesImpl PropertyClassValues_p;
     ::dataadvice::PropertyClassCodeImpl PropertyClassCode_p;
     ::dataadvice::PropertySubClassCodeImpl PropertySubClassCode_p;
@@ -603,9 +604,9 @@ std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, con
                                    FolioGroupValues_p,
                                    FolioGroupValues_p,
                                    FolioGroupValues_p,
-                                   PropertyClassValuesCollection_p,
-                                   PropertyClassValuesCollection_p,
-                                   PropertyClassValuesCollection_p,
+                                   PropertyClassValuesSummaryCollection_p,
+                                   PropertyClassValuesSummaryCollection_p,
+                                   PropertyClassValuesSummaryCollection_p,
                                    AmendmentReasonCountCollection_p,
                                    DeleteReasonCountCollection_p);
 
