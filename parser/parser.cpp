@@ -81,6 +81,7 @@ void Parser::import()
         }
 
         writeMetadata(dataAdvice);
+        emit folioSaved(-1); // set progressbar to indeterminate
         if (!QDjango::database().commit())
             throw SaveError("Failed to commit transaction.");
         message("Successfully imported the data file.");

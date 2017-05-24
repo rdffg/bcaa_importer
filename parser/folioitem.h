@@ -19,7 +19,7 @@ private:
 };
 
 template <class T>
-class FolioItem: FolioItemGroup
+class FolioItem: public FolioItemGroup
 {
 public:
     FolioItem(T value, T oldvalue, ActionCode::Code code);
@@ -63,10 +63,19 @@ inline T FolioItem<T>::value() const
 }
 
 typedef FolioItem<bool> BooleanItem;
-typedef FolioItem<QString> StringItem;
 typedef FolioItem<double> DecimalItem;
 typedef FolioItem<long long> IntegerItem;
 typedef FolioItem<QDate> DateItem;
+
+class StringItem: public FolioItem<QString>
+{
+public:
+    StringItem(QString value, QString oldValue, ActionCode::Code);
+};
+
+inline StringItem::StringItem(QString value, QString oldValue, ActionCode::Code code) :
+    FolioItem(value.trimmed().isEmpty() ? QString(): value, oldValue, code)
+    {}
 
 // PropertyValues
 typedef std::pair<std::vector<std::unique_ptr<model::ValuesByETC> >,

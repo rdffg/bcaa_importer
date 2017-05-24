@@ -140,6 +140,7 @@ ApplicationWindow {
             height: 23
             value: importer.percentDone
             maximumValue: 1
+            indeterminate: importer.percentDone < 0
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 23
             anchors.left: parent.left

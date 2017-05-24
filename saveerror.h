@@ -10,8 +10,8 @@
 class SaveError
 {
 public:
-    SaveError(const QString message);
-    QString text() const;
+    SaveError(const QString message): m_message(message) { }
+    QString text() const { return m_message; }
 private:
     QString m_message;
 };

@@ -19,7 +19,6 @@ SOURCES += main.cpp \
     model/folioaddress.cpp \
     model/ownergroup.cpp \
     model/owner.cpp \
-    saveerror.cpp \
     model/mailingaddress.cpp \
     model/formattedmailingaddress.cpp \
     model/legaldescription.cpp \

@@ -15,6 +15,7 @@
 #include "parser/parser.h"
 #include "model/model.h"
 #include "parser/DataAdvice-pimpl.h"
+#include "saveerror.h"
 
 BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_datafilepath("")
@@ -166,10 +167,21 @@ model::ImportMeta *BCAADataImporter::lastRun() const
 
 void BCAADataImporter::onImportFinished(bool success)
 {
+    // run this in a thread, its own thread
     // if we have a post-processing plugin for this database type, run it
-    if (success && m_plugins.count(m_dbconnection->driver()) > 0)
-        m_plugins[m_dbconnection->driver()]->processDatabase(
-                    new QSqlDatabase(m_dbconnection->makeDbConnection()), this->runType());
+    if (success && m_plugins.find(m_dbconnection->driver()) != m_plugins.end())
+    {
+        try
+        {
+            m_plugins[m_dbconnection->driver()]->processDatabase(
+                                    new QSqlDatabase(m_dbconnection->makeDbConnection()), this->runType());
+        }
+        catch (SaveError &e)
+        {
+            emit statusChanged(QString("Error: ") + e.text());
+            emit statusChanged(QString("*").repeated(80) + "\nFailed to run post-processing step\n" + QString("*").repeated(80));
+        }
+    }
     emit statusChanged(QString("Import finished at ") + QTime::currentTime().toString());
     m_isrunning = false;
     m_canRun = false;
