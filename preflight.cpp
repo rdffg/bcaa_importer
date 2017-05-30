@@ -12,11 +12,11 @@ void PreFlight::prepareDatabase(const QString &runType)
             throw SaveError(query.lastError().text());
     }
     if (runType == "COMP" || runType == "REVD") {
-        std::vector<QString> tables {"property_class_value", "valuation", "tax_exempt_property_class_value"};
+        std::vector<QString> tables {"property_class_value", "tax_exempt_property_class_value", "valuation"};
         QString queryText;
         for (auto &tab: tables)
         {
-        if (QDjango::database().driverName() == "QSQLITE")
+        if (QDjango::database().driverName() == "QSQLITE" || tab == "valuation")
             queryText = "DELETE FROM " + tab;
         else
             queryText = "TRUNCATE TABLE " + tab;

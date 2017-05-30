@@ -8,6 +8,7 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
 
     QQmlApplicationEngine engine;
     QQmlContext *context = engine.rootContext();

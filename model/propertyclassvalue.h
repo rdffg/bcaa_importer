@@ -31,7 +31,6 @@ class PropertyClassValue : public QDjangoModel
     Q_CLASSINFO("taxExemptValues", "null=true on_delete=cascade")
     Q_CLASSINFO("netValues", "null=true on_delete=cascade")
     Q_CLASSINFO("folio", "on_delete=cascade")
-    Q_CLASSINFO("valueType", "on_delete=cascade")
 
 public:
 
