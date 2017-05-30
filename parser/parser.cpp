@@ -29,7 +29,7 @@ std::string Parser::findXsdPath()
     QFileInfo check_file(xsdPath);
     if (check_file.exists() && check_file.isReadable())
     {
-        return xsdPath.toStdString();
+        return (QString("file:///") + xsdPath.replace(" ","%20")).toStdString();
     }
     else
     {
@@ -38,7 +38,7 @@ std::string Parser::findXsdPath()
         xsdPath = dir.canonicalPath() + "/" + xsdName;
         check_file = QFileInfo(xsdPath);
         if (check_file.exists() && check_file.isReadable())
-            return xsdPath.toStdString();
+            return (QString("file:///") + xsdPath.replace(" ", "%20")).toStdString();
         else
             throw QString("DataAdvice.xsd was not found.");
     }
