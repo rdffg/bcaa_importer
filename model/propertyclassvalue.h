@@ -27,9 +27,9 @@ class PropertyClassValue : public QDjangoModel
     Q_CLASSINFO("propertySubClassCode", "null=true max_length=64")
     Q_CLASSINFO("propertyClassDescription", "null=true max_length=255")
     Q_CLASSINFO("propertySubClassDescription", "null=true max_length=255")
-    Q_CLASSINFO("grossValues", "null=true on_delete=cascade")
-    Q_CLASSINFO("taxExemptValues", "null=true on_delete=cascade")
-    Q_CLASSINFO("netValues", "null=true on_delete=cascade")
+    Q_CLASSINFO("grossValues", "null=true on_delete=no_action")
+    Q_CLASSINFO("taxExemptValues", "null=true on_delete=no_action")
+    Q_CLASSINFO("netValues", "null=true on_delete=no_action")
     Q_CLASSINFO("folio", "on_delete=cascade")
 
 public:
