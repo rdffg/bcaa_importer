@@ -7,7 +7,7 @@ QT += qml quick widgets sql
 
 CONFIG += qtquickcompiler
 
-VERSION = 2.0.0.1
+VERSION = 2.0.0.2
 
 SOURCES += main.cpp \
     bcaadataimporter.cpp \
