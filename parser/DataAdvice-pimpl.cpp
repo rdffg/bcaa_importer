@@ -811,6 +811,21 @@ namespace dataadvice
                 if (!land->save())
                     throw SaveError(land->lastError().text());
             }
+            for (auto &&forest: m_managedForests)
+            {
+                forest->setFolio(m_folio.get());
+                if (!forest->save())
+                    throw SaveError(QString("Forest: ") + forest->lastError().text());
+            }
+
+            for (auto &&home: m_managedForests)
+            {
+                home->setFolio(m_folio.get());
+                if (!home->save())
+                    throw SaveError(QString("Manufactured Home: ")
+                                    + home->lastError().text());
+            }
+
             // property values
             for (auto &&vByETC: m_propertyValues->first)
             {
@@ -835,6 +850,39 @@ namespace dataadvice
                 if (!valuation->save())
                     throw SaveError(valuation->lastError().text());
             }
+
+            // Farms
+            for (auto &&farm: m_farms)
+            {
+                farm->setFolio(m_folio.get());
+                if (!farm->save())
+                    throw SaveError(QString("Farm: ")
+                                    + farm->lastError().text());
+            }
+
+            // manufactured homes
+            for (auto &&home: m_manufacturedHomes)
+            {
+                home->setFolio(m_folio.get());
+                if (!home->save())
+                    throw SaveError(QString("Home: ") + home->lastError().text());
+            }
+
+            for (auto &&forest: m_managedForests)
+            {
+                forest->setFolio(m_folio.get());
+                if (!forest->save())
+                    throw SaveError(QString("Forest: ") + forest->lastError().text());
+            }
+
+            for (auto &&oil: m_oilAndGas)
+            {
+                oil->setFolio(m_folio.get());
+                if (!oil->save())
+                    throw SaveError(QString("Oil and Gas: ")
+                                    + oil->lastError().text());
+            }
+
             // hospital tax values
         }
         else if (m_action->actionType() == model::FolioAction::DELETE)
@@ -2510,6 +2558,9 @@ namespace dataadvice
   void FolioDescriptionImpl::
   PredominantManualClass (std::unique_ptr<model::ManualClass> &PredominantManualClass)
   {
+      if (!PredominantManualClass->save())
+          throw SaveError(QString("Manual Class: ")
+                          + PredominantManualClass->lastError().text());
       m_descr->setPredominantManualClass(std::move(PredominantManualClass));
   }
 
