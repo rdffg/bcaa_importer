@@ -7,7 +7,7 @@ FolioAction::ActionType FolioAction::actionType() const
     return m_actionType;
 }
 
-FolioAction::FolioAction(const ActionType &type, const FolioRenumber &renumber) :
+FolioAction::FolioAction(ActionType type, const FolioRenumber &renumber) :
      m_renumber(std::make_unique<FolioRenumber>())
    , m_actionType(type)
    , m_deleteReasonCode(QString())

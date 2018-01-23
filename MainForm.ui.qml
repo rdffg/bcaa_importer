@@ -20,13 +20,12 @@ Item {
         anchors.bottom: rowLayout2.top
         anchors.bottomMargin: 0
 
-
         Rectangle {
             color: "#dbdbdb"
             border.color: "#242424"
             anchors.fill: parent
         }
-        TextArea {
+        TextEdit {
             id: textedit1
             anchors.fill: parent
             readOnly: true

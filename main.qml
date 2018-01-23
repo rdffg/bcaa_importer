@@ -134,6 +134,8 @@ ApplicationWindow {
             settingsWindow.visible = true;
         }
 
+        settingsButton.enabled: !importer.isRunning
+
         ProgressBar {
             id: progressBar1
             y: 426

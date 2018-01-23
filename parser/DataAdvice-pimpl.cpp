@@ -45,6 +45,7 @@ namespace dataadvice
   RunType (const QString& RunType)
   {
       runType = RunType;
+      emit message(QString("Preparing database..."));
       PreFlight::prepareDatabase(runType);
   }
 
@@ -709,6 +710,7 @@ namespace dataadvice
     if (*m_shouldCancel)
     {
         emit message(QString("import cancelled."));
+        emit folioSaved(-1);
         throw StopParsing();
     }
     if (auto jurisdiction = m_jurisdiction.lock())
@@ -722,13 +724,18 @@ namespace dataadvice
             m_folio->setJurisdiction(jurisdiction.get());
             if (!m_folio->save())
                 throw SaveError(m_folio->lastError().text());
-            // save child objects... add error handling...
+            // --------------------
+            // save child objects
+            // --------------------
+            // property addresses
             for (auto &&addr: m_folioAddresses)
             {
                 addr->setFolio(m_folio.get());
                 if(!addr->save())
                     throw SaveError(addr->lastError().text());
             }
+
+            // owners
             for (auto &&ownGroup: m_ownershipGroups)
             {
                 ownGroup->setFolio(m_folio.get());
@@ -755,6 +762,8 @@ namespace dataadvice
                                         + ownGroup->formattedMailingAddress()->lastError().text());
                 }
             }
+
+            // legal descriptions
             for (auto &&legal: m_legalDescriptions)
             {
                 legal->setFolio(m_folio.get());
@@ -788,9 +797,10 @@ namespace dataadvice
                 if (!sale->save())
                     throw SaveError(sale->lastError().text());
             }
+
+            // minor taxing jurisdictions
             for (auto &&minorTax: m_minorTaxingJurisdictions)
             {
-                // minor tax jurisdictions
                 model::minortaxing::MinorTaxing taxing;
                 taxing.setFolio(m_folio.get());
                 if (!minorTax->save())
@@ -799,31 +809,13 @@ namespace dataadvice
                 if (!taxing.save())
                     throw SaveError(taxing.lastError().text());
             }
-            for (auto &&oAndG: m_oilAndGas)
-            {
-                oAndG->setFolio(m_folio.get());
-                if (!oAndG->save())
-                    throw SaveError(oAndG->lastError().text());
-            }
+
+            // Land Characteristics
             for (auto &&land : m_landCharacteristics)
             {
                 land->setFolio(m_folio.get());
                 if (!land->save())
                     throw SaveError(land->lastError().text());
-            }
-            for (auto &&forest: m_managedForests)
-            {
-                forest->setFolio(m_folio.get());
-                if (!forest->save())
-                    throw SaveError(QString("Forest: ") + forest->lastError().text());
-            }
-
-            for (auto &&home: m_managedForests)
-            {
-                home->setFolio(m_folio.get());
-                if (!home->save())
-                    throw SaveError(QString("Manufactured Home: ")
-                                    + home->lastError().text());
             }
 
             // property values
@@ -833,6 +825,8 @@ namespace dataadvice
                 if (!vByETC->save())
                     throw SaveError(vByETC->lastError().text());
             }
+
+            // Land valuations
             for (auto &&valuation: m_propertyValues->second)
             {
                 valuation->setFolio(m_folio.get());
@@ -865,9 +859,10 @@ namespace dataadvice
             {
                 home->setFolio(m_folio.get());
                 if (!home->save())
-                    throw SaveError(QString("Home: ") + home->lastError().text());
+                    throw SaveError(QString("Manufactured Home: ") + home->lastError().text());
             }
 
+            // Forests
             for (auto &&forest: m_managedForests)
             {
                 forest->setFolio(m_folio.get());
@@ -875,6 +870,7 @@ namespace dataadvice
                     throw SaveError(QString("Forest: ") + forest->lastError().text());
             }
 
+            // Oil and Gas
             for (auto &&oil: m_oilAndGas)
             {
                 oil->setFolio(m_folio.get());

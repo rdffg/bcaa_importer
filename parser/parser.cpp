@@ -630,6 +630,7 @@ std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, con
     // connect signals
     connect(&FolioRecord_p, &dataadvice::FolioRecordImpl::folioSaved, this, &Parser::folioSaved);
     connect(&FolioRecord_p, &dataadvice::FolioRecordImpl::message, this, &Parser::message);
+    connect(dynamic_cast<dataadvice::DataAdviceImpl *>(DataAdvice_p.get()), &dataadvice::DataAdviceImpl::message, this, &Parser::message);
 
     // configure XSD location
     ::xml_schema::document doc_p (*DataAdvice_p,

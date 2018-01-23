@@ -12,8 +12,9 @@
 
 namespace dataadvice
 {
-  class DataAdviceImpl: public virtual DataAdvice_pskel
+  class DataAdviceImpl: public QObject, public virtual DataAdvice_pskel
   {
+      Q_OBJECT
     public:
     virtual void
     pre () override;
@@ -66,6 +67,8 @@ namespace dataadvice
       QString version;
       std::unique_ptr<model::DeliverySummary> reportSummary;
       std::vector<model::AssessmentArea*> assessmentAreas;
+  signals:
+      void message(const QString& message);
   };
 
   class VersionImpl: public virtual Version_pskel,
@@ -366,7 +369,7 @@ namespace dataadvice
 
   class FolioRecordImpl: public QObject, public virtual FolioRecord_pskel
   {
-      Q_OBJECT
+    Q_OBJECT
     public:
 
       FolioRecordImpl(std::ifstream& is, long long size);

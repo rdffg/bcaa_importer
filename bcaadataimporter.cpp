@@ -22,7 +22,7 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
   , m_isrunning(false)
   , m_totalRecords(0)
   , m_progress(0)
-  , m_percentDone(0)
+  , m_percentDone(-1)
   , m_canRun(false)
   , m_plugins(std::map<QString, std::unique_ptr<rdffg::IPostProcess> >())
 {
@@ -31,7 +31,6 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
     if (QDir(dataFilePath.toLocalFile()).exists())
         m_datafilepath = dataFilePath.toString();
     registerModels();
-    loadPlugins();
     m_importMeta = new model::ImportMeta(this);
 }
 
@@ -72,9 +71,10 @@ void BCAADataImporter::beginImport()
 #else
         QDjango::setDebugEnabled(false);
 #endif
+    loadPlugins();
 
     m_progress = 0;
-    m_percentDone = 0;
+    m_percentDone = -1;
     emit progressChanged();
 
     m_isrunning = true;
@@ -304,6 +304,9 @@ long long BCAADataImporter::progress() const
 
 void BCAADataImporter::loadPlugins()
 {
+    if (!m_plugins.empty()) // already loaded
+        return;
+
     auto pluginsDir = QDir(qApp->applicationDirPath());
     qDebug() << pluginsDir.path();
     //pluginsDir.cdUp();
@@ -321,6 +324,7 @@ void BCAADataImporter::loadPlugins()
                 rdffg::IPostProcess *post = qobject_cast<rdffg::IPostProcess *>(plugin);
                 QObject::connect(plugin, SIGNAL(statusChanged(QString const &)), this, SLOT(onStatusChanged(QString const &)));
                 m_plugins[post->databaseType()] = std::unique_ptr<rdffg::IPostProcess>(post);
+                statusChanged(QString("Found post-process plugin for ") + post->databaseType());
                 qDebug() << "Found Post-process plugin for " << post->databaseType();
             }
         }
