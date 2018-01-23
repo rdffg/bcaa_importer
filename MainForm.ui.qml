@@ -27,8 +27,12 @@ Item {
         }
         TextEdit {
             id: textedit1
+            enabled: true
+            selectByMouse: true
+            activeFocusOnPress: false
             anchors.fill: parent
             readOnly: true
+            wrapMode: TextEdit.Wrap
         }
     }
     RowLayout {

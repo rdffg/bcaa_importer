@@ -171,6 +171,8 @@ void BCAADataImporter::onImportFinished(bool success)
     // if we have a post-processing plugin for this database type, run it
     if (success && m_plugins.find(m_dbconnection->driver()) != m_plugins.end())
     {
+        m_percentDone = -1;
+        emit progressChanged();
         try
         {
             m_plugins[m_dbconnection->driver()]->processDatabase(

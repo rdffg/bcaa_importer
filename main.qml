@@ -140,7 +140,7 @@ ApplicationWindow {
             id: progressBar1
             y: 426
             height: 23
-            value: importer.percentDone
+            value: importer.percentDone < 0 ? 0: importer.percentDone
             maximumValue: 1
             indeterminate: importer.percentDone < 0
             anchors.bottom: parent.bottom
