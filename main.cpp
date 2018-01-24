@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
+    app.setApplicationVersion(QString(APP_VERSION));
 
     QQmlApplicationEngine engine;
     QQmlContext *context = engine.rootContext();
@@ -20,6 +21,7 @@ int main(int argc, char *argv[])
     context->setContextProperty("logdata", logdata);
     context->setContextProperty("importer", importer);
     context->setContextProperty("sqlconnection", sqlconnection);
+    context->setContextProperty("version", APP_VERSION);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     return app.exec();
 }

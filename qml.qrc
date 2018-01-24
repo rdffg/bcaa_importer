@@ -4,5 +4,8 @@
         <file>MainForm.ui.qml</file>
         <file>Settings.qml</file>
         <file>bcaa_importer2.ico</file>
+        <file>AboutWindow.qml</file>
+        <file>AboutWindowForm.ui.qml</file>
+        <file>RDFFG_logo.svg</file>
     </qresource>
 </RCC>

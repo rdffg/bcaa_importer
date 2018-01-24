@@ -9,6 +9,11 @@ ApplicationWindow {
     height: 480
     visible: true
 
+    AboutWindow {
+        id: aboutWindow
+        appVersion: version
+    }
+
     Settings {
         id: settingsWindow
         driverType.model: sqlconnection.drivers
@@ -86,6 +91,15 @@ ApplicationWindow {
                 text: qsTr("E&xit")
                 shortcut: "Alt+F4"
                 onTriggered: Qt.quit();
+            }
+        }
+        Menu {
+            title: qsTr("&Help")
+            MenuItem {
+                text: qsTr("&About")
+                onTriggered: {
+                    aboutWindow.show();
+                }
             }
         }
     }
