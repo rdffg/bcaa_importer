@@ -1,4 +1,5 @@
 #include "logsource.h"
+#include <QCoreApplication>
 
 LogSource::LogSource(QObject *parent) : QObject(parent)
   , m_logtext("")
@@ -8,6 +9,7 @@ LogSource::LogSource(QObject *parent) : QObject(parent)
 
 void LogSource::addLogText(QString text) {
     m_logtext += "\n" + text;
+    QCoreApplication::processEvents();
     emit dataChanged();
 }
 

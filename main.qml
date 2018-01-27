@@ -68,6 +68,13 @@ ApplicationWindow {
         value: settingsWindow.password
     }
 
+    Action {
+        id: copyAction
+        shortcut: "ctrl+c"
+        text: "Copy"
+        onTriggered: mainForm1.textedit1.copy()
+    }
+
     menuBar: MenuBar {
         Menu {
             title: qsTr("&File")
@@ -93,6 +100,11 @@ ApplicationWindow {
                 onTriggered: Qt.quit();
             }
         }
+        Menu {
+            title: qsTr("&Edit")
+            MenuItem { action: copyAction }
+        }
+
         Menu {
             title: qsTr("&Help")
             MenuItem {

@@ -155,6 +155,7 @@ private slots:
     void onStatusChanged(QString const &message);
     void onProgressChanged(float percent);
     void onImportFinished(bool success);
+    void onRunFinished();
 
 private:
     void registerModels();

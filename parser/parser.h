@@ -27,7 +27,14 @@ public:
      * @return
      */
     std::unique_ptr<model::DataAdvice> getFileInfo();
+
+    ~Parser();
+
+public slots:
     /**
+     * @brief Import the current file into the database
+     */
+    void import (); /**
      * @brief cancel
      *
      * Stop processing the input file. The cancel() method cannot be called from the
@@ -35,13 +42,6 @@ public:
      * finished.
      */
     void cancel();
-    ~Parser();
-
-public slots:
-    /**
-     * @brief Import the current file into the database
-     */
-    void import ();
 
 signals:
     /**

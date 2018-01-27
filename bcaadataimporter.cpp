@@ -67,7 +67,7 @@ bool BCAADataImporter::isRunning() {
 void BCAADataImporter::beginImport()
 {
 #ifdef QT_DEBUG
-        QDjango::setDebugEnabled(true);
+        QDjango::setDebugEnabled(false);
 #else
         QDjango::setDebugEnabled(false);
 #endif
@@ -109,13 +109,12 @@ void BCAADataImporter::beginImport()
     QObject::connect(r, &Parser::finished, [=](bool){ t->quit(); });
     QObject::connect(r, &Parser::finished, this, &BCAADataImporter::onImportFinished);
     QObject::connect(r, &Parser::folioSaved, this, &BCAADataImporter::onProgressChanged);
-    QObject::connect(this, &BCAADataImporter::cancelJob, [=]() {
-        r->cancel();
-    });
+    QObject::connect(this, &BCAADataImporter::cancelJob, r, &Parser::cancel);
     QObject::connect(t, &QThread::finished, [=] () {
         qDebug() << "parser thread finished.";
         QDjango::database().close();
-        delete r;
+        this->disconnect(r);
+        r->deleteLater();
         t->deleteLater();
     });
     QObject::connect(t, &QThread::destroyed, r, &Parser::deleteLater);
@@ -173,17 +172,33 @@ void BCAADataImporter::onImportFinished(bool success)
     {
         m_percentDone = -1;
         emit progressChanged();
-        try
+        auto t = new QThread;
+        std::unique_ptr<rdffg::IPostProcess>& postPlugin = m_plugins[m_dbconnection->driver()];
+        auto plugin =dynamic_cast<QObject *>(postPlugin.get());
+        if (plugin != NULL)
         {
-            m_plugins[m_dbconnection->driver()]->processDatabase(
-                                    new QSqlDatabase(m_dbconnection->makeDbConnection()), this->runType());
-        }
-        catch (SaveError &e)
-        {
-            emit statusChanged(QString("Error: ") + e.text());
-            emit statusChanged(QString("*").repeated(80) + "\nFailed to run post-processing step\n" + QString("*").repeated(80));
+            plugin->moveToThread(t);
+            connect(t, &QThread::started, [&]() {
+                postPlugin->processDatabase(new QSqlDatabase(m_dbconnection->makeDbConnection()), runType());
+            });
+            QObject::connect(plugin, SIGNAL(finished()), t, SLOT(quit()), Qt::QueuedConnection);
+            QObject::connect(t, &QThread::finished, this, [=]() {
+                //t->deleteLater();
+                auto actuallyDone = !t->isRunning();
+            }, Qt::QueuedConnection);
+            t->start();
+            //postPlugin->processDatabase((new QSqlDatabase(m_dbconnection->makeDbConnection())), runType());
+            //onRunFinished();
         }
     }
+    else
+    {
+        emit onRunFinished();
+    }
+}
+
+void BCAADataImporter::onRunFinished()
+{
     emit statusChanged(QString("Import finished at ") + QTime::currentTime().toString());
     m_isrunning = false;
     m_canRun = false;
@@ -224,6 +239,7 @@ bool BCAADataImporter::verifyDataFile()
 {
     try {
         auto parser = new Parser(QUrl(m_datafilepath).toLocalFile(), this);
+        connect(parser, &Parser::message, this, &BCAADataImporter::statusChanged);
         auto advice = parser->getFileInfo();
         m_importMeta->setRunType(advice->runType());
         m_importMeta->setRunDate(advice->runDate());
@@ -325,6 +341,7 @@ void BCAADataImporter::loadPlugins()
             if (plugin) {
                 rdffg::IPostProcess *post = qobject_cast<rdffg::IPostProcess *>(plugin);
                 QObject::connect(plugin, SIGNAL(statusChanged(QString const &)), this, SLOT(onStatusChanged(QString const &)));
+                QObject::connect(plugin, SIGNAL(finished()), this, SLOT(onRunFinished()));
                 m_plugins[post->databaseType()] = std::unique_ptr<rdffg::IPostProcess>(post);
                 statusChanged(QString("Found post-process plugin for ") + post->databaseType());
                 qDebug() << "Found Post-process plugin for " << post->databaseType();
