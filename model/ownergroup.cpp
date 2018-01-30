@@ -91,26 +91,3 @@ std::unique_ptr<model::MailingAddress>& OwnershipGroup::mailingAddress()
 {
     return m_mailingAddress;
 }
-
-//model::OwnershipGroup *OwnershipGroup::fromXml(const dataadvice::OwnershipGroup &group) {
-//    auto groupmodel = new model::OwnershipGroup();
-//    groupmodel->setAssessmentNoticeReturned(group.AssessmentNoticeReturned());
-//    groupmodel->setAssessmentNoticeSuppressed(group.AssessmentNoticeSuppressed());
-//    if (group.ChangeDate().present()) {
-//        QDate date;
-//        date.setDate(group.ChangeDate().get().year()
-//                     , group.ChangeDate().get().month()
-//                     , group.ChangeDate().get().day());
-//        groupmodel->setChangeDate(date);
-//    }
-//    if (group.ChangeSource().present())
-//        groupmodel->setChangeSource(QString::fromStdString(group.ChangeSource().get()));
-//    if (group.ChangeSourceDescription().present())
-//        groupmodel->setChangeSourceDescription(QString::fromStdString(group.ChangeSourceDescription().get()));
-//    if (group.ChangeType().present())
-//        groupmodel->setChangeType(QString::fromStdString(group.ChangeType().get()));
-//    if (group.ChangeTypeDescription().present())
-//        groupmodel->setChangeTypeDescription(QString::fromStdString(group.ChangeTypeDescription().get()));
-
-//    return groupmodel;
-//}

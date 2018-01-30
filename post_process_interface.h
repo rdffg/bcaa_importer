@@ -29,6 +29,11 @@ public:
      * or MSSQL, which is handled as a special case of QODBC.
      */
     virtual QString databaseType() const = 0;
+    /**
+     * @brief Request that the running operation be cancelled
+     */
+
+    virtual void cancel() = 0;
 signals:
     /**
      * @brief statusChanged - Generic status messages

@@ -187,6 +187,7 @@ void BCAADataImporter::onImportFinished(bool success)
                 QSqlDatabase::removeDatabase(QSqlDatabase::database().connectionName());
                 auto actuallyDone = !t->isRunning();
             }, Qt::QueuedConnection);
+            QObject::connect(this, SIGNAL(cancelJob()), plugin, SLOT(cancel()), Qt::DirectConnection);
             t->start();
             //postPlugin->processDatabase((new QSqlDatabase(m_dbconnection->makeDbConnection())), runType());
             //onRunFinished();
