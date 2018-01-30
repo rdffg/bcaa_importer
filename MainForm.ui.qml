@@ -25,17 +25,28 @@ Item {
             border.color: "#242424"
             anchors.fill: parent
         }
-        TextEdit {
-            id: textedit1
-            renderType: Text.NativeRendering
-            enabled: true
-            selectByMouse: true
-            activeFocusOnPress: false
+
+        ScrollView {
+            id: flick1
+            x: 0
+            y: 0
+            width: 640
+            height: 457
             anchors.fill: parent
-            readOnly: true
-            wrapMode: TextEdit.NoWrap
+            clip: true
+
+            TextEdit {
+                id: textedit1
+                renderType: Text.NativeRendering
+                enabled: true
+                selectByMouse: true
+                activeFocusOnPress: false
+                readOnly: true
+                wrapMode: TextEdit.NoWrap
+            }
         }
     }
+
     RowLayout {
         id: rowLayout2
         anchors.bottom: parent.bottom

@@ -67,7 +67,7 @@ bool BCAADataImporter::isRunning() {
 void BCAADataImporter::beginImport()
 {
 #ifdef QT_DEBUG
-        QDjango::setDebugEnabled(false);
+        QDjango::setDebugEnabled(true);
 #else
         QDjango::setDebugEnabled(false);
 #endif
@@ -109,7 +109,7 @@ void BCAADataImporter::beginImport()
     QObject::connect(r, &Parser::finished, [=](bool){ t->quit(); });
     QObject::connect(r, &Parser::finished, this, &BCAADataImporter::onImportFinished);
     QObject::connect(r, &Parser::folioSaved, this, &BCAADataImporter::onProgressChanged);
-    QObject::connect(this, &BCAADataImporter::cancelJob, r, &Parser::cancel);
+    QObject::connect(this, &BCAADataImporter::cancelJob, r, &Parser::cancel, Qt::DirectConnection);
     QObject::connect(t, &QThread::finished, [=] () {
         qDebug() << "parser thread finished.";
         QDjango::database().close();
@@ -184,6 +184,7 @@ void BCAADataImporter::onImportFinished(bool success)
             QObject::connect(plugin, SIGNAL(finished()), t, SLOT(quit()), Qt::QueuedConnection);
             QObject::connect(t, &QThread::finished, this, [=]() {
                 //t->deleteLater();
+                QSqlDatabase::removeDatabase(QSqlDatabase::database().connectionName());
                 auto actuallyDone = !t->isRunning();
             }, Qt::QueuedConnection);
             t->start();
