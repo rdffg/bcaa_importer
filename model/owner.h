@@ -18,7 +18,7 @@ class Owner : public QDjangoModel
     Q_PROPERTY(QString equityType READ equityType WRITE setEquityType)
     Q_PROPERTY(QString equityTypeDescription READ equityTypeDescription WRITE setEquityTypeDescription)
     Q_PROPERTY(QString ownerSequenceID READ ownerSequenceID WRITE setOwnerSequenceID)
-    Q_PROPERTY(QString id READ id WRITE setId)
+    Q_PROPERTY(QString bca_id READ bca_id WRITE setId)
     Q_PROPERTY(model::OwnershipGroup* ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
 
     Q_CLASSINFO("__meta__", "db_table=owner")
@@ -59,8 +59,8 @@ public:
     QString ownerSequenceID() const;
     void setOwnerSequenceID(const QString &ownerSequenceID);
 
-    QString id() const;
-    void setId(const QString &id);
+    QString bca_id() const;
+    void setId(const QString &bca_id);
 
 private:
     QString m_id;

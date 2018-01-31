@@ -85,7 +85,7 @@ void Owner::setOwnerSequenceID(const QString &ownerSequenceID)
     m_ownerSequenceID = ownerSequenceID;
 }
 
-QString Owner::id() const
+QString Owner::bca_id() const
 {
     return m_id;
 }
