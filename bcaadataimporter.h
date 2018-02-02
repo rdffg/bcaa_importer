@@ -170,6 +170,7 @@ private:
     bool m_canRun;
     model::ImportMeta *m_importMeta;
     std::map<QString, std::unique_ptr<rdffg::IPostProcess> > m_plugins;
+    bool removeOrphanOwners();
 };
 
 #endif // BCAADATAIMPORTER_H

@@ -12,6 +12,7 @@
 #include "model/schoolclassconverter.h"
 #include <fstream>
 #include <algorithm>
+#include <QDjangoQuerySet.h>
 
 namespace dataadvice
 {
@@ -252,22 +253,16 @@ namespace dataadvice
   void AmendmentReasonCountImpl::
   AmendmentReasonCode (const QString& AmendmentReasonCode)
   {
-    // TODO AmendmentReasonCount
-    //
   }
 
   void AmendmentReasonCountImpl::
   AmendmentReasonDescription (const QString& AmendmentReasonDescription)
   {
-    // TODO AmendmentReasonCount
-    //
   }
 
   void AmendmentReasonCountImpl::
   FolioCount (long long FolioCount)
   {
-    // TODO AmendmentReasonCount
-    //
   }
 #pragma warning(pop)
 
@@ -307,22 +302,16 @@ namespace dataadvice
   void DeleteReasonCountImpl::
   DeleteReasonCode (const QString& DeleteReasonCode)
   {
-    // TODO DeleteReasonCount
-    //
   }
 
   void DeleteReasonCountImpl::
   DeleteReasonDescription (const QString& DeleteReasonDescription)
   {
-    // TODO DeleteReasonCount
-    //
   }
 
   void DeleteReasonCountImpl::
   FolioCount (long long FolioCount)
   {
-    // TODO DeleteReasonCount
-    //
   }
 #pragma warning(pop)
 
@@ -380,8 +369,6 @@ namespace dataadvice
   void AssessmentAreaImpl::
   AreaSummary (std::unique_ptr<model::DeliverySummary> &AreaSummary)
   {
-    // TODO AssessmentAreaImpl::AreaSummary
-    //
   }
 #pragma warning(pop)
 
@@ -469,8 +456,6 @@ namespace dataadvice
   void JurisdictionImpl::
   JurisdictionSummary (std::unique_ptr<model::DeliverySummary> &JurisdictionSummary)
   {
-    // TODO JurisdictionSummary
-    //
   }
 #pragma warning(pop)
 
@@ -512,15 +497,11 @@ namespace dataadvice
   void FolioGroupValuesImpl::
   LandValue (double LandValue)
   {
-    // TODO FolioGroupValues
-    //
   }
 
   void FolioGroupValuesImpl::
   ImprovementValue (double ImprovementValue)
   {
-    // TODO FolioGroupValues
-    //
   }
 #pragma warning(pop)
 
@@ -743,9 +724,15 @@ namespace dataadvice
                     throw SaveError(ownGroup->lastError().text());
                 for (auto &&owner: ownGroup->owners())
                 {
-                    owner->setOwnershipGroup(ownGroup.get());
                     if (!owner->save())
                         throw SaveError(QString("Owner: ") + owner->lastError().text());
+                    model::OwnershipGroupOwner ogo;
+                    ogo.setOwner(owner.get());
+                    ogo.setOwnershipGroup(ownGroup.get());
+                    if (!ogo.save())
+                    {
+                        throw SaveError(QString("OwnershipGroup link: " + ogo.lastError().text()));
+                    }
                 }
                 if (ownGroup->mailingAddress())
                 {
@@ -1219,7 +1206,7 @@ namespace dataadvice
 
   std::unique_ptr<model::FolioAddress> FolioAddressImpl::post_FolioAddress()
   {
-    model::ActionCode::Code action = post_FolioItemGroup (); // TODO: use the action for something
+    model::ActionCode::Code action = post_FolioItemGroup ();
     if (action == model::ActionCode::Delete)
     {
         m_address->remove();
@@ -1436,6 +1423,11 @@ namespace dataadvice
     auto action = post_FolioItemGroup ();
     if (action == model::ActionCode::Delete)
     {
+        // find all the owner-ownershipgroup items that this owner belongs to
+        // nope, still wrong. should only delete from this ownershipgroup. Of course, we
+        // don't know what the enclosing ownership group is.
+        QDjangoQuerySet<model::OwnershipGroupOwner> ogos;
+        ogos.filter(QDjangoWhere("owner_id", QDjangoWhere::Equals, m_owner->id())).remove();
         m_owner->remove();
         m_owner.release();
     }
@@ -2332,8 +2324,6 @@ namespace dataadvice
   void FolioAmendmentImpl::
   ID (const QString& ID)
   {
-    // TODO FolioAmendmentImpl::ID
-    //
   }
 #pragma warning(pop)
 

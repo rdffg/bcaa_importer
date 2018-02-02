@@ -54,7 +54,8 @@ SOURCES += main.cpp \
     model/valuesbyetc.cpp \
     preflight.cpp \
     model/folioaction.cpp \
-    model/schoolclassconverter.cpp
+    model/schoolclassconverter.cpp \
+    model/ownershipgroupowner.cpp
 
 RESOURCES += qml.qrc
 
@@ -116,7 +117,8 @@ HEADERS += \
     parser/stopparsing.h \
     preflight.h \
     model/folioaction.h \
-    model/schoolclassconverter.h
+    model/schoolclassconverter.h \
+    model/ownershipgroupowner.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d

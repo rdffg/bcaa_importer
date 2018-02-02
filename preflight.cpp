@@ -1,15 +1,25 @@
 #include "preflight.h"
 #include "QDjango.h"
 #include "saveerror.h"
+#include <QDjangoQuerySet.h>
+#include "model/model.h"
 
 void PreFlight::prepareDatabase(const QString &runType)
 {
     if (runType == "COMP")
     {
         QString queryText = "DELETE FROM folio";
-        auto query = QDjango::database().exec(queryText);
-        if (query.lastError().type() != QSqlError::NoError)
-            throw SaveError(query.lastError().text());
+        QDjangoQuerySet<model::Folio> folios;
+        if (!folios.remove())
+            throw SaveError(folios.lastError().text());
+        QDjangoQuerySet<model::Owner> owners;
+        if (!owners.remove())
+            throw SaveError(owners.lastError().text());
+
+
+//        auto query = QDjango::database().exec(queryText);
+//        if (query.lastError().type() != QSqlError::NoError)
+//            throw SaveError(query.lastError().text());
     }
     if (runType == "COMP" || runType == "REVD") {
         std::vector<QString> tables {"property_class_value", "tax_exempt_property_class_value", "valuation"};

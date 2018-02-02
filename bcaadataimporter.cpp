@@ -112,7 +112,6 @@ void BCAADataImporter::beginImport()
     QObject::connect(this, &BCAADataImporter::cancelJob, r, &Parser::cancel, Qt::DirectConnection);
     QObject::connect(t, &QThread::finished, [=] () {
         qDebug() << "parser thread finished.";
-        QDjango::database().close();
         this->disconnect(r);
         r->deleteLater();
         t->deleteLater();
@@ -168,10 +167,14 @@ void BCAADataImporter::onImportFinished(bool success)
 {
     // run this in a thread, its own thread
     // if we have a post-processing plugin for this database type, run it
-    if (success && m_plugins.find(m_dbconnection->driver()) != m_plugins.end())
+    if (success)
     {
         m_percentDone = -1;
         emit progressChanged();
+        success = removeOrphanOwners();
+    }
+    if (success && m_plugins.find(m_dbconnection->driver()) != m_plugins.end())
+    {
         auto t = new QThread;
         std::unique_ptr<rdffg::IPostProcess>& postPlugin = m_plugins[m_dbconnection->driver()];
         auto plugin =dynamic_cast<QObject *>(postPlugin.get());
@@ -185,17 +188,43 @@ void BCAADataImporter::onImportFinished(bool success)
             QObject::connect(t, &QThread::finished, this, [=]() {
                 //t->deleteLater();
                 QSqlDatabase::removeDatabase(QSqlDatabase::database().connectionName());
-                auto actuallyDone = !t->isRunning();
             }, Qt::QueuedConnection);
             QObject::connect(this, SIGNAL(cancelJob()), plugin, SLOT(cancel()), Qt::DirectConnection);
             t->start();
-            //postPlugin->processDatabase((new QSqlDatabase(m_dbconnection->makeDbConnection())), runType());
-            //onRunFinished();
         }
     }
     else
     {
         emit onRunFinished();
+    }
+}
+
+bool BCAADataImporter::removeOrphanOwners()
+{
+    QDjangoMetaModel ogoModel(&model::OwnershipGroupOwner::staticMetaObject);
+    QDjangoMetaModel ownerModel(&model::Owner::staticMetaObject);
+
+    QString q("DELETE FROM ");
+    q += ownerModel.table();
+    q += QString(" WHERE NOT EXISTS (SELECT 1 FROM ");
+    q += ogoModel.table();
+    q += QString(" WHERE ");
+    q += QString(OWNER_PROPERTY) + "_id";
+    q += QString(" = ");
+    q += ownerModel.table();
+    q += QString(".");
+    q += ownerModel.primaryKey();
+    q += QString(")");
+
+    QSqlQuery query;
+    if (!query.exec(q))
+    {
+        emit statusChanged(QString("failed to remove orphaned owners: ") + query.lastError().text());
+        return false;
+    }
+    else
+    {
+        return true;
     }
 }
 
@@ -288,6 +317,7 @@ void BCAADataImporter::registerModels()
     QDjango::registerModel<model::OilAndGas>();
     QDjango::registerModel<model::OwnershipGroup>();
     QDjango::registerModel<model::Owner>();
+    QDjango::registerModel<model::OwnershipGroupOwner>();
     QDjango::registerModel<model::PropertyClassValueType>();
     QDjango::registerModel<model::Sale>();
     QDjango::registerModel<model::SpecialDistrict>();

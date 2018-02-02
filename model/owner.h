@@ -18,8 +18,7 @@ class Owner : public QDjangoModel
     Q_PROPERTY(QString equityType READ equityType WRITE setEquityType)
     Q_PROPERTY(QString equityTypeDescription READ equityTypeDescription WRITE setEquityTypeDescription)
     Q_PROPERTY(QString ownerSequenceID READ ownerSequenceID WRITE setOwnerSequenceID)
-    Q_PROPERTY(QString bca_id READ bca_id WRITE setId)
-    Q_PROPERTY(model::OwnershipGroup* ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
+    Q_PROPERTY(QString id READ id WRITE setId)
 
     Q_CLASSINFO("__meta__", "db_table=owner")
     Q_CLASSINFO("firstname", "null=true")
@@ -30,7 +29,6 @@ class Owner : public QDjangoModel
     Q_CLASSINFO("equityTypeDescription", "null=true")
     Q_CLASSINFO("ownerSequenceID", "null=true max_length=32")
     Q_CLASSINFO("id", "primary_key=true max_length=32")
-    Q_CLASSINFO(OWNERSHIPGROUP_PROPERTY, "on_delete=cascade")
 
 public:
     Owner(QObject *parent=0);
@@ -53,13 +51,10 @@ public:
     QString equityTypeDescription() const;
     void setEquityTypeDescription(const QString &equityTypeDescription);
 
-    OwnershipGroup *ownershipGroup() const;
-    void setOwnershipGroup(OwnershipGroup *ownershipGroup);
-
     QString ownerSequenceID() const;
     void setOwnerSequenceID(const QString &ownerSequenceID);
 
-    QString bca_id() const;
+    QString id() const;
     void setId(const QString &bca_id);
 
 private:

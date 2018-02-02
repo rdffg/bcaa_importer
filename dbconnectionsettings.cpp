@@ -114,6 +114,7 @@ QSqlDatabase DbConnectionSettings::makeDbConnection()
 }
 
 QString DbConnectionSettings::makeMssqlConnString() {
+    // FIXME: don't hard code the SQL Server Native client version!
     QString connstr = "Driver={SQL Server Native Client 11.0};MARS_Connection=yes;Server="
             % this->server()
             % ";Database="

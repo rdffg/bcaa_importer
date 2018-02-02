@@ -19,6 +19,7 @@
 #include "model/neighbourhood.h"
 #include "model/oilandgas.h"
 #include "model/ownergroup.h"
+#include "model/ownershipgroupowner.h"
 #include "model/owner.h"
 #include "model/propertyclassvalue.h"
 #include "model/propertyclassvaluetype.h"
