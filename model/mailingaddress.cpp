@@ -196,15 +196,6 @@ void MailingAddress::setBulkMailCode(const QString &bulkMailCode)
     m_bulkMailCode = bulkMailCode;
 }
 
-OwnershipGroup *MailingAddress::ownershipGroup() const
-{
-    return qobject_cast<OwnershipGroup *>(foreignKey(OWNERSHIPGROUP_PROPERTY));
-}
-
-void MailingAddress::setOwnershipGroup(OwnershipGroup *ownershipGroup) {
-    setForeignKey(OWNERSHIPGROUP_PROPERTY, ownershipGroup);
-}
-
 QString MailingAddress::modeOfDeliveryValue() const
 {
     return m_modeOfDeliveryValue;

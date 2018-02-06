@@ -30,7 +30,6 @@ class MailingAddress : public QDjangoModel
     Q_PROPERTY(QString modeOfDeliveryValue READ modeOfDeliveryValue WRITE setModeOfDeliveryValue)
     Q_PROPERTY(QString site READ site WRITE setSite)
     Q_PROPERTY(QString bulkMailCode READ bulkMailCode WRITE setBulkMailCode)
-    Q_PROPERTY(model::OwnershipGroup* ownershipGroup READ ownershipGroup WRITE setOwnershipGroup)
 
     Q_CLASSINFO("__meta__", "db_table=mailing_address")
     Q_CLASSINFO("id", "primary_key=true max_length=32")
@@ -54,7 +53,6 @@ class MailingAddress : public QDjangoModel
     Q_CLASSINFO("modeOfDeliveryValue", "null=true length=255")
     Q_CLASSINFO("site", "null=true")
     Q_CLASSINFO("bulkMailCode", "null=true")
-    Q_CLASSINFO(OWNERSHIPGROUP_PROPERTY, "on_delete=cascade")
 
 public:
     explicit MailingAddress(QObject *parent=0);
@@ -114,9 +112,6 @@ public:
 
     QString bulkMailCode() const;
     void setBulkMailCode(const QString &bulkMailCode);
-
-    OwnershipGroup* ownershipGroup() const;
-    void setOwnershipGroup(OwnershipGroup *group);
 
     QString modeOfDeliveryValue() const;
     void setModeOfDeliveryValue(const QString &modeOfDeliveryValue);

@@ -67,27 +67,40 @@ std::vector<std::unique_ptr<Owner>>& OwnershipGroup::owners()
     return m_owners;
 }
 
-void OwnershipGroup::setOwners(std::vector<std::unique_ptr<model::Owner>> &owners)
+void OwnershipGroup::setOwners(std::vector<std::unique_ptr<Owner> >& owners)
 {
     m_owners = std::move(owners);
 }
 
-std::unique_ptr<model::FormattedMailingAddress>& OwnershipGroup::formattedMailingAddress()
+model::FormattedMailingAddress* OwnershipGroup::formattedMailingAddress()
 {
-    return m_address;
+    return qobject_cast<model::FormattedMailingAddress *>(
+                            foreignKey(FORMATTED_MAILING_ADDRESS_PROPERTY));
 }
 
-void OwnershipGroup::setFormattedMailingAddress(std::unique_ptr<model::FormattedMailingAddress> &addresses)
+void OwnershipGroup::setFormattedMailingAddress(FormattedMailingAddress *addresses)
 {
-    m_address = std::move(addresses);
+    setForeignKey(FORMATTED_MAILING_ADDRESS_PROPERTY, addresses);
 }
 
-void OwnershipGroup::setMailingAddress(std::unique_ptr<model::MailingAddress> &addr)
+void OwnershipGroup::setFormattedMailingAddress(std::unique_ptr<model::FormattedMailingAddress> address)
 {
-    m_mailingAddress = std::move(addr);
+    m_address = std::move(address);
+    setFormattedMailingAddress(m_address.get());
 }
 
-std::unique_ptr<model::MailingAddress>& OwnershipGroup::mailingAddress()
+void OwnershipGroup::setMailingAddress(MailingAddress *addr)
 {
-    return m_mailingAddress;
+    setForeignKey(MAILING_ADDRESS_PROPERTY, addr);
+}
+
+model::MailingAddress* OwnershipGroup::mailingAddress()
+{
+    return qobject_cast<model::MailingAddress*>(foreignKey(MAILING_ADDRESS_PROPERTY));
+}
+
+void OwnershipGroup::setMailingAddress(std::unique_ptr<model::MailingAddress> mailingAddress)
+{
+    m_mailingAddress = std::move(mailingAddress);
+    setMailingAddress(m_mailingAddress.get());
 }

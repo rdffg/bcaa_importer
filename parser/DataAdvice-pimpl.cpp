@@ -734,20 +734,6 @@ namespace dataadvice
                         throw SaveError(QString("OwnershipGroup link: " + ogo.lastError().text()));
                     }
                 }
-                if (ownGroup->mailingAddress())
-                {
-                    ownGroup->mailingAddress()->setOwnershipGroup(ownGroup.get());
-                    if (!ownGroup->mailingAddress()->save())
-                    throw SaveError(QString("Mailing Address: ")
-                                    + ownGroup->mailingAddress()->lastError().text());
-                }
-                if (ownGroup->formattedMailingAddress())
-                {
-                    ownGroup->formattedMailingAddress()->setOwnershipGroup(ownGroup.get());
-                    if (!ownGroup->formattedMailingAddress()->save())
-                        throw SaveError(QString("Formatted Mailing Address: ")
-                                        + ownGroup->formattedMailingAddress()->lastError().text());
-                }
             }
 
             // legal descriptions
@@ -1311,12 +1297,22 @@ namespace dataadvice
   void OwnershipGroupImpl::
   FormattedMailingAddress (std::unique_ptr<model::FormattedMailingAddress> &FormattedMailingAddress)
   {
+      if (!FormattedMailingAddress->save())
+      {
+          throw SaveError(QString("Formatted Mailing Address: "
+                                  + FormattedMailingAddress->lastError().text()));
+      }
     m_owners->setFormattedMailingAddress(std::move(FormattedMailingAddress));
   }
 
   void OwnershipGroupImpl::
   MailingAddress (std::unique_ptr<model::MailingAddress> &MailingAddress)
   {
+      if (!MailingAddress->save())
+      {
+          throw SaveError(QString("Mailing Address: ")
+              + MailingAddress->lastError().text());
+      }
       m_owners->setMailingAddress(std::move(MailingAddress));
   }
 

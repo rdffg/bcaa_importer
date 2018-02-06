@@ -8,6 +8,8 @@
 #include "model/formattedmailingaddress.h"
 
 #define FOLIO_PROPERTY "folio"
+#define MAILING_ADDRESS_PROPERTY "mailingAddress"
+#define FORMATTED_MAILING_ADDRESS_PROPERTY "formattedMailingAddress"
 
 namespace model {
 class Owner;
@@ -25,6 +27,8 @@ class OwnershipGroup : public QDjangoModel
     Q_PROPERTY(QString changeSource READ changeSource WRITE setChangeSource)
     Q_PROPERTY(QString changeSourceDescription READ changeSourceDescription WRITE setChangeSourceDescription)
     Q_PROPERTY(model::Folio * folio READ folio WRITE setFolio)
+    Q_PROPERTY(model::MailingAddress* mailingAddress READ mailingAddress WRITE setMailingAddress)
+    Q_PROPERTY(model::FormattedMailingAddress* formattedMailingAddress READ formattedMailingAddress WRITE setFormattedMailingAddress)
 
     Q_CLASSINFO("__meta__", "db_table=ownership_group")
     Q_CLASSINFO("assessmentNoticeReturned", "null=true")
@@ -34,6 +38,8 @@ class OwnershipGroup : public QDjangoModel
     Q_CLASSINFO("changeDate", "null=true")
     Q_CLASSINFO("changeSource", "null=true")
     Q_CLASSINFO("changeSourceDescription", "null=true")
+    Q_CLASSINFO(MAILING_ADDRESS_PROPERTY, "db_column=mailing_address_id null=true")
+    Q_CLASSINFO(FORMATTED_MAILING_ADDRESS_PROPERTY, "db_column=formatted_mailing_address_id null=true")
     Q_CLASSINFO(FOLIO_PROPERTY, "on_delete=cascade")
 public:
     explicit OwnershipGroup(QObject *parent = 0);
@@ -56,10 +62,12 @@ public:
     void setFolio(Folio *folio);
     std::vector<std::unique_ptr<model::Owner>>& owners();
     void setOwners(std::vector<std::unique_ptr<model::Owner>> &owners);
-    std::unique_ptr<model::FormattedMailingAddress>& formattedMailingAddress();
-    void setFormattedMailingAddress(std::unique_ptr<model::FormattedMailingAddress> &addresses);
-    std::unique_ptr<model::MailingAddress>& mailingAddress();
-    void setMailingAddress(std::unique_ptr<model::MailingAddress>&);
+    model::FormattedMailingAddress* formattedMailingAddress();
+    void setFormattedMailingAddress(model::FormattedMailingAddress* addresses);
+    void setFormattedMailingAddress(std::unique_ptr<model::FormattedMailingAddress> addresses);
+    model::MailingAddress* mailingAddress();
+    void setMailingAddress(model::MailingAddress*);
+    void setMailingAddress(std::unique_ptr<model::MailingAddress> mailingAddress);
 
 signals:
 

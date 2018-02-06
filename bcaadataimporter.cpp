@@ -315,6 +315,8 @@ void BCAADataImporter::registerModels()
     QDjango::registerModel<model::minortaxing::MinorTaxingJurisdiction>();
     QDjango::registerModel<model::minortaxing::MinorTaxing>();
     QDjango::registerModel<model::OilAndGas>();
+    QDjango::registerModel<model::FormattedMailingAddress>();
+    QDjango::registerModel<model::MailingAddress>();
     QDjango::registerModel<model::OwnershipGroup>();
     QDjango::registerModel<model::Owner>();
     QDjango::registerModel<model::OwnershipGroupOwner>();
@@ -326,8 +328,6 @@ void BCAADataImporter::registerModels()
     QDjango::registerModel<model::PropertyClassValue>();
     QDjango::registerModel<model::Farm>();
     QDjango::registerModel<model::FolioDescription>();
-    QDjango::registerModel<model::FormattedMailingAddress>();
-    QDjango::registerModel<model::MailingAddress>();
     QDjango::registerModel<model::Neighbourhood>();
 }
 

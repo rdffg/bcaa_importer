@@ -66,15 +66,6 @@ void FormattedMailingAddress::setLine6(const QString &line6)
     m_line6 = line6;
 }
 
-OwnershipGroup* FormattedMailingAddress::ownershipGroup() const
-{
-    return qobject_cast<OwnershipGroup*>(foreignKey(OWNERSHIPGROUP_PROPERTY));
-}
-
-void FormattedMailingAddress::setOwnershipGroup(OwnershipGroup *group) {
-    setForeignKey(OWNERSHIPGROUP_PROPERTY, group);
-}
-
 QString FormattedMailingAddress::id() const
 {
     return m_id;
