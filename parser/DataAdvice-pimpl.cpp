@@ -619,7 +619,8 @@ namespace dataadvice
   void FolioRecordImpl::
   FolioDescription (std::unique_ptr<model::FolioDescription> &FolioDescription)
   {
-      m_folioDescription = std::move(FolioDescription);
+      if (FolioDescription)
+          m_folioDescription = std::move(FolioDescription);
   }
 
   void FolioRecordImpl::
@@ -1297,12 +1298,15 @@ namespace dataadvice
   void OwnershipGroupImpl::
   FormattedMailingAddress (std::unique_ptr<model::FormattedMailingAddress> &FormattedMailingAddress)
   {
-      if (!FormattedMailingAddress->save())
+      if (FormattedMailingAddress)
       {
+          if (!FormattedMailingAddress->save())
+          {
           throw SaveError(QString("Formatted Mailing Address: "
-                                  + FormattedMailingAddress->lastError().text()));
+                      + FormattedMailingAddress->lastError().text()));
+          }
+          m_owners->setFormattedMailingAddress(std::move(FormattedMailingAddress));
       }
-    m_owners->setFormattedMailingAddress(std::move(FormattedMailingAddress));
   }
 
   void OwnershipGroupImpl::
@@ -1322,7 +1326,7 @@ namespace dataadvice
     if (action == model::ActionCode::Delete)
     {
         m_owners->remove();
-        m_owners.release();
+        m_owners.reset();
     }
     return std::move(m_owners);
   }
@@ -1425,7 +1429,7 @@ namespace dataadvice
         QDjangoQuerySet<model::OwnershipGroupOwner> ogos;
         ogos.filter(QDjangoWhere("owner_id", QDjangoWhere::Equals, m_owner->id())).remove();
         m_owner->remove();
-        m_owner.release();
+        m_owner.reset();
     }
     return std::move(m_owner);
   }
@@ -1578,7 +1582,7 @@ namespace dataadvice
     if (action == model::ActionCode::Delete)
     {
         m_addr->remove();
-        m_addr.release();
+        m_addr.reset();
     }
     return std::move(m_addr);
   }
@@ -1641,7 +1645,7 @@ namespace dataadvice
     if (action == model::ActionCode::Delete)
     {
         m_addr->remove();
-        m_addr.release();
+        m_addr.reset();
     }
     return std::move(m_addr);
   }
@@ -1931,7 +1935,7 @@ namespace dataadvice
     if ( post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_descr->remove();
-        m_descr.release();
+        m_descr.reset();
     }
     return std::move(m_descr);
   }
@@ -1963,7 +1967,7 @@ namespace dataadvice
     if (post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_characteristic->remove();
-        m_characteristic.release();
+        m_characteristic.reset();
     }
     return std::move(m_characteristic);
   }
@@ -2073,7 +2077,7 @@ namespace dataadvice
     if (action == model::ActionCode::Delete)
     {
         m_home->remove();
-        m_home.release();
+        m_home.reset();
     }
     return std::move(m_home);
   }
@@ -2131,7 +2135,7 @@ namespace dataadvice
     if (post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_farm->remove();
-        m_farm.release();
+        m_farm.reset();
     }
     return std::move(m_farm);
   }
@@ -2190,7 +2194,7 @@ namespace dataadvice
     if ( post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_oil->remove();
-        m_oil.release();
+        m_oil.reset();
     }
     return std::move(m_oil);
   }
@@ -2250,7 +2254,7 @@ namespace dataadvice
     if ( post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_forest->remove();
-        m_forest.release();
+        m_forest.reset();
     }
     return std::move(m_forest);
   }
@@ -2424,7 +2428,7 @@ namespace dataadvice
     if ( post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_sale->remove();
-        m_sale.release();
+        m_sale.reset();
     }
     return std::move(m_sale);
   }
@@ -2441,7 +2445,8 @@ namespace dataadvice
   void FolioDescriptionImpl::
   Neighbourhood (std::unique_ptr<model::Neighbourhood> &Neighbourhood)
   {
-      m_descr->setNeighbourhood(Neighbourhood);
+      if (Neighbourhood)
+          m_descr->setNeighbourhood(Neighbourhood);
   }
 
   void FolioDescriptionImpl::
@@ -2507,43 +2512,56 @@ namespace dataadvice
   void FolioDescriptionImpl::
   LandMeasurement (std::unique_ptr<model::LandMeasurement> &land)
   {
-      m_descr->setLandMeasurement(land);
+      if (land)
+          m_descr->setLandMeasurement(land);
   }
 
   void FolioDescriptionImpl::
   SchoolDistrict (std::unique_ptr<model::SpecialDistrict> &SchoolDistrict)
   {
-      if (!SchoolDistrict->save())
-          throw SaveError(QString("School district: ")
-                          + SchoolDistrict->lastError().text());
-      m_descr->setSchoolDistrict(std::move(SchoolDistrict));
+      if (SchoolDistrict)
+      {
+          if (!SchoolDistrict->save())
+              throw SaveError(QString("School district: ")
+                                  + SchoolDistrict->lastError().text());
+          m_descr->setSchoolDistrict(std::move(SchoolDistrict));
+      }
   }
 
   void FolioDescriptionImpl::
   RegionalDistrict (std::unique_ptr<model::SpecialDistrict> &RegionalDistrict)
   {
-      if (!RegionalDistrict->save())
-          throw SaveError(QString("Regional District: ")
-                          + RegionalDistrict->lastError().text());
-      m_descr->setRegionalDistrict(std::move(RegionalDistrict));
+      if (RegionalDistrict)
+      {
+          if (!RegionalDistrict->save())
+              throw SaveError(QString("Regional District: ")
+                                  + RegionalDistrict->lastError().text());
+          m_descr->setRegionalDistrict(std::move(RegionalDistrict));
+      }
   }
 
   void FolioDescriptionImpl::
   RegionalHospitalDistrict (std::unique_ptr<model::SpecialDistrict> &RegionalHospitalDistrict)
   {
-      if (!RegionalHospitalDistrict->save())
-          throw SaveError(QString("Regional hospital district: ")
-                          + RegionalHospitalDistrict->lastError().text());
-      m_descr->setRegionalHospitalDistrict(std::move(RegionalHospitalDistrict));
+      if (RegionalHospitalDistrict)
+      {
+          if (!RegionalHospitalDistrict->save())
+              throw SaveError(QString("Regional hospital district: ")
+                                  + RegionalHospitalDistrict->lastError().text());
+          m_descr->setRegionalHospitalDistrict(std::move(RegionalHospitalDistrict));
+      }
   }
 
   void FolioDescriptionImpl::
   PredominantManualClass (std::unique_ptr<model::ManualClass> &PredominantManualClass)
   {
-      if (!PredominantManualClass->save())
-          throw SaveError(QString("Manual Class: ")
-                          + PredominantManualClass->lastError().text());
-      m_descr->setPredominantManualClass(std::move(PredominantManualClass));
+      if (PredominantManualClass)
+      {
+          if (!PredominantManualClass->save())
+              throw SaveError(QString("Manual Class: ")
+                                  + PredominantManualClass->lastError().text());
+          m_descr->setPredominantManualClass(std::move(PredominantManualClass));
+      }
   }
 
   std::unique_ptr<model::FolioDescription> FolioDescriptionImpl::
@@ -2552,7 +2570,7 @@ namespace dataadvice
     if ( post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_descr->remove();
-        m_descr.release();
+        m_descr.reset();
     }
     return std::move(m_descr);
   }
@@ -2602,7 +2620,7 @@ namespace dataadvice
     if ( post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_measurement->remove();
-        m_measurement.release();
+        m_measurement.reset();
     }
     return std::move(m_measurement);
   }
@@ -2634,7 +2652,7 @@ namespace dataadvice
     if ( post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_neighbourhood->remove();
-        m_neighbourhood.release();
+        m_neighbourhood.reset();
     }
     return std::move(m_neighbourhood);
   }
@@ -2666,7 +2684,7 @@ namespace dataadvice
     if ( post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_district->remove();
-        m_district.release();
+        m_district.reset();
     }
     return std::move(m_district);
   }
@@ -2704,7 +2722,7 @@ namespace dataadvice
     if ( post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_class->remove();
-        m_class.release();
+        m_class.reset();
     }
     return std::move(m_class);
   }
@@ -2927,7 +2945,7 @@ namespace dataadvice
     if ( post_FolioItemGroup () == model::ActionCode::Delete)
     {
         m_jurisdiction->remove();
-        m_jurisdiction.release();
+        m_jurisdiction.reset();
     }
     return std::move(m_jurisdiction);
   }
