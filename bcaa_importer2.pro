@@ -55,7 +55,8 @@ SOURCES += main.cpp \
     preflight.cpp \
     model/folioaction.cpp \
     model/schoolclassconverter.cpp \
-    model/ownershipgroupowner.cpp
+    model/ownershipgroupowner.cpp \
+    mssqldrivers.cpp
 
 RESOURCES += qml.qrc
 
@@ -118,10 +119,11 @@ HEADERS += \
     preflight.h \
     model/folioaction.h \
     model/schoolclassconverter.h \
-    model/ownershipgroupowner.h
+    model/ownershipgroupowner.h \
+    mssqldrivers.h
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3 -lAdvapi32
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c_3d -lAdvapi32
 else:unix:!macx: LIBS += -L$$PWD/../libs/CodeSynthesis/lib64/vc-12.0/ -lxerces-c
 
 win32:INCLUDEPATH += $$PWD/../libs/CodeSynthesis/include

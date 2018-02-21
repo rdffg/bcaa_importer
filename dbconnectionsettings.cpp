@@ -4,6 +4,9 @@
 #include <QSqlError>
 #include <QSettings>
 #include "dbconnectionsettings.h"
+#ifdef WIN32
+#include "mssqldrivers.h"
+#endif
 
 DbConnectionSettings::DbConnectionSettings(QObject *parent) : QObject(parent)
   , m_driver("")
@@ -72,6 +75,10 @@ void DbConnectionSettings::setPassword(QString password) {
 bool DbConnectionSettings::tryDbConnection() {
     auto db = this->makeDbConnection();
     if (!db.open() || !db.isValid()) {
+        auto err = db.lastError();
+        auto dbErr = err.databaseText();
+        auto driverErr = err.driverText();
+        auto err1 = err.nativeErrorCode();
         qDebug() << Q_FUNC_INFO << db.lastError();
         return false;
     } else {
@@ -115,7 +122,15 @@ QSqlDatabase DbConnectionSettings::makeDbConnection()
 
 QString DbConnectionSettings::makeMssqlConnString() {
     // FIXME: don't hard code the SQL Server Native client version!
-    QString connstr = "Driver={SQL Server Native Client 11.0};MARS_Connection=yes;Server="
+    auto drivername = MssqlDrivers().GetBestMssqlDriver();
+    if (drivername.isEmpty())
+    {
+        return QString();
+    }
+
+    QString connstr = "Driver={"
+            % drivername
+            % "};MARS_Connection=yes;Server="
             % this->server()
             % ";Database="
             % this->database();

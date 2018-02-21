@@ -108,6 +108,8 @@ public:
 
 signals:
     void dataChanged();
+    void message(QString &);
+
 public slots:
 
 private:
