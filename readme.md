@@ -4,11 +4,15 @@ Imports BC Assessment data advice files (XML) into a SQL database.
 
 - SQL Server, Sqlite and PostgreSQL tested
 
+Prerequisites
+-----------------
+
+- For SQL Server, a database driver is required. Sql Server Native Client, or ODBC Driver for Sql Server should work.
+
 Use
 -----
 
-1. Unzip the release somewhere
-2. Run bcaa\_importer2.exe
+1. Install by double-clicking the installer
 3. Configure your database connection
 4. Start by importing a COMP data file (you'll have time for a cup of coffee or three)
 5. Import updates
