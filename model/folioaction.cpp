@@ -16,7 +16,7 @@ FolioAction::FolioAction(ActionType type, const FolioRenumber &renumber) :
     *m_renumber = renumber;
 }
 
-FolioAction::FolioAction(const FolioAction::ActionType &type, const FolioRenumber &renumber, const QString &reasonCode, const QString &reasonDescr)
+FolioAction::FolioAction(FolioAction::ActionType type, const FolioRenumber &renumber, const QString &reasonCode, const QString &reasonDescr)
     : m_renumber(std::make_unique<FolioRenumber>())
     , m_actionType(type)
     , m_deleteReasonCode(reasonCode)
@@ -25,7 +25,7 @@ FolioAction::FolioAction(const FolioAction::ActionType &type, const FolioRenumbe
    *m_renumber = renumber;
 }
 
-FolioAction::FolioAction(const ActionType &type, const QString &reasonCode, const QString &reasonDescr)
+FolioAction::FolioAction(ActionType type, const QString &reasonCode, const QString &reasonDescr)
     : m_actionType(type)
     , m_deleteReasonCode(reasonCode)
     , m_deleteReasonDescr(reasonDescr)
@@ -33,7 +33,7 @@ FolioAction::FolioAction(const ActionType &type, const QString &reasonCode, cons
 
 }
 
-FolioAction::FolioAction(const ActionType &type) :
+FolioAction::FolioAction(ActionType type) :
     m_actionType(type)
   , m_deleteReasonCode(QString())
   , m_deleteReasonDescr(QString())

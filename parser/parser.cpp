@@ -72,6 +72,13 @@ void Parser::import()
             emit finished(false);
             return;
         }
+        catch (QString& err)
+        {
+            QDjango::database().rollback();
+            emit message(err);
+            emit finished(false);
+            return;
+        }
         catch ( ... )
         {
             QDjango::database().rollback();

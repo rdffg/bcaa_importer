@@ -249,7 +249,9 @@ namespace dataadvice
   }
 
 #pragma warning(push)
-#pragma warning(disable:4100)
+#pragma warning(disable:4100 4068)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
   void AmendmentReasonCountImpl::
   AmendmentReasonCode (const QString& AmendmentReasonCode)
   {
@@ -264,6 +266,7 @@ namespace dataadvice
   FolioCount (long long FolioCount)
   {
   }
+#pragma clang diagnostic pop
 #pragma warning(pop)
 
   void AmendmentReasonCountImpl::
@@ -298,7 +301,9 @@ namespace dataadvice
   }
 
 #pragma warning(push)
-#pragma warning(disable:4100)
+#pragma warning(disable:4100 4068)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
   void DeleteReasonCountImpl::
   DeleteReasonCode (const QString& DeleteReasonCode)
   {
@@ -313,6 +318,7 @@ namespace dataadvice
   FolioCount (long long FolioCount)
   {
   }
+#pragma clang diagnostic pop
 #pragma warning(pop)
 
   void DeleteReasonCountImpl::
@@ -563,7 +569,7 @@ namespace dataadvice
       m_folioAddresses = std::vector<std::unique_ptr<model::FolioAddress>>();
       m_ownershipGroups = std::vector<std::unique_ptr<model::OwnershipGroup>>();
       m_legalDescriptions = std::vector<std::unique_ptr<model::LegalDescription>>();
-      m_folioDescription = std::make_unique<model::FolioDescription>();
+      m_folioDescription = std::unique_ptr<model::FolioDescription>();
       m_sales = std::vector<std::unique_ptr<model::Sale>>();
       m_minorTaxingJurisdictions = std::vector<std::unique_ptr<model::minortaxing::MinorTaxingJurisdiction>>();
       m_farms = std::vector<std::unique_ptr<model::Farm>>();
@@ -718,6 +724,13 @@ namespace dataadvice
             }
 
             // owners
+            if (m_ownershipGroups.size() > 0)
+            {
+                QDjangoQuerySet<model::OwnershipGroup> q;
+                // remove existing ownership groups for this folio
+                q.filter(QDjangoWhere("folio_id", QDjangoWhere::Equals, m_folio->id())).remove();
+            }
+
             for (auto &&ownGroup: m_ownershipGroups)
             {
                 ownGroup->setFolio(m_folio.get());
@@ -745,23 +758,31 @@ namespace dataadvice
                     throw SaveError(legal->lastError().text());
             }
             // folio description
-            m_folioDescription->setFolio(m_folio.get());
-            if (!m_folioDescription->save())
-                throw SaveError(QString("Folio Description: ")+ m_folioDescription->lastError().text());
-            if (m_folioDescription->landMeasurement())
+            // if there was a description in the import file, clear the existing descriptions
+            // in the db, and load these ones.
+            if (m_folioDescription)
             {
+                QDjangoQuerySet<model::LegalDescription> q;
+                q.filter(QDjangoWhere("folio_id", QDjangoWhere::Equals, m_folio->id())).remove();
+
+                m_folioDescription->setFolio(m_folio.get());
+                if (!m_folioDescription->save())
+                throw SaveError(QString("Folio Description: ")+ m_folioDescription->lastError().text());
+                if (m_folioDescription->landMeasurement())
+                {
                 m_folioDescription->landMeasurement()->setFolioDescription(m_folioDescription.get());
                 if (!m_folioDescription->landMeasurement()->save())
                     throw SaveError(QString("Land Measurement: ")
-                                        + m_folioDescription->landMeasurement()->lastError().text());
+                            + m_folioDescription->landMeasurement()->lastError().text());
                 m_folioDescription->neighbourhood()->setFolioDescription(m_folioDescription.get());
-            }
-            if (m_folioDescription->neighbourhood())
-            {
+                }
+                if (m_folioDescription->neighbourhood())
+                {
                 m_folioDescription->neighbourhood()->setFolioDescription(m_folioDescription.get());
                 if (!m_folioDescription->neighbourhood()->save())
                     throw SaveError(QString("Neighbourhood: ")
-                                        + m_folioDescription->neighbourhood()->lastError().text());
+                            + m_folioDescription->neighbourhood()->lastError().text());
+                }
             }
 
             // sales
@@ -1292,7 +1313,7 @@ namespace dataadvice
   void OwnershipGroupImpl::
   Owners (std::vector<std::unique_ptr<model::Owner>>& Owners)
   {
-      m_owners->setOwners(std::move(Owners));
+      m_owners->setOwners(Owners);
   }
 
   void OwnershipGroupImpl::
