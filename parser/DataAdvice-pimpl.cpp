@@ -762,7 +762,7 @@ namespace dataadvice
             // in the db, and load these ones.
             if (m_folioDescription)
             {
-                QDjangoQuerySet<model::LegalDescription> q;
+                QDjangoQuerySet<model::FolioDescription> q;
                 q.filter(QDjangoWhere("folio_id", QDjangoWhere::Equals, m_folio->id())).remove();
 
                 m_folioDescription->setFolio(m_folio.get());
