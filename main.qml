@@ -4,7 +4,7 @@ import QtQuick.Window 2.0
 import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
-    title: qsTr("BC Assessment Importer 2.0")
+    title: qsTr("BC Assessment Importer ") + version
     width: 640
     height: 480
     visible: true
