@@ -7,7 +7,7 @@ QT += qml quick widgets sql
 
 CONFIG += qtquickcompiler
 
-VERSION = 2.1.2.0
+VERSION = 2.2.0.0
 
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 
@@ -132,7 +132,8 @@ win32:DEPENDPATH += $$PWD/../libs/CodeSynthesis/include
 DISTFILES += \
     DataAdvice.xsd \
     qdjango.pri \
-    DataAdvice.map
+    DataAdvice.map \
+    readme.md
 
 #mytarget.target = DataAdvice.hxx
 #mytarget.commands = xsd cxx-tree --namespace-map http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd=dataadvice --std c++11 --output-dir $$PWD $$PWD/DataAdvice.xsd

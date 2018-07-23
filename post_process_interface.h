@@ -32,8 +32,13 @@ public:
     /**
      * @brief Request that the running operation be cancelled
      */
-
     virtual void cancel() = 0;
+
+    /**
+     * @brief name
+     * @return The friendly name of the plugin
+     */
+    virtual QString name() const = 0;
 signals:
     /**
      * @brief statusChanged - Generic status messages

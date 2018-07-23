@@ -13,6 +13,7 @@
 #include <fstream>
 #include <algorithm>
 #include <QDjangoQuerySet.h>
+#include <QDjango.h>
 
 namespace dataadvice
 {
@@ -882,7 +883,10 @@ namespace dataadvice
                 emit message(QString("Found a folio renumber section in folio ID ") + m_folio->id() + QString(". This was not handled!"));
             }
             if (!m_folio->remove())
+            {
+                emit message(QString("Failed to delete folio with ID ") + m_folio->id());
                 throw SaveError(m_folio->lastError().text());
+            }
         }
     }
     else
