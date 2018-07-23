@@ -5,6 +5,7 @@ Item {
     id: item1
     width: 400
     height: 400
+    property alias pluginList: pluginList
     property string appVersion
     property alias updates: updates
     ColumnLayout {
@@ -45,6 +46,22 @@ Item {
             y: 0
             text: "Copyright Regional District of Fraser-Fort George 2018"
             transformOrigin: Item.Center
+            Layout.fillWidth: true
+        }
+
+        Text {
+            id: pluginslabel
+            text: qsTr("Loaded Plugins")
+            font.bold: true
+            font.pixelSize: 14
+        }
+
+        ListView {
+            id: pluginList
+            width: 110
+            height: 160
+            spacing: 14
+            interactive: true
             Layout.fillWidth: true
         }
     }

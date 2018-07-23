@@ -32,6 +32,7 @@ BCAADataImporter::BCAADataImporter(QObject *parent) : QObject(parent)
         m_datafilepath = dataFilePath.toString();
     registerModels();
     m_importMeta = new model::ImportMeta(this);
+    loadPlugins();
 }
 
 QString BCAADataImporter::dataFilePath()
@@ -71,8 +72,6 @@ void BCAADataImporter::beginImport()
 #else
         QDjango::setDebugEnabled(false);
 #endif
-    loadPlugins();
-
     m_progress = 0;
     m_percentDone = -1;
     emit progressChanged();
@@ -380,9 +379,20 @@ void BCAADataImporter::loadPlugins()
             }
         }
     }
+    pluginsChanged();
 }
 
 bool BCAADataImporter::canRun() const
 {
     return m_canRun;
+}
+
+QStringList BCAADataImporter::plugins() const
+{
+    QStringList list;
+    for (auto &plugin: this->m_plugins)
+    {
+        list.append(plugin.second->databaseType() + ": " + plugin.second->name());
+    }
+    return list;
 }

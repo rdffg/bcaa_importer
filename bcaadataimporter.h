@@ -31,6 +31,7 @@ class BCAADataImporter : public QObject
     Q_PROPERTY(bool canRun READ canRun NOTIFY dataChanged)
     Q_PROPERTY(model::ImportMeta *lastRun READ lastRun NOTIFY dataChanged)
     Q_PROPERTY(model::ImportMeta *importMeta READ importMeta NOTIFY dataChanged)
+    Q_PROPERTY(QStringList plugins READ plugins NOTIFY pluginsChanged)
 
 public:
     explicit BCAADataImporter(QObject *parent = 0);
@@ -116,6 +117,11 @@ public:
      */
     bool canRun() const;
 
+    /**
+     * @brief Returns a list of loaded post-process plugins
+     */
+    QStringList plugins() const;
+
 signals:
     /**
      * @brief Job status has changed
@@ -138,6 +144,10 @@ signals:
      * @brief Requests that the currently running job be canceled.
      */
     void cancelJob();
+    /**
+      * @brief The list of loaded plugins changed
+      */
+    void pluginsChanged() const;
 
 public slots:
     /**

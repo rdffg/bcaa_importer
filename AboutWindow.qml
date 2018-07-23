@@ -15,5 +15,10 @@ ApplicationWindow {
     AboutWindowForm {
         appVersion: appVersion
         updates.onLinkActivated: Qt.openUrlExternally(link);
+        pluginList.model: importer.plugins;
+        pluginList.delegate: Rectangle {
+            Text { text: modelData }
+        }
+
     }
 }
