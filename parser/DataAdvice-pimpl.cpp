@@ -1446,14 +1446,14 @@ namespace dataadvice
   std::unique_ptr<model::Owner> OwnerImpl::post_Owner()
   {
     auto action = post_FolioItemGroup ();
+    // If the owner is marked as deleted, just don't pass
+    // the owner object up to the OwnershipCollection. The
+    // ownershipgroup_owner records
+    // get regenerated for the folio completely anyway. Any
+    // orphaned owner records should get cleaned up after the
+    // import is done.
     if (action == model::ActionCode::Delete)
     {
-        // find all the owner-ownershipgroup items that this owner belongs to
-        // nope, still wrong. should only delete from this ownershipgroup. Of course, we
-        // don't know what the enclosing ownership group is.
-        QDjangoQuerySet<model::OwnershipGroupOwner> ogos;
-        ogos.filter(QDjangoWhere("owner_id", QDjangoWhere::Equals, m_owner->id())).remove();
-        m_owner->remove();
         m_owner.reset();
     }
     return std::move(m_owner);
