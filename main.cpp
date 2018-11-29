@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
     context->setContextProperty("importer", importer);
     context->setContextProperty("sqlconnection", sqlconnection);
     context->setContextProperty("version", APP_VERSION);
+    context->setContextProperty("xmlSchemaVersion", SCHEMA_VERSION);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     return app.exec();
 }

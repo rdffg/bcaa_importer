@@ -36,6 +36,12 @@ Item {
         }
 
         Text {
+            id: text1
+            text: "XML Schema version: " + xmlSchemaVersion
+            font.pixelSize: 12
+        }
+
+        Text {
             id: updates
             text: "Updates: go to <a href=\"https://github.com/rdffg/bcaa_importer/releases\">our github page</a>."
             textFormat: Text.RichText
