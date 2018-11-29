@@ -198,3 +198,33 @@ std::unique_ptr<model::Neighbourhood>& FolioDescription::neighbourhood()
 {
     return m_neighbourhood;
 }
+
+bool FolioDescription::schoolTax3Mto4MFlag() const
+{
+    return m_schoolTax3Mto4MFlag;
+}
+
+void FolioDescription::setSchoolTax3Mto4MFlag(bool flag)
+{
+    m_schoolTax3Mto4MFlag = flag;
+}
+
+bool FolioDescription::schoolTaxGreater4MFlag() const
+{
+    return m_schoolTaxGreater4MFlag;
+}
+
+void FolioDescription::setSchooTaxGreater4MFlag(bool flag)
+{
+    m_schoolTaxGreater4MFlag = flag;
+}
+
+bool FolioDescription::candidateforSpecTaxFlag() const
+{
+    return m_candidateforSpecTaxFlag;
+}
+
+void FolioDescription::setCandidateforSpecTaxFlag(bool flag)
+{
+    m_candidateforSpecTaxFlag = flag;
+}

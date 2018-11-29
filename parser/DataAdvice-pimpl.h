@@ -501,10 +501,10 @@ namespace dataadvice
     pre () override;
 
     virtual void
-    FolioAdd (const model::FolioAction&) override;
+    FolioAdd (model::FolioAction&) override;
 
     virtual void
-    FolioDelete (const model::FolioAction&) override;
+    FolioDelete (model::FolioAction&) override;
 
     std::unique_ptr<model::FolioAction>
     post_FolioAction () override;
@@ -1346,10 +1346,10 @@ namespace dataadvice
     VacantFlag (const model::BooleanItem&) override;
 
     virtual void
-    BCTransitFlag (const model::BooleanItem&) override;
+    BCTransitFlag (bool) override;
 
     virtual void
-    PoliceTaxFlag (const model::BooleanItem&) override;
+    PoliceTaxFlag (bool) override;
 
     virtual void
     ALRCode (const model::StringItem&) override;
@@ -1380,6 +1380,13 @@ namespace dataadvice
 
     virtual void
     PredominantManualClass (std::unique_ptr<model::ManualClass>&) override;
+
+    virtual void AddSchoolTax3Mto4MFlag (bool) override;
+
+    virtual void AddSchoolTaxGreater4MFlag (bool) override;
+
+    virtual void CandidateforSpecTaxFlag (bool) override;
+
 
     virtual std::unique_ptr<model::FolioDescription>
     post_FolioDescription () override;

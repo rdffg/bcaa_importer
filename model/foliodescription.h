@@ -28,6 +28,9 @@ class FolioDescription : public QDjangoModel
     Q_PROPERTY(QString parkingArea READ parkingArea WRITE setParkingArea)
     Q_PROPERTY(QString tenureCode READ tenureCode WRITE setTenureCode)
     Q_PROPERTY(QString tenureDescription READ tenureDescription WRITE setTenureDescription)
+    Q_PROPERTY(bool schoolTax3Mto4MFlag READ schoolTax3Mto4MFlag WRITE setSchoolTax3Mto4MFlag)
+    Q_PROPERTY(bool schoolTaxGreater4MFlag READ schoolTaxGreater4MFlag WRITE setSchooTaxGreater4MFlag)
+    Q_PROPERTY(bool candidateforSpecTaxFlag READ candidateforSpecTaxFlag WRITE setCandidateforSpecTaxFlag)
     Q_PROPERTY(model::SpecialDistrict *schoolDistrict READ schoolDistrict WRITE setSchoolDistrict)
     Q_PROPERTY(model::SpecialDistrict *regionalDistrict READ regionalDistrict WRITE setRegionalDistrict)
     Q_PROPERTY(model::SpecialDistrict *regionalHospitalDistrict READ regionalHospitalDistrict WRITE setRegionalHospitalDistrict)
@@ -40,6 +43,9 @@ class FolioDescription : public QDjangoModel
     Q_CLASSINFO("vacantFlag", "null=true")
     Q_CLASSINFO("bcTransitFlag", "null=true")
     Q_CLASSINFO("policeTaxFlag", "null=true")
+    Q_CLASSINFO("schoolTax3Mto4MFlag", "null=true")
+    Q_CLASSINFO("schoolTaxGreater4MFlag", "null=true")
+    Q_CLASSINFO("candidateforSpecTaxFlag", "null=true")
     Q_CLASSINFO("alrCode", "null=true")
     Q_CLASSINFO("alrDescription", "null=true")
     Q_CLASSINFO("parkingArea", "null=true")
@@ -104,6 +110,15 @@ public:
     QString tenureDescription() const;
     void setTenureDescription(const QString &tenureDescription);
 
+    bool schoolTax3Mto4MFlag() const;
+    void setSchoolTax3Mto4MFlag(bool flag);
+
+    bool schoolTaxGreater4MFlag() const;
+    void setSchooTaxGreater4MFlag(bool flag);
+
+    bool candidateforSpecTaxFlag() const;
+    void setCandidateforSpecTaxFlag(bool flag);
+
     // storage for child objects
     void setLandMeasurement(std::unique_ptr<model::LandMeasurement> &measurement);
     std::unique_ptr<model::LandMeasurement>& landMeasurement();
@@ -116,6 +131,9 @@ private:
     bool m_vacantFlag;
     bool m_bcTransitFlag;
     bool m_policeTaxFlag;
+    bool m_schoolTax3Mto4MFlag;
+    bool m_schoolTaxGreater4MFlag;
+    bool m_candidateforSpecTaxFlag;
     QString m_alrCode;
     QString m_alrDescription;
     QString m_parkingArea;

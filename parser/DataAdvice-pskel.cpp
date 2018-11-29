@@ -2423,6 +2423,30 @@ namespace dataadvice
   }
 
   void Sale_pskel::
+  SaleDate_parser (::dataadvice::FolioDateItem_pskel& p)
+  {
+    this->SaleDate_parser_ = &p;
+  }
+
+  void Sale_pskel::
+  SalePrice_parser (::dataadvice::FolioDecimalItem_pskel& p)
+  {
+    this->SalePrice_parser_ = &p;
+  }
+
+  void Sale_pskel::
+  SaleStatusCode_parser (::dataadvice::FolioLookupCodeItem_pskel& p)
+  {
+    this->SaleStatusCode_parser_ = &p;
+  }
+
+  void Sale_pskel::
+  SaleStatusDescription_parser (::dataadvice::FolioString255Item_pskel& p)
+  {
+    this->SaleStatusDescription_parser_ = &p;
+  }
+
+  void Sale_pskel::
   ConveyanceDate_parser (::dataadvice::FolioDateItem_pskel& p)
   {
     this->ConveyanceDate_parser_ = &p;
@@ -2467,6 +2491,10 @@ namespace dataadvice
   void Sale_pskel::
   parsers (::dataadvice::ActionCode_pskel& Action,
            ::dataadvice::FolioString255Item_pskel& DocumentNumber,
+           ::dataadvice::FolioDateItem_pskel& SaleDate,
+           ::dataadvice::FolioDecimalItem_pskel& SalePrice,
+           ::dataadvice::FolioLookupCodeItem_pskel& SaleStatusCode,
+           ::dataadvice::FolioString255Item_pskel& SaleStatusDescription,
            ::dataadvice::FolioDateItem_pskel& ConveyanceDate,
            ::dataadvice::FolioDecimalItem_pskel& ConveyancePrice,
            ::dataadvice::FolioLookupCodeItem_pskel& ConveyanceType,
@@ -2477,6 +2505,10 @@ namespace dataadvice
   {
     this->Action_parser_ = &Action;
     this->DocumentNumber_parser_ = &DocumentNumber;
+    this->SaleDate_parser_ = &SaleDate;
+    this->SalePrice_parser_ = &SalePrice;
+    this->SaleStatusCode_parser_ = &SaleStatusCode;
+    this->SaleStatusDescription_parser_ = &SaleStatusDescription;
     this->ConveyanceDate_parser_ = &ConveyanceDate;
     this->ConveyancePrice_parser_ = &ConveyancePrice;
     this->ConveyanceType_parser_ = &ConveyanceType;
@@ -2489,6 +2521,10 @@ namespace dataadvice
   Sale_pskel::
   Sale_pskel ()
   : DocumentNumber_parser_ (0),
+    SaleDate_parser_ (0),
+    SalePrice_parser_ (0),
+    SaleStatusCode_parser_ (0),
+    SaleStatusDescription_parser_ (0),
     ConveyanceDate_parser_ (0),
     ConveyancePrice_parser_ (0),
     ConveyanceType_parser_ (0),
@@ -2527,15 +2563,33 @@ namespace dataadvice
   }
 
   void FolioDescription_pskel::
-  BCTransitFlag_parser (::dataadvice::FolioBooleanItem_pskel& p)
+  BCTransitFlag_parser (::xml_schema::boolean_pskel& p)
   {
     this->BCTransitFlag_parser_ = &p;
   }
 
   void FolioDescription_pskel::
-  PoliceTaxFlag_parser (::dataadvice::FolioBooleanItem_pskel& p)
+  PoliceTaxFlag_parser (::xml_schema::boolean_pskel& p)
   {
     this->PoliceTaxFlag_parser_ = &p;
+  }
+
+  void FolioDescription_pskel::
+  AddSchoolTax3Mto4MFlag_parser (::xml_schema::boolean_pskel& p)
+  {
+    this->AddSchoolTax3Mto4MFlag_parser_ = &p;
+  }
+
+  void FolioDescription_pskel::
+  AddSchoolTaxGreater4MFlag_parser (::xml_schema::boolean_pskel& p)
+  {
+    this->AddSchoolTaxGreater4MFlag_parser_ = &p;
+  }
+
+  void FolioDescription_pskel::
+  CandidateforSpecTaxFlag_parser (::xml_schema::boolean_pskel& p)
+  {
+    this->CandidateforSpecTaxFlag_parser_ = &p;
   }
 
   void FolioDescription_pskel::
@@ -2604,8 +2658,11 @@ namespace dataadvice
            ::dataadvice::FolioLookupCodeItem_pskel& ActualUseCode,
            ::dataadvice::FolioString255Item_pskel& ActualUseDescription,
            ::dataadvice::FolioBooleanItem_pskel& VacantFlag,
-           ::dataadvice::FolioBooleanItem_pskel& BCTransitFlag,
-           ::dataadvice::FolioBooleanItem_pskel& PoliceTaxFlag,
+           ::xml_schema::boolean_pskel& BCTransitFlag,
+           ::xml_schema::boolean_pskel& PoliceTaxFlag,
+           ::xml_schema::boolean_pskel& AddSchoolTax3Mto4MFlag,
+           ::xml_schema::boolean_pskel& AddSchoolTaxGreater4MFlag,
+           ::xml_schema::boolean_pskel& CandidateforSpecTaxFlag,
            ::dataadvice::FolioLookupCodeItem_pskel& ALRCode,
            ::dataadvice::FolioString255Item_pskel& ALRDescription,
            ::dataadvice::FolioLookupCodeItem_pskel& TenureCode,
@@ -2624,6 +2681,9 @@ namespace dataadvice
     this->VacantFlag_parser_ = &VacantFlag;
     this->BCTransitFlag_parser_ = &BCTransitFlag;
     this->PoliceTaxFlag_parser_ = &PoliceTaxFlag;
+    this->AddSchoolTax3Mto4MFlag_parser_ = &AddSchoolTax3Mto4MFlag;
+    this->AddSchoolTaxGreater4MFlag_parser_ = &AddSchoolTaxGreater4MFlag;
+    this->CandidateforSpecTaxFlag_parser_ = &CandidateforSpecTaxFlag;
     this->ALRCode_parser_ = &ALRCode;
     this->ALRDescription_parser_ = &ALRDescription;
     this->TenureCode_parser_ = &TenureCode;
@@ -2644,6 +2704,9 @@ namespace dataadvice
     VacantFlag_parser_ (0),
     BCTransitFlag_parser_ (0),
     PoliceTaxFlag_parser_ (0),
+    AddSchoolTax3Mto4MFlag_parser_ (0),
+    AddSchoolTaxGreater4MFlag_parser_ (0),
+    CandidateforSpecTaxFlag_parser_ (0),
     ALRCode_parser_ (0),
     ALRDescription_parser_ (0),
     TenureCode_parser_ (0),
@@ -5403,12 +5466,12 @@ namespace dataadvice
   //
 
   void FolioAction_pskel::
-  FolioAdd (const model::FolioAction&)
+  FolioAdd (model::FolioAction&)
   {
   }
 
   void FolioAction_pskel::
-  FolioDelete (const model::FolioAction&)
+  FolioDelete (model::FolioAction&)
   {
   }
 
@@ -9383,6 +9446,26 @@ namespace dataadvice
   }
 
   void Sale_pskel::
+  SaleDate (const model::DateItem&)
+  {
+  }
+
+  void Sale_pskel::
+  SalePrice (const model::DecimalItem&)
+  {
+  }
+
+  void Sale_pskel::
+  SaleStatusCode (const model::StringItem&)
+  {
+  }
+
+  void Sale_pskel::
+  SaleStatusDescription (const model::StringItem&)
+  {
+  }
+
+  void Sale_pskel::
   ConveyanceDate (const model::DateItem&)
   {
   }
@@ -9433,6 +9516,46 @@ namespace dataadvice
 
       if (this->DocumentNumber_parser_)
         this->DocumentNumber_parser_->pre ();
+
+      return true;
+    }
+
+    if (n == "SaleDate" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      this->::xml_schema::complex_content::context_.top ().parser_ = this->SaleDate_parser_;
+
+      if (this->SaleDate_parser_)
+        this->SaleDate_parser_->pre ();
+
+      return true;
+    }
+
+    if (n == "SalePrice" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      this->::xml_schema::complex_content::context_.top ().parser_ = this->SalePrice_parser_;
+
+      if (this->SalePrice_parser_)
+        this->SalePrice_parser_->pre ();
+
+      return true;
+    }
+
+    if (n == "SaleStatusCode" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      this->::xml_schema::complex_content::context_.top ().parser_ = this->SaleStatusCode_parser_;
+
+      if (this->SaleStatusCode_parser_)
+        this->SaleStatusCode_parser_->pre ();
+
+      return true;
+    }
+
+    if (n == "SaleStatusDescription" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      this->::xml_schema::complex_content::context_.top ().parser_ = this->SaleStatusDescription_parser_;
+
+      if (this->SaleStatusDescription_parser_)
+        this->SaleStatusDescription_parser_->pre ();
 
       return true;
     }
@@ -9511,6 +9634,38 @@ namespace dataadvice
     {
       if (this->DocumentNumber_parser_)
         this->DocumentNumber (this->DocumentNumber_parser_->post_FolioString255Item ());
+
+      return true;
+    }
+
+    if (n == "SaleDate" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      if (this->SaleDate_parser_)
+        this->SaleDate (this->SaleDate_parser_->post_FolioDateItem ());
+
+      return true;
+    }
+
+    if (n == "SalePrice" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      if (this->SalePrice_parser_)
+        this->SalePrice (this->SalePrice_parser_->post_FolioDecimalItem ());
+
+      return true;
+    }
+
+    if (n == "SaleStatusCode" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      if (this->SaleStatusCode_parser_)
+        this->SaleStatusCode (this->SaleStatusCode_parser_->post_FolioLookupCodeItem ());
+
+      return true;
+    }
+
+    if (n == "SaleStatusDescription" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      if (this->SaleStatusDescription_parser_)
+        this->SaleStatusDescription (this->SaleStatusDescription_parser_->post_FolioString255Item ());
 
       return true;
     }
@@ -9615,12 +9770,27 @@ namespace dataadvice
   }
 
   void FolioDescription_pskel::
-  BCTransitFlag (const model::BooleanItem&)
+  BCTransitFlag (bool)
   {
   }
 
   void FolioDescription_pskel::
-  PoliceTaxFlag (const model::BooleanItem&)
+  PoliceTaxFlag (bool)
+  {
+  }
+
+  void FolioDescription_pskel::
+  AddSchoolTax3Mto4MFlag (bool)
+  {
+  }
+
+  void FolioDescription_pskel::
+  AddSchoolTaxGreater4MFlag (bool)
+  {
+  }
+
+  void FolioDescription_pskel::
+  CandidateforSpecTaxFlag (bool)
   {
   }
 
@@ -9740,6 +9910,36 @@ namespace dataadvice
 
       if (this->PoliceTaxFlag_parser_)
         this->PoliceTaxFlag_parser_->pre ();
+
+      return true;
+    }
+
+    if (n == "AddSchoolTax3Mto4MFlag" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      this->::xml_schema::complex_content::context_.top ().parser_ = this->AddSchoolTax3Mto4MFlag_parser_;
+
+      if (this->AddSchoolTax3Mto4MFlag_parser_)
+        this->AddSchoolTax3Mto4MFlag_parser_->pre ();
+
+      return true;
+    }
+
+    if (n == "AddSchoolTaxGreater4MFlag" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      this->::xml_schema::complex_content::context_.top ().parser_ = this->AddSchoolTaxGreater4MFlag_parser_;
+
+      if (this->AddSchoolTaxGreater4MFlag_parser_)
+        this->AddSchoolTaxGreater4MFlag_parser_->pre ();
+
+      return true;
+    }
+
+    if (n == "CandidateforSpecTaxFlag" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      this->::xml_schema::complex_content::context_.top ().parser_ = this->CandidateforSpecTaxFlag_parser_;
+
+      if (this->CandidateforSpecTaxFlag_parser_)
+        this->CandidateforSpecTaxFlag_parser_->pre ();
 
       return true;
     }
@@ -9889,7 +10089,7 @@ namespace dataadvice
     if (n == "BCTransitFlag" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->BCTransitFlag_parser_)
-        this->BCTransitFlag (this->BCTransitFlag_parser_->post_FolioBooleanItem ());
+        this->BCTransitFlag (this->BCTransitFlag_parser_->post_boolean ());
 
       return true;
     }
@@ -9897,7 +10097,31 @@ namespace dataadvice
     if (n == "PoliceTaxFlag" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->PoliceTaxFlag_parser_)
-        this->PoliceTaxFlag (this->PoliceTaxFlag_parser_->post_FolioBooleanItem ());
+        this->PoliceTaxFlag (this->PoliceTaxFlag_parser_->post_boolean ());
+
+      return true;
+    }
+
+    if (n == "AddSchoolTax3Mto4MFlag" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      if (this->AddSchoolTax3Mto4MFlag_parser_)
+        this->AddSchoolTax3Mto4MFlag (this->AddSchoolTax3Mto4MFlag_parser_->post_boolean ());
+
+      return true;
+    }
+
+    if (n == "AddSchoolTaxGreater4MFlag" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      if (this->AddSchoolTaxGreater4MFlag_parser_)
+        this->AddSchoolTaxGreater4MFlag (this->AddSchoolTaxGreater4MFlag_parser_->post_boolean ());
+
+      return true;
+    }
+
+    if (n == "CandidateforSpecTaxFlag" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
+    {
+      if (this->CandidateforSpecTaxFlag_parser_)
+        this->CandidateforSpecTaxFlag (this->CandidateforSpecTaxFlag_parser_->post_boolean ());
 
       return true;
     }

@@ -1416,10 +1416,10 @@ namespace dataadvice
     // pre ();
 
     virtual void
-    FolioAdd (const model::FolioAction&);
+    FolioAdd (model::FolioAction&);
 
     virtual void
-    FolioDelete (const model::FolioAction&);
+    FolioDelete (model::FolioAction&);
 
     virtual std::unique_ptr<model::FolioAction>
     post_FolioAction () = 0;
@@ -3586,6 +3586,18 @@ namespace dataadvice
     DocumentNumber (const model::StringItem&);
 
     virtual void
+    SaleDate (const model::DateItem&);
+
+    virtual void
+    SalePrice (const model::DecimalItem&);
+
+    virtual void
+    SaleStatusCode (const model::StringItem&);
+
+    virtual void
+    SaleStatusDescription (const model::StringItem&);
+
+    virtual void
     ConveyanceDate (const model::DateItem&);
 
     virtual void
@@ -3615,6 +3627,18 @@ namespace dataadvice
     DocumentNumber_parser (::dataadvice::FolioString255Item_pskel&);
 
     void
+    SaleDate_parser (::dataadvice::FolioDateItem_pskel&);
+
+    void
+    SalePrice_parser (::dataadvice::FolioDecimalItem_pskel&);
+
+    void
+    SaleStatusCode_parser (::dataadvice::FolioLookupCodeItem_pskel&);
+
+    void
+    SaleStatusDescription_parser (::dataadvice::FolioString255Item_pskel&);
+
+    void
     ConveyanceDate_parser (::dataadvice::FolioDateItem_pskel&);
 
     void
@@ -3638,6 +3662,10 @@ namespace dataadvice
     void
     parsers (::dataadvice::ActionCode_pskel& /* Action */,
              ::dataadvice::FolioString255Item_pskel& /* DocumentNumber */,
+             ::dataadvice::FolioDateItem_pskel& /* SaleDate */,
+             ::dataadvice::FolioDecimalItem_pskel& /* SalePrice */,
+             ::dataadvice::FolioLookupCodeItem_pskel& /* SaleStatusCode */,
+             ::dataadvice::FolioString255Item_pskel& /* SaleStatusDescription */,
              ::dataadvice::FolioDateItem_pskel& /* ConveyanceDate */,
              ::dataadvice::FolioDecimalItem_pskel& /* ConveyancePrice */,
              ::dataadvice::FolioLookupCodeItem_pskel& /* ConveyanceType */,
@@ -3669,6 +3697,10 @@ namespace dataadvice
 
     protected:
     ::dataadvice::FolioString255Item_pskel* DocumentNumber_parser_;
+    ::dataadvice::FolioDateItem_pskel* SaleDate_parser_;
+    ::dataadvice::FolioDecimalItem_pskel* SalePrice_parser_;
+    ::dataadvice::FolioLookupCodeItem_pskel* SaleStatusCode_parser_;
+    ::dataadvice::FolioString255Item_pskel* SaleStatusDescription_parser_;
     ::dataadvice::FolioDateItem_pskel* ConveyanceDate_parser_;
     ::dataadvice::FolioDecimalItem_pskel* ConveyancePrice_parser_;
     ::dataadvice::FolioLookupCodeItem_pskel* ConveyanceType_parser_;
@@ -3699,10 +3731,19 @@ namespace dataadvice
     VacantFlag (const model::BooleanItem&);
 
     virtual void
-    BCTransitFlag (const model::BooleanItem&);
+    BCTransitFlag (bool);
 
     virtual void
-    PoliceTaxFlag (const model::BooleanItem&);
+    PoliceTaxFlag (bool);
+
+    virtual void
+    AddSchoolTax3Mto4MFlag (bool);
+
+    virtual void
+    AddSchoolTaxGreater4MFlag (bool);
+
+    virtual void
+    CandidateforSpecTaxFlag (bool);
 
     virtual void
     ALRCode (const model::StringItem&);
@@ -3752,10 +3793,19 @@ namespace dataadvice
     VacantFlag_parser (::dataadvice::FolioBooleanItem_pskel&);
 
     void
-    BCTransitFlag_parser (::dataadvice::FolioBooleanItem_pskel&);
+    BCTransitFlag_parser (::xml_schema::boolean_pskel&);
 
     void
-    PoliceTaxFlag_parser (::dataadvice::FolioBooleanItem_pskel&);
+    PoliceTaxFlag_parser (::xml_schema::boolean_pskel&);
+
+    void
+    AddSchoolTax3Mto4MFlag_parser (::xml_schema::boolean_pskel&);
+
+    void
+    AddSchoolTaxGreater4MFlag_parser (::xml_schema::boolean_pskel&);
+
+    void
+    CandidateforSpecTaxFlag_parser (::xml_schema::boolean_pskel&);
 
     void
     ALRCode_parser (::dataadvice::FolioLookupCodeItem_pskel&);
@@ -3793,8 +3843,11 @@ namespace dataadvice
              ::dataadvice::FolioLookupCodeItem_pskel& /* ActualUseCode */,
              ::dataadvice::FolioString255Item_pskel& /* ActualUseDescription */,
              ::dataadvice::FolioBooleanItem_pskel& /* VacantFlag */,
-             ::dataadvice::FolioBooleanItem_pskel& /* BCTransitFlag */,
-             ::dataadvice::FolioBooleanItem_pskel& /* PoliceTaxFlag */,
+             ::xml_schema::boolean_pskel& /* BCTransitFlag */,
+             ::xml_schema::boolean_pskel& /* PoliceTaxFlag */,
+             ::xml_schema::boolean_pskel& /* AddSchoolTax3Mto4MFlag */,
+             ::xml_schema::boolean_pskel& /* AddSchoolTaxGreater4MFlag */,
+             ::xml_schema::boolean_pskel& /* CandidateforSpecTaxFlag */,
              ::dataadvice::FolioLookupCodeItem_pskel& /* ALRCode */,
              ::dataadvice::FolioString255Item_pskel& /* ALRDescription */,
              ::dataadvice::FolioLookupCodeItem_pskel& /* TenureCode */,
@@ -3827,8 +3880,11 @@ namespace dataadvice
     ::dataadvice::FolioLookupCodeItem_pskel* ActualUseCode_parser_;
     ::dataadvice::FolioString255Item_pskel* ActualUseDescription_parser_;
     ::dataadvice::FolioBooleanItem_pskel* VacantFlag_parser_;
-    ::dataadvice::FolioBooleanItem_pskel* BCTransitFlag_parser_;
-    ::dataadvice::FolioBooleanItem_pskel* PoliceTaxFlag_parser_;
+    ::xml_schema::boolean_pskel* BCTransitFlag_parser_;
+    ::xml_schema::boolean_pskel* PoliceTaxFlag_parser_;
+    ::xml_schema::boolean_pskel* AddSchoolTax3Mto4MFlag_parser_;
+    ::xml_schema::boolean_pskel* AddSchoolTaxGreater4MFlag_parser_;
+    ::xml_schema::boolean_pskel* CandidateforSpecTaxFlag_parser_;
     ::dataadvice::FolioLookupCodeItem_pskel* ALRCode_parser_;
     ::dataadvice::FolioString255Item_pskel* ALRDescription_parser_;
     ::dataadvice::FolioLookupCodeItem_pskel* TenureCode_parser_;

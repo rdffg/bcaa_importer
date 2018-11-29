@@ -956,13 +956,13 @@ namespace dataadvice
   }
 
   void FolioActionImpl::
-  FolioAdd (const model::FolioAction &add)
+  FolioAdd (model::FolioAction &add)
   {
       *m_action = add;
   }
 
   void FolioActionImpl::
-  FolioDelete (const model::FolioAction &del)
+  FolioDelete (model::FolioAction &del)
   {
       *m_action = del;
   }
@@ -990,9 +990,9 @@ namespace dataadvice
   model::FolioAction FolioAddImpl::post_FolioAdd()
   {
       if (m_renumber)
-          return model::FolioAction(model::FolioAction::ADD, *m_renumber);
+          return model::FolioAction(model::FolioAction::ActionType::ADD, *m_renumber);
       else
-          return model::FolioAction(model::FolioAction::ADD);
+          return model::FolioAction(model::FolioAction::ActionType::ADD);
   }
 
   // FolioDeleteImpl
@@ -2493,15 +2493,15 @@ namespace dataadvice
   }
 
   void FolioDescriptionImpl::
-  BCTransitFlag (const model::BooleanItem &item)
+  BCTransitFlag (bool item)
   {
-      m_descr->setBcTransitFlag(item.value());
+      m_descr->setBcTransitFlag(item);
   }
 
   void FolioDescriptionImpl::
-  PoliceTaxFlag (const model::BooleanItem &item)
+  PoliceTaxFlag (bool item)
   {
-      m_descr->setPoliceTaxFlag(item.value());
+      m_descr->setPoliceTaxFlag(item);
   }
 
   void FolioDescriptionImpl::
@@ -2588,6 +2588,20 @@ namespace dataadvice
           m_descr->setPredominantManualClass(std::move(PredominantManualClass));
       }
   }
+   void FolioDescriptionImpl::AddSchoolTax3Mto4MFlag(bool flag)
+   {
+       m_descr->setSchoolTax3Mto4MFlag(flag);
+   }
+
+   void FolioDescriptionImpl::AddSchoolTaxGreater4MFlag(bool flag)
+   {
+       m_descr->setSchooTaxGreater4MFlag(flag);
+   }
+
+   void FolioDescriptionImpl::CandidateforSpecTaxFlag(bool flag)
+   {
+       m_descr->setCandidateforSpecTaxFlag(flag);
+   }
 
   std::unique_ptr<model::FolioDescription> FolioDescriptionImpl::
   post_FolioDescription ()

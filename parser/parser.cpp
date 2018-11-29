@@ -462,6 +462,9 @@ std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, con
                                     FolioBooleanItem_p,
                                     FolioBooleanItem_p,
                                     FolioBooleanItem_p,
+                                    FolioBooleanItem_p,
+                                    FolioBooleanItem_p,
+                                    FolioBooleanItem_p,
                                     FolioLookupCodeItem_p,
                                     FolioString255Item_p,
                                     FolioLookupCodeItem_p,
@@ -500,6 +503,10 @@ std::unique_ptr<model::DataAdvice> Parser::readFile(const std::string& path, con
                                   Sale_p);
 
         Sale_p.parsers (ActionCode_p,
+                        FolioString255Item_p,
+                        FolioDateItem_p,
+                        FolioDecimalItem_p,
+                        FolioLookupCodeItem_p,
                         FolioString255Item_p,
                         FolioDateItem_p,
                         FolioDecimalItem_p,
