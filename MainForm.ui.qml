@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.5
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.1
 
@@ -13,6 +13,7 @@ Item {
 
     RowLayout {
         id: rowlayout1
+        anchors.rightMargin: 0
         anchors.right: parent.right
         anchors.left: parent.left
         anchors.leftMargin: 0
@@ -32,17 +33,24 @@ Item {
             y: 0
             width: 640
             height: 457
+            Layout.fillHeight: true
+            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysAsNeeded
+            Layout.fillWidth: true
             anchors.fill: parent
             clip: true
 
             TextEdit {
                 id: textedit1
+                anchors.left: parent.left
+                anchors.leftMargin: 4
+                anchors.right: parent.right
+                anchors.rightMargin: 4
                 renderType: Text.NativeRendering
                 enabled: true
                 selectByMouse: true
                 activeFocusOnPress: false
                 readOnly: true
-                wrapMode: TextEdit.NoWrap
+                wrapMode: TextEdit.Wrap
             }
         }
     }

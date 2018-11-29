@@ -25,6 +25,17 @@ Building
 3. Configure Qt Creator to use your Visual Studio compiler
 4. Build
 
+Changes
+---------
+
+- Version 2.3: Updated to XML Schema 1.8 -- requires manual change of the database to add columns to the `legal_description` table: 
+
+     ```sql
+     candidateforSpecTaxFlag bool
+     schoolTax3Mto4MFlag bool
+     schoolTaxGreater4MFlag bool
+     ```
+
 License
 -------------
 
