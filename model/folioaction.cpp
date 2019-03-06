@@ -56,7 +56,7 @@ FolioAction& FolioAction::operator=(const FolioAction& other)
     return *this;
 }
 
-FolioAction::FolioAction(FolioAction &other)
+FolioAction::FolioAction(const FolioAction &other)
     : m_renumber(std::make_unique<model::FolioRenumber>())
     , m_actionType(other.m_actionType)
     , m_deleteReasonCode(other.m_deleteReasonCode)

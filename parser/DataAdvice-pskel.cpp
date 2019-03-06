@@ -3788,7 +3788,10 @@ namespace dataadvice
     if (n == "ReportSummary" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->ReportSummary_parser_)
-        this->ReportSummary (this->ReportSummary_parser_->post_DeliverySummary ());
+      {
+          auto summary = ReportSummary_parser_->post_DeliverySummary();
+        this->ReportSummary (summary);
+      }
 
       return true;
     }
@@ -4111,7 +4114,10 @@ namespace dataadvice
     if (n == "GeneralValues" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->GeneralValues_parser_)
-        this->GeneralValues (this->GeneralValues_parser_->post_PropertyClassValuesCollection ());
+      {
+        auto values = this->GeneralValues_parser_->post_PropertyClassValuesCollection();
+        this->GeneralValues (values);
+      }
 
       return true;
     }
@@ -4119,7 +4125,10 @@ namespace dataadvice
     if (n == "BCTransitValues" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->BCTransitValues_parser_)
-        this->BCTransitValues (this->BCTransitValues_parser_->post_PropertyClassValuesCollection ());
+      {
+          auto values = this->BCTransitValues_parser_->post_PropertyClassValuesCollection ();
+        this->BCTransitValues (values);
+      }
 
       return true;
     }
@@ -4127,7 +4136,10 @@ namespace dataadvice
     if (n == "SchoolValues" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->SchoolValues_parser_)
-        this->SchoolValues (this->SchoolValues_parser_->post_PropertyClassValuesCollection ());
+      {
+          auto values = this->SchoolValues_parser_->post_PropertyClassValuesCollection ();
+        this->SchoolValues (values);
+      }
 
       return true;
     }
@@ -4646,7 +4658,10 @@ namespace dataadvice
     if (n == "AreaSummary" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->AreaSummary_parser_)
-        this->AreaSummary (this->AreaSummary_parser_->post_DeliverySummary ());
+      {
+          auto value = this->AreaSummary_parser_->post_DeliverySummary ();
+        this->AreaSummary (value);
+      }
 
       return true;
     }
@@ -4818,7 +4833,10 @@ namespace dataadvice
     if (n == "FolioRecords" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioRecords_parser_)
-        this->FolioRecords (this->FolioRecords_parser_->post_FolioRecordCollection ());
+      {
+          auto values = this->FolioRecords_parser_->post_FolioRecordCollection ();
+        this->FolioRecords (values);
+      }
 
       return true;
     }
@@ -4826,7 +4844,10 @@ namespace dataadvice
     if (n == "JurisdictionSummary" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->JurisdictionSummary_parser_)
-        this->JurisdictionSummary (this->JurisdictionSummary_parser_->post_DeliverySummary ());
+      {
+          auto value = this->JurisdictionSummary_parser_->post_DeliverySummary ();
+        this->JurisdictionSummary (value);
+      }
 
       return true;
     }
@@ -4952,7 +4973,10 @@ namespace dataadvice
     if (n == "FolioRecord" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioRecord_parser_)
-        this->FolioRecord (this->FolioRecord_parser_->post_FolioRecord ());
+      {
+          auto value = this->FolioRecord_parser_->post_FolioRecord();
+        this->FolioRecord (value);
+      }
 
       return true;
     }
@@ -5270,23 +5294,32 @@ namespace dataadvice
     if (n == "FolioAction" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioAction_parser_)
-        this->FolioAction (this->FolioAction_parser_->post_FolioAction ());
+      {
+          auto value =this->FolioAction_parser_->post_FolioAction ();
+          this->FolioAction (value);
+      }
 
       return true;
     }
 
     if (n == "FolioAddresses" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
-      if (this->FolioAddresses_parser_)
-        this->FolioAddresses (this->FolioAddresses_parser_->post_FolioAddressCollection ());
+        if (this->FolioAddresses_parser_)
+        {
+            auto value = this->FolioAddresses_parser_->post_FolioAddressCollection ();
+            this->FolioAddresses (value);
+        }
 
-      return true;
+        return true;
     }
 
     if (n == "OwnershipGroups" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->OwnershipGroups_parser_)
-        this->OwnershipGroups (this->OwnershipGroups_parser_->post_OwnershipGroupCollection ());
+      {
+          auto values = this->OwnershipGroups_parser_->post_OwnershipGroupCollection ();
+        this->OwnershipGroups (values);
+      }
 
       return true;
     }
@@ -5294,7 +5327,10 @@ namespace dataadvice
     if (n == "LegalDescriptions" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->LegalDescriptions_parser_)
-        this->LegalDescriptions (this->LegalDescriptions_parser_->post_LegalDescriptionCollection ());
+      {
+          auto values = this->LegalDescriptions_parser_->post_LegalDescriptionCollection ();
+        this->LegalDescriptions (values);
+      }
 
       return true;
     }
@@ -5302,7 +5338,10 @@ namespace dataadvice
     if (n == "FolioDescription" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioDescription_parser_)
-        this->FolioDescription (this->FolioDescription_parser_->post_FolioDescription ());
+      {
+          auto value = this->FolioDescription_parser_->post_FolioDescription ();
+        this->FolioDescription (value);
+      }
 
       return true;
     }
@@ -5310,7 +5349,10 @@ namespace dataadvice
     if (n == "Sales" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->Sales_parser_)
-        this->Sales (this->Sales_parser_->post_SaleCollection ());
+      {
+       auto values = this->Sales_parser_->post_SaleCollection ();
+          this->Sales (values);
+      }
 
       return true;
     }
@@ -5318,7 +5360,10 @@ namespace dataadvice
     if (n == "Values" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->Values_parser_)
-        this->Values (this->Values_parser_->post_PropertyValues ());
+      {
+          auto values = this->Values_parser_->post_PropertyValues ();
+        this->Values (values);
+      }
 
       return true;
     }
@@ -5337,7 +5382,10 @@ namespace dataadvice
     if (n == "MinorTaxing" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->MinorTaxing_parser_)
-        this->MinorTaxing (this->MinorTaxing_parser_->post_MinorTaxing ());
+      {
+          auto values = this->MinorTaxing_parser_->post_MinorTaxing ();
+        this->MinorTaxing (values);
+      }
 
       return true;
     }
@@ -5345,7 +5393,10 @@ namespace dataadvice
     if (n == "Farms" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->Farms_parser_)
-        this->Farms (this->Farms_parser_->post_FarmCollection ());
+      {
+          auto values = this->Farms_parser_->post_FarmCollection ();
+        this->Farms (values);
+      }
 
       return true;
     }
@@ -5353,7 +5404,10 @@ namespace dataadvice
     if (n == "ManufacturedHomes" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->ManufacturedHomes_parser_)
-        this->ManufacturedHomes (this->ManufacturedHomes_parser_->post_ManufacturedHomeCollection ());
+      {
+          auto values = this->ManufacturedHomes_parser_->post_ManufacturedHomeCollection ();
+        this->ManufacturedHomes (values);
+      }
 
       return true;
     }
@@ -5361,7 +5415,10 @@ namespace dataadvice
     if (n == "ManagedForests" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->ManagedForests_parser_)
-        this->ManagedForests (this->ManagedForests_parser_->post_ManagedForestCollection ());
+      {
+          auto values = this->ManagedForests_parser_->post_ManagedForestCollection ();
+        this->ManagedForests (values);
+      }
 
       return true;
     }
@@ -5369,7 +5426,10 @@ namespace dataadvice
     if (n == "OilAndGas" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->OilAndGas_parser_)
-        this->OilAndGas (this->OilAndGas_parser_->post_OilAndGasCollection ());
+      {
+          auto values = this->OilAndGas_parser_->post_OilAndGasCollection ();
+        this->OilAndGas (values);
+      }
 
       return true;
     }
@@ -5377,7 +5437,10 @@ namespace dataadvice
     if (n == "LandCharacteristics" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->LandCharacteristics_parser_)
-        this->LandCharacteristics (this->LandCharacteristics_parser_->post_LandCharacteristicCollection ());
+      {
+          auto values = this->LandCharacteristics_parser_->post_LandCharacteristicCollection ();
+        this->LandCharacteristics (values);
+      }
 
       return true;
     }
@@ -5518,7 +5581,10 @@ namespace dataadvice
     if (n == "FolioAdd" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioAdd_parser_)
-        this->FolioAdd (this->FolioAdd_parser_->post_FolioAdd ());
+      {
+          auto value = this->FolioAdd_parser_->post_FolioAdd ();
+        this->FolioAdd (value);
+      }
 
       return true;
     }
@@ -5526,7 +5592,10 @@ namespace dataadvice
     if (n == "FolioDelete" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioDelete_parser_)
-        this->FolioDelete (this->FolioDelete_parser_->post_FolioDelete ());
+      {
+          auto value = this->FolioDelete_parser_->post_FolioDelete ();
+        this->FolioDelete (value);
+      }
 
       return true;
     }
@@ -5893,7 +5962,10 @@ namespace dataadvice
     if (n == "FolioAddress" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FolioAddress_parser_)
-        this->FolioAddress (this->FolioAddress_parser_->post_FolioAddress ());
+      {
+          auto value = this->FolioAddress_parser_->post_FolioAddress ();
+        this->FolioAddress (value);
+      }
 
       return true;
     }
@@ -6251,7 +6323,10 @@ namespace dataadvice
     if (n == "OwnershipGroup" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->OwnershipGroup_parser_)
-        this->OwnershipGroup (this->OwnershipGroup_parser_->post_OwnershipGroup ());
+      {
+          auto value = this->OwnershipGroup_parser_->post_OwnershipGroup ();
+        this->OwnershipGroup (value);
+      }
 
       return true;
     }
@@ -6514,7 +6589,10 @@ namespace dataadvice
     if (n == "Owners" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->Owners_parser_)
-        this->Owners (this->Owners_parser_->post_OwnerCollection ());
+      {
+          auto values = this->Owners_parser_->post_OwnerCollection ();
+        this->Owners (values);
+      }
 
       return true;
     }
@@ -6522,7 +6600,10 @@ namespace dataadvice
     if (n == "FormattedMailingAddress" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->FormattedMailingAddress_parser_)
-        this->FormattedMailingAddress (this->FormattedMailingAddress_parser_->post_FormattedMailingAddress ());
+      {
+          auto value = this->FormattedMailingAddress_parser_->post_FormattedMailingAddress ();
+        this->FormattedMailingAddress (value);
+      }
 
       return true;
     }
@@ -6530,7 +6611,10 @@ namespace dataadvice
     if (n == "MailingAddress" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->MailingAddress_parser_)
-        this->MailingAddress (this->MailingAddress_parser_->post_MailingAddress ());
+      {
+          auto value = this->MailingAddress_parser_->post_MailingAddress ();
+        this->MailingAddress (value);
+      }
 
       return true;
     }
@@ -6579,7 +6663,10 @@ namespace dataadvice
     if (n == "Owner" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->Owner_parser_)
-        this->Owner (this->Owner_parser_->post_Owner ());
+      {
+          auto value = this->Owner_parser_->post_Owner ();
+        this->Owner (value);
+      }
 
       return true;
     }
@@ -7630,7 +7717,10 @@ namespace dataadvice
     if (n == "LegalDescription" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->LegalDescription_parser_)
-        this->LegalDescription (this->LegalDescription_parser_->post_LegalDescription ());
+      {
+          auto value = this->LegalDescription_parser_->post_LegalDescription ();
+        this->LegalDescription (value);
+      }
 
       return true;
     }
@@ -8543,7 +8633,10 @@ namespace dataadvice
     if (n == "LandCharacteristic" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->LandCharacteristic_parser_)
-        this->LandCharacteristic (this->LandCharacteristic_parser_->post_LandCharacteristic ());
+      {
+          auto value = this->LandCharacteristic_parser_->post_LandCharacteristic ();
+        this->LandCharacteristic (value);
+      }
 
       return true;
     }
@@ -8592,7 +8685,10 @@ namespace dataadvice
     if (n == "ManufacturedHome" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->ManufacturedHome_parser_)
-        this->ManufacturedHome (this->ManufacturedHome_parser_->post_ManufacturedHome ());
+      {
+          auto value = this->ManufacturedHome_parser_->post_ManufacturedHome ();
+        this->ManufacturedHome (value);
+      }
 
       return true;
     }
@@ -8789,7 +8885,10 @@ namespace dataadvice
     if (n == "Farm" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->Farm_parser_)
-        this->Farm (this->Farm_parser_->post_Farm ());
+      {
+          auto value = this->Farm_parser_->post_Farm ();
+        this->Farm (value);
+      }
 
       return true;
     }
@@ -8917,7 +9016,10 @@ namespace dataadvice
     if (n == "OilAndGas" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->OilAndGas_parser_)
-        this->OilAndGas (this->OilAndGas_parser_->post_OilAndGas ());
+      {
+          auto value = this->OilAndGas_parser_->post_OilAndGas ();
+        this->OilAndGas (value);
+      }
 
       return true;
     }
@@ -9045,7 +9147,10 @@ namespace dataadvice
     if (n == "ManagedForest" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->ManagedForest_parser_)
-        this->ManagedForest (this->ManagedForest_parser_->post_ManagedForest ());
+      {
+          auto value = this->ManagedForest_parser_->post_ManagedForest ();
+        this->ManagedForest (value);
+      }
 
       return true;
     }
@@ -9429,7 +9534,10 @@ namespace dataadvice
     if (n == "Sale" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->Sale_parser_)
-        this->Sale (this->Sale_parser_->post_Sale ());
+      {
+          auto values = this->Sale_parser_->post_Sale ();
+        this->Sale (values);
+      }
 
       return true;
     }
@@ -10057,7 +10165,10 @@ namespace dataadvice
     if (n == "Neighbourhood" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->Neighbourhood_parser_)
-        this->Neighbourhood (this->Neighbourhood_parser_->post_Neighbourhood ());
+      {
+          auto value = this->Neighbourhood_parser_->post_Neighbourhood();
+        this->Neighbourhood (value);
+      }
 
       return true;
     }
@@ -10168,16 +10279,22 @@ namespace dataadvice
 
     if (n == "LandMeasurement" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
-      if (this->LandMeasurement_parser_)
-        this->LandMeasurement (this->LandMeasurement_parser_->post_LandMeasurement ());
+        if (this->LandMeasurement_parser_)
+        {
+            auto value = this->LandMeasurement_parser_->post_LandMeasurement ();
+            this->LandMeasurement (value);
+        }
 
-      return true;
+        return true;
     }
 
     if (n == "SchoolDistrict" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->SchoolDistrict_parser_)
-        this->SchoolDistrict (this->SchoolDistrict_parser_->post_SpecialDistrict ());
+      {
+        auto value = this->SchoolDistrict_parser_->post_SpecialDistrict ();
+        this->SchoolDistrict (value);
+      }
 
       return true;
     }
@@ -10185,7 +10302,10 @@ namespace dataadvice
     if (n == "RegionalDistrict" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->RegionalDistrict_parser_)
-        this->RegionalDistrict (this->RegionalDistrict_parser_->post_SpecialDistrict ());
+      {
+          auto value = this->RegionalDistrict_parser_->post_SpecialDistrict ();
+        this->RegionalDistrict (value);
+      }
 
       return true;
     }
@@ -10193,7 +10313,10 @@ namespace dataadvice
     if (n == "RegionalHospitalDistrict" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->RegionalHospitalDistrict_parser_)
-        this->RegionalHospitalDistrict (this->RegionalHospitalDistrict_parser_->post_SpecialDistrict ());
+      {
+          auto value = this->RegionalHospitalDistrict_parser_->post_SpecialDistrict ();
+        this->RegionalHospitalDistrict (value);
+      }
 
       return true;
     }
@@ -10201,7 +10324,10 @@ namespace dataadvice
     if (n == "PredominantManualClass" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->PredominantManualClass_parser_)
-        this->PredominantManualClass (this->PredominantManualClass_parser_->post_ManualClass ());
+      {
+          auto value = this->PredominantManualClass_parser_->post_ManualClass ();
+        this->PredominantManualClass (value);
+      }
 
       return true;
     }
@@ -10750,31 +10876,43 @@ namespace dataadvice
     if (n == "ElectoralAreas" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->ElectoralAreas_parser_)
-        this->ElectoralAreas (this->ElectoralAreas_parser_->post_MinorTaxingJurisdictionCollection ());
+      {
+          auto value = this->ElectoralAreas_parser_->post_MinorTaxingJurisdictionCollection ();
+        this->ElectoralAreas (value);
+      }
 
       return true;
     }
 
     if (n == "ServiceAreas" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
-      if (this->ServiceAreas_parser_)
-        this->ServiceAreas (this->ServiceAreas_parser_->post_MinorTaxingJurisdictionCollection ());
+        if (this->ServiceAreas_parser_)
+        {
+            auto values = this->ServiceAreas_parser_->post_MinorTaxingJurisdictionCollection ();
+            this->ServiceAreas (values);
+        }
 
       return true;
     }
 
     if (n == "Defined" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
-      if (this->Defined_parser_)
-        this->Defined (this->Defined_parser_->post_MinorTaxingJurisdictionCollection ());
+        if (this->Defined_parser_)
+        {
+            auto value = this->Defined_parser_->post_MinorTaxingJurisdictionCollection ();
+            this->Defined (value);
+        }
 
       return true;
     }
 
     if (n == "SpecifiedRegional" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
-      if (this->SpecifiedRegional_parser_)
-        this->SpecifiedRegional (this->SpecifiedRegional_parser_->post_MinorTaxingJurisdictionCollection ());
+        if (this->SpecifiedRegional_parser_)
+        {
+            auto value= this->SpecifiedRegional_parser_->post_MinorTaxingJurisdictionCollection ();
+            this->SpecifiedRegional (value);
+        }
 
       return true;
     }
@@ -10782,7 +10920,10 @@ namespace dataadvice
     if (n == "SpecifiedMunicipal" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->SpecifiedMunicipal_parser_)
-        this->SpecifiedMunicipal (this->SpecifiedMunicipal_parser_->post_MinorTaxingJurisdictionCollection ());
+      {
+          auto value = this->SpecifiedMunicipal_parser_->post_MinorTaxingJurisdictionCollection ();
+        this->SpecifiedMunicipal (value);
+      }
 
       return true;
     }
@@ -10790,7 +10931,10 @@ namespace dataadvice
     if (n == "LocalAreas" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->LocalAreas_parser_)
-        this->LocalAreas (this->LocalAreas_parser_->post_MinorTaxingJurisdictionCollection ());
+      {
+          auto values = this->LocalAreas_parser_->post_MinorTaxingJurisdictionCollection ();
+        this->LocalAreas (values);
+      }
 
       return true;
     }
@@ -10798,7 +10942,10 @@ namespace dataadvice
     if (n == "GeneralServices" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->GeneralServices_parser_)
-        this->GeneralServices (this->GeneralServices_parser_->post_MinorTaxingJurisdictionCollection ());
+      {
+          auto values = this->GeneralServices_parser_->post_MinorTaxingJurisdictionCollection ();
+        this->GeneralServices (values);
+      }
 
       return true;
     }
@@ -10806,7 +10953,10 @@ namespace dataadvice
     if (n == "ImprovementDistricts" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->ImprovementDistricts_parser_)
-        this->ImprovementDistricts (this->ImprovementDistricts_parser_->post_MinorTaxingJurisdictionCollection ());
+      {
+          auto value = this->ImprovementDistricts_parser_->post_MinorTaxingJurisdictionCollection ();
+        this->ImprovementDistricts (value);
+      }
 
       return true;
     }
@@ -10814,7 +10964,10 @@ namespace dataadvice
     if (n == "IslandsTrusts" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->IslandsTrusts_parser_)
-        this->IslandsTrusts (this->IslandsTrusts_parser_->post_MinorTaxingJurisdictionCollection ());
+      {
+          auto values = this->IslandsTrusts_parser_->post_MinorTaxingJurisdictionCollection ();
+        this->IslandsTrusts (values);
+      }
 
       return true;
     }
@@ -10863,7 +11016,10 @@ namespace dataadvice
     if (n == "MinorTaxingJurisdiction" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->MinorTaxingJurisdiction_parser_)
-        this->MinorTaxingJurisdiction (this->MinorTaxingJurisdiction_parser_->post_MinorTaxingJurisdiction ());
+      {
+          auto value = this->MinorTaxingJurisdiction_parser_->post_MinorTaxingJurisdiction ();
+        this->MinorTaxingJurisdiction (value);
+      }
 
       return true;
     }
@@ -11082,7 +11238,10 @@ namespace dataadvice
     if (n == "GeneralValues" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->GeneralValues_parser_)
-        this->GeneralValues (this->GeneralValues_parser_->post_PropertyClassValuesCollection ());
+      {
+          auto values = this->GeneralValues_parser_->post_PropertyClassValuesCollection ();
+        this->GeneralValues (values);
+      }
 
       return true;
     }
@@ -11090,7 +11249,10 @@ namespace dataadvice
     if (n == "BCTransitValues" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->BCTransitValues_parser_)
-        this->BCTransitValues (this->BCTransitValues_parser_->post_PropertyClassValuesCollection ());
+      {
+          auto values = this->BCTransitValues_parser_->post_PropertyClassValuesCollection ();
+        this->BCTransitValues (values);
+      }
 
       return true;
     }
@@ -11098,7 +11260,10 @@ namespace dataadvice
     if (n == "SchoolValues" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->SchoolValues_parser_)
-        this->SchoolValues (this->SchoolValues_parser_->post_PropertyClassValuesCollection ());
+      {
+          auto values = this->SchoolValues_parser_->post_PropertyClassValuesCollection ();
+        this->SchoolValues (values);
+      }
 
       return true;
     }
@@ -11106,7 +11271,10 @@ namespace dataadvice
     if (n == "Valuation" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->Valuation_parser_)
-        this->Valuation (this->Valuation_parser_->post_ValuationCollection ());
+      {
+          auto values = this->Valuation_parser_->post_ValuationCollection ();
+        this->Valuation (values);
+      }
 
       return true;
     }
@@ -11155,7 +11323,10 @@ namespace dataadvice
     if (n == "ValuesByETC" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->ValuesByETC_parser_)
-        this->ValuesByETC (this->ValuesByETC_parser_->post_ValuesByETC ());
+      {
+          auto values = this->ValuesByETC_parser_->post_ValuesByETC ();
+        this->ValuesByETC (values);
+      }
 
       return true;
     }
@@ -11368,7 +11539,10 @@ namespace dataadvice
     if (n == "PropertyClassValues" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->PropertyClassValues_parser_)
-        this->PropertyClassValues (this->PropertyClassValues_parser_->post_PropertyClassValues ());
+      {
+          auto values = this->PropertyClassValues_parser_->post_PropertyClassValues ();
+        this->PropertyClassValues (values);
+      }
 
       return true;
     }
@@ -11539,7 +11713,10 @@ namespace dataadvice
     if (n == "GrossValues" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->GrossValues_parser_)
-        this->GrossValues (this->GrossValues_parser_->post_Valuation ());
+      {
+          auto values = this->GrossValues_parser_->post_Valuation ();
+        this->GrossValues (values);
+      }
 
       return true;
     }
@@ -11547,7 +11724,10 @@ namespace dataadvice
     if (n == "TaxExemptValues" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->TaxExemptValues_parser_)
-        this->TaxExemptValues (this->TaxExemptValues_parser_->post_Valuation ());
+      {
+          auto values = this->TaxExemptValues_parser_->post_Valuation ();
+        this->TaxExemptValues (values);
+      }
 
       return true;
     }
@@ -11555,7 +11735,10 @@ namespace dataadvice
     if (n == "NetValues" && ns == "http://data.bcassessment.ca/DataAdvice/Formats/DAX/DataAdvice.xsd")
     {
       if (this->NetValues_parser_)
-        this->NetValues (this->NetValues_parser_->post_Valuation ());
+      {
+          auto values = this->NetValues_parser_->post_Valuation ();
+        this->NetValues (values);
+      }
 
       return true;
     }

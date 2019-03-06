@@ -50,7 +50,7 @@ public:
     QString deleteReasonDescription() const;
     const std::unique_ptr<FolioRenumber> &renumber() const;
     FolioAction& operator=(const FolioAction& other);
-    FolioAction(FolioAction &other);
+    FolioAction(const FolioAction &other);
 
 private:
     std::unique_ptr<FolioRenumber> m_renumber;
