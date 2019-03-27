@@ -123,7 +123,6 @@ QSqlDatabase DbConnectionSettings::makeDbConnection()
 QString DbConnectionSettings::makeMssqlConnString() {
     // FIXME: don't hard code the SQL Server Native client version!
     auto drivername = MssqlDrivers().GetBestMssqlDriver();
-    emit message(QString("Found ") + drivername);
     if (drivername.isEmpty())
     {
         emit message("Could not find a Sql Server driver");

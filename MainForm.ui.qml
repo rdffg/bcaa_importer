@@ -24,33 +24,38 @@ Item {
         Rectangle {
             color: "#dbdbdb"
             border.color: "#242424"
-            anchors.fill: parent
-        }
-
-        ScrollView {
-            id: flick1
-            x: 0
-            y: 0
-            width: 640
-            height: 457
+            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             Layout.fillHeight: true
-            horizontalScrollBarPolicy: Qt.ScrollBarAlwaysAsNeeded
             Layout.fillWidth: true
-            anchors.fill: parent
-            clip: true
 
-            TextEdit {
-                id: textedit1
-                anchors.left: parent.left
-                anchors.leftMargin: 4
-                anchors.right: parent.right
-                anchors.rightMargin: 4
-                renderType: Text.NativeRendering
-                enabled: true
-                selectByMouse: true
-                activeFocusOnPress: false
-                readOnly: true
-                wrapMode: TextEdit.Wrap
+            ScrollView {
+                id: flick1
+                x: 0
+                y: 0
+                width: 640
+                height: 457
+                anchors.rightMargin: 3
+                anchors.leftMargin: 3
+                anchors.bottomMargin: 3
+                anchors.topMargin: 3
+                Layout.fillHeight: true
+                horizontalScrollBarPolicy: Qt.ScrollBarAsNeeded
+                Layout.fillWidth: true
+                anchors.fill: parent
+                clip: true
+
+                TextEdit {
+                    id: textedit1
+                    Layout.leftMargin: 4
+                    Layout.rightMargin: 4
+                    Layout.fillWidth: true
+                    renderType: Text.NativeRendering
+                    enabled: true
+                    selectByMouse: true
+                    activeFocusOnPress: false
+                    readOnly: true
+                    wrapMode: TextEdit.Wrap
+                }
             }
         }
     }
@@ -62,15 +67,11 @@ Item {
         Button {
             id: button1
             text: qsTr("Start")
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 0
         }
 
         Button {
             id: settingsButton1
             text: qsTr("Settings...")
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 0
         }
     }
 }

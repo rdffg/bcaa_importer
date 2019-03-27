@@ -10,6 +10,9 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
     app.setApplicationVersion(QString(APP_VERSION));
+    app.setApplicationName("BC Assessment Importer");
+    app.setOrganizationName("Regional District of Fraser-Fort Georrge");
+    app.setOrganizationDomain("rdffg.bc.ca");
 
     QQmlApplicationEngine engine;
     QQmlContext *context = engine.rootContext();
