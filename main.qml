@@ -140,7 +140,7 @@ ApplicationWindow {
                 importer.createTables();
                 var lastRun = importer.lastRun;
                 var thisRun = importer.importMeta;
-                if (lastRun != undefined && lastRun.runDate >= thisRun.runDate)
+                if (lastRun !== undefined && lastRun.runDate >= thisRun.runDate)
                 {
                     overwriteImportDialog.open();
                 } else {
@@ -153,6 +153,11 @@ ApplicationWindow {
 
         settingsButton.onClicked: {
             sqlconnection.loadSettings();
+            if (sqlconnection.driver == "")
+            {
+                sqlconnection.driver = sqlconnection.drivers[0];
+            }
+
             if(settingsWindow.driverType.find(sqlconnection.driver) >= 0)
                                      settingsWindow.driverType.currentIndex = settingsWindow.driverType.find(sqlconnection.driver);
                                  else
@@ -191,6 +196,11 @@ ApplicationWindow {
                 text: Math.round(importer.progress / 10) * 10;
                 anchors.horizontalCenter: parent.horizontalCenter
             }
+        }
+
+        Connections {
+            target: sqlconnection
+            onMessage: logdata.addLogText(msg);
         }
 
     }

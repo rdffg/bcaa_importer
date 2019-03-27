@@ -16,7 +16,7 @@ QString MssqlDrivers::GetBestMssqlDriver()
     {
         drivers = GetMssqlDrivers();
     }
-    catch (const std::string &e)
+    catch (const std::string)
     {
         return QString();
     }
