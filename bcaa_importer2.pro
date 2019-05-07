@@ -7,7 +7,7 @@ QT += qml quick widgets sql
 
 CONFIG += qtquickcompiler
 
-VERSION = 2.3.2.0
+VERSION = 2.3.3.0
 
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
 DEFINES += SCHEMA_VERSION=\"1.8\"
