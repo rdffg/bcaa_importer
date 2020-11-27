@@ -1268,8 +1268,9 @@ namespace dataadvice
   }
 
   void OwnershipGroupImpl::
-  OwnershipGroupID (const model::StringItem &)
+  OwnershipGroupID (const model::StringItem &id)
   {
+      m_owners->setOwnershipGroupId(id.value());
   }
 
   void OwnershipGroupImpl::
@@ -1325,12 +1326,12 @@ namespace dataadvice
   {
       if (FormattedMailingAddress)
       {
-          if (!FormattedMailingAddress->save())
-          {
-          throw SaveError(QString("Formatted Mailing Address: "
-                      + FormattedMailingAddress->lastError().text()));
-          }
           m_owners->setFormattedMailingAddress(std::move(FormattedMailingAddress));
+          if (!m_owners->formattedMailingAddress()->save())
+          {
+              throw SaveError(QString("Formatted Mailing Address: "
+                      + m_owners->formattedMailingAddress()->lastError().text()));
+          }
       }
   }
 

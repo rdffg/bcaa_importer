@@ -6,6 +6,7 @@
 
 void PreFlight::prepareDatabase(const QString &runType)
 {
+    addOwnershipGroupIdColumn();
     if (runType == "COMP")
     {
         QString queryText = "DELETE FROM folio";
@@ -32,6 +33,21 @@ void PreFlight::prepareDatabase(const QString &runType)
             queryText = "TRUNCATE TABLE " + tab;
         auto query = QDjango::database().exec(queryText);
         if (query.lastError().type() != QSqlError::NoError)
+            throw SaveError(query.lastError().text());
+        }
+    }
+}
+
+void PreFlight::addOwnershipGroupIdColumn()
+{
+    QString queryText = "SELECT count(ownership_group_id) FROM ownership_group";
+    auto query = QDjango::database().exec(queryText);
+    if (query.lastError().type() != QSqlError::NoError)
+    {
+        queryText = "ALTER TABLE ownership_group ADD ownership_group_id nvarchar(32)";
+        query = QDjango::database().exec(queryText);
+        if (query.lastError().type() != QSqlError::NoError)
+        {
             throw SaveError(query.lastError().text());
         }
     }

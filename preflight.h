@@ -13,8 +13,11 @@ public:
     /**
      * @brief prepareDatabase
      * @param runType
+     * The type of BCA run: COMP, MONTHY, REVISED
      */
     static void prepareDatabase(const QString &runType);
+private:
+    static void addOwnershipGroupIdColumn();
 };
 
 #endif // PREFLIGHT_H

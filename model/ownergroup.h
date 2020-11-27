@@ -10,6 +10,7 @@
 #define FOLIO_PROPERTY "folio"
 #define MAILING_ADDRESS_PROPERTY "mailingAddress"
 #define FORMATTED_MAILING_ADDRESS_PROPERTY "formattedMailingAddress"
+#define OWNERSHIP_GROUP_ID_PROPERTY "ownershipGroupId"
 
 namespace model {
 class Owner;
@@ -29,6 +30,7 @@ class OwnershipGroup : public QDjangoModel
     Q_PROPERTY(model::Folio * folio READ folio WRITE setFolio)
     Q_PROPERTY(model::MailingAddress* mailingAddress READ mailingAddress WRITE setMailingAddress)
     Q_PROPERTY(model::FormattedMailingAddress* formattedMailingAddress READ formattedMailingAddress WRITE setFormattedMailingAddress)
+    Q_PROPERTY(QString ownershipGroupId READ ownershipGroupId WRITE setOwnershipGroupId)
 
     Q_CLASSINFO("__meta__", "db_table=ownership_group")
     Q_CLASSINFO("assessmentNoticeReturned", "null=true")
@@ -38,6 +40,7 @@ class OwnershipGroup : public QDjangoModel
     Q_CLASSINFO("changeDate", "null=true")
     Q_CLASSINFO("changeSource", "null=true")
     Q_CLASSINFO("changeSourceDescription", "null=true")
+    Q_CLASSINFO(OWNERSHIP_GROUP_ID_PROPERTY, "db_column=ownership_group_id null=true")
     Q_CLASSINFO(MAILING_ADDRESS_PROPERTY, "db_column=mailing_address_id null=true")
     Q_CLASSINFO(FORMATTED_MAILING_ADDRESS_PROPERTY, "db_column=formatted_mailing_address_id null=true")
     Q_CLASSINFO(FOLIO_PROPERTY, "on_delete=cascade")
@@ -68,6 +71,8 @@ public:
     model::MailingAddress* mailingAddress();
     void setMailingAddress(model::MailingAddress*);
     void setMailingAddress(std::unique_ptr<model::MailingAddress> mailingAddress);
+    void setOwnershipGroupId(QString id);
+    QString ownershipGroupId() const;
 
 signals:
 
@@ -84,6 +89,7 @@ private:
     std::vector<std::unique_ptr<model::Owner> > m_owners;
     std::unique_ptr<model::FormattedMailingAddress> m_address;
     std::unique_ptr<model::MailingAddress> m_mailingAddress;
+    QString m_ownershipGroupId;
 };
 }
 

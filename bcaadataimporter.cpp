@@ -78,7 +78,7 @@ void BCAADataImporter::beginImport()
 
     m_isrunning = true;
     emit runningChanged();
-    if (m_dbconnection != NULL) {
+    if (m_dbconnection != nullptr) {
         auto db = m_dbconnection->makeDbConnection();
         if(db.open()) {
             // make sqlite fast
@@ -139,7 +139,7 @@ model::ImportMeta *BCAADataImporter::importMeta() const
 
 model::ImportMeta *BCAADataImporter::lastRun() const
 {
-    if (m_dbconnection != NULL)
+    if (m_dbconnection != nullptr)
     {
         auto db = m_dbconnection->makeDbConnection();
         if (db.open())
@@ -159,7 +159,7 @@ model::ImportMeta *BCAADataImporter::lastRun() const
     {
         emit statusChanged(QString("No sql connection settings defined."));
     }
-    return NULL;
+    return nullptr;
 }
 
 void BCAADataImporter::onImportFinished(bool success)
@@ -177,7 +177,7 @@ void BCAADataImporter::onImportFinished(bool success)
         auto t = new QThread;
         std::unique_ptr<rdffg::IPostProcess>& postPlugin = m_plugins[m_dbconnection->driver()];
         auto plugin =dynamic_cast<QObject *>(postPlugin.get());
-        if (plugin != NULL)
+        if (plugin != nullptr)
         {
             plugin->moveToThread(t);
             connect(t, &QThread::started, [&]() {
@@ -263,7 +263,8 @@ void BCAADataImporter::onStatusChanged(const QString &message)
 ///
 /// \brief BCAADataImporter::verifyDataFile
 /// \todo signal error messages back to the UI
-/// \return
+/// \return Returns true if the file is parsed correctly (checking the XML Schema version)
+///
 ///
 bool BCAADataImporter::verifyDataFile()
 {
