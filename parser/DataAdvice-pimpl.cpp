@@ -1338,12 +1338,15 @@ namespace dataadvice
   void OwnershipGroupImpl::
   MailingAddress (std::unique_ptr<model::MailingAddress> &MailingAddress)
   {
-      if (!MailingAddress->save())
+      if (MailingAddress)
       {
-          throw SaveError(QString("Mailing Address: ")
-              + MailingAddress->lastError().text());
+          m_owners->setMailingAddress(std::move(MailingAddress));
+          if (!m_owners->mailingAddress()->save())
+          {
+              throw SaveError(QString("Mailing Address: ")
+                              + MailingAddress->lastError().text());
+          }
       }
-      m_owners->setMailingAddress(std::move(MailingAddress));
   }
 
   std::unique_ptr<model::OwnershipGroup> OwnershipGroupImpl::post_OwnershipGroup()

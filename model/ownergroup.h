@@ -45,7 +45,7 @@ class OwnershipGroup : public QDjangoModel
     Q_CLASSINFO(FORMATTED_MAILING_ADDRESS_PROPERTY, "db_column=formatted_mailing_address_id null=true")
     Q_CLASSINFO(FOLIO_PROPERTY, "on_delete=cascade")
 public:
-    explicit OwnershipGroup(QObject *parent = 0);
+    explicit OwnershipGroup(QObject *parent = nullptr);
 
     bool assessmentNoticeReturned() const;
     void setAssessmentNoticeReturned(bool returned);

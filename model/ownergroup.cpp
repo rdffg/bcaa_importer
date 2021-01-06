@@ -95,6 +95,10 @@ void OwnershipGroup::setFormattedMailingAddress(std::unique_ptr<model::Formatted
 
 void OwnershipGroup::setMailingAddress(MailingAddress *addr)
 {
+    if (m_ownershipGroupId != nullptr)
+    {
+        addr->setId(m_ownershipGroupId);
+    }
     setForeignKey(MAILING_ADDRESS_PROPERTY, addr);
 }
 
@@ -114,6 +118,10 @@ void OwnershipGroup::setOwnershipGroupId(QString id)
     if (formattedMailingAddress() != nullptr)
     {
         formattedMailingAddress()->setId(id);
+    }
+    if (mailingAddress() != nullptr)
+    {
+        mailingAddress()->setId(id);
     }
     m_ownershipGroupId = id;
 }
