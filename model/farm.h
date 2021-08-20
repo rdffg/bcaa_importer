@@ -32,7 +32,7 @@ public:
     void setFolio(Folio *folio);
     void setFolio(std::unique_ptr<Folio> folio);
     QString id() const;
-    void setId(const QString &id);
+    void setId(const QString);
 
 private:
     QString m_id;
